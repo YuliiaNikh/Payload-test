@@ -2,7 +2,7 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useSyncExternalStore } from 'react'
 
 import type { Header } from '@/payload-types'
 
@@ -12,6 +12,16 @@ import { HeaderNav } from './Nav'
 interface HeaderClientProps {
   data: Header
 }
+
+const subscribeToNothing = () => () => {}
+
+// False on the server and during hydration, true afterwards
+const useHydrated = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  )
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   /* Storing the value in a useState to avoid hydration errors */
@@ -24,10 +34,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+  const hydrated = useHydrated()
+
+  // Keep the last non-null header theme, applied only after hydration so the first render matches the server
+  if (hydrated && headerTheme && headerTheme !== theme) setTheme(headerTheme)
 
   return (
     <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>

@@ -7,31 +7,38 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import React, { useState } from 'react'
+import React, { useSyncExternalStore } from 'react'
 
 import type { Theme } from './types'
 
 import { useTheme } from '..'
 import { themeLocalStorageKey } from './types'
 
+// localStorage doesn't notify the tab that wrote to it, so changes made here dispatch this event
+const preferenceChangeEvent = 'theme-preference-change'
+
+const subscribe = (onChange: () => void) => {
+  window.addEventListener('storage', onChange)
+  window.addEventListener(preferenceChangeEvent, onChange)
+  return () => {
+    window.removeEventListener('storage', onChange)
+    window.removeEventListener(preferenceChangeEvent, onChange)
+  }
+}
+
+const getPreference = () => window.localStorage.getItem(themeLocalStorageKey) ?? 'auto'
+
+// Empty on the server and during hydration, so the first client render matches the HTML
+const getServerPreference = () => ''
+
 export const ThemeSelector: React.FC = () => {
   const { setTheme } = useTheme()
-  const [value, setValue] = useState('')
+  const value = useSyncExternalStore(subscribe, getPreference, getServerPreference)
 
   const onThemeChange = (themeToSet: Theme & 'auto') => {
-    if (themeToSet === 'auto') {
-      setTheme(null)
-      setValue('auto')
-    } else {
-      setTheme(themeToSet)
-      setValue(themeToSet)
-    }
+    setTheme(themeToSet === 'auto' ? null : themeToSet)
+    window.dispatchEvent(new Event(preferenceChangeEvent))
   }
-
-  React.useEffect(() => {
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
-    setValue(preference ?? 'auto')
-  }, [])
 
   return (
     <Select onValueChange={onThemeChange} value={value}>

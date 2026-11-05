@@ -3,6 +3,7 @@ import React from 'react'
 
 import { SeedButton } from './SeedButton'
 import './index.scss'
+import { isProductionDeployment } from '@/utilities/site'
 
 const baseClass = 'before-dashboard'
 
@@ -14,14 +15,17 @@ const BeforeDashboard: React.FC = () => {
       </Banner>
       Here&apos;s what to do next:
       <ul className={`${baseClass}__instructions`}>
-        <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
-        </li>
+        {/* Seeding wipes all content, so it is only offered outside production */}
+        {!isProductionDeployment && (
+          <li>
+            <SeedButton />
+            {' with a few pages, posts, and projects to jump-start your new site, then '}
+            <a href="/" target="_blank">
+              visit your website
+            </a>
+            {' to see the results.'}
+          </li>
+        )}
         <li>
           {'Modify your '}
           <a

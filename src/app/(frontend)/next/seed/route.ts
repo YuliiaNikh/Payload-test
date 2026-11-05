@@ -2,10 +2,16 @@ import { createLocalReq, getPayload } from 'payload'
 import { seed } from '@/endpoints/seed'
 import config from '@payload-config'
 import { headers } from 'next/headers'
+import { isProductionDeployment } from '@/utilities/site'
 
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
 export async function POST(): Promise<Response> {
+  // Seeding deletes all existing content, so never allow it on the live site
+  if (isProductionDeployment) {
+    return new Response('Seeding is disabled in production.', { status: 403 })
+  }
+
   const payload = await getPayload({ config })
   const requestHeaders = await headers()
 

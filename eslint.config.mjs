@@ -1,16 +1,10 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
+import nextTypescript from 'eslint-config-next/typescript'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
-
+// eslint-config-next 16 ships native flat configs, so they're spread in directly
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...nextCoreWebVitals,
+  ...nextTypescript,
   {
     rules: {
       '@typescript-eslint/ban-ts-comment': 'warn',
@@ -28,6 +22,16 @@ const eslintConfig = [
           caughtErrorsIgnorePattern: '^(_|ignore)',
         },
       ],
+    },
+  },
+  {
+    // Same file scope as Next's config, which registers the react-hooks plugin.
+    // The template reads localStorage after mount (theme) and passes hook refs through objects (Card),
+    // which these React Compiler rules flag; keep them visible as warnings rather than errors
+    files: ['**/*.{js,jsx,mjs,ts,tsx,mts,cts}'],
+    rules: {
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/refs': 'warn',
     },
   },
   {

@@ -35,8 +35,20 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Pardes',
+          value: 'pardes',
+        },
       ],
       required: true,
+    },
+    {
+      name: 'title',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'pardes',
+        description: 'Shown in the white tab on the bottom edge of the image.',
+      },
     },
     {
       name: 'richText',
@@ -62,7 +74,7 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'pardes'].includes(type),
       },
       relationTo: 'media',
       required: true,

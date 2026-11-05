@@ -10,12 +10,23 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
-      name: 'navItems',
+      name: 'columns',
       type: 'array',
       fields: [
-        link({
-          appearances: false,
-        }),
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'links',
+          type: 'array',
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+        },
       ],
       maxRows: 6,
       admin: {
@@ -24,6 +35,41 @@ export const Footer: GlobalConfig = {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
       },
+    },
+    {
+      name: 'social',
+      type: 'group',
+      fields: [
+        { name: 'facebook', type: 'text', label: 'Facebook URL' },
+        { name: 'instagram', type: 'text', label: 'Instagram URL' },
+        { name: 'linkedin', type: 'text', label: 'LinkedIn URL' },
+        { name: 'tiktok', type: 'text', label: 'TikTok URL' },
+      ],
+    },
+    {
+      name: 'newsletter',
+      type: 'group',
+      fields: [
+        {
+          name: 'form',
+          type: 'relationship',
+          admin: {
+            description:
+              'A form with an "email" field. Signups appear under Form Submissions. Leave empty to hide the signup.',
+          },
+          relationTo: 'forms',
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'Sign up for our newsletter!',
+        },
+        {
+          name: 'buttonLabel',
+          type: 'text',
+          defaultValue: 'Sign me up',
+        },
+      ],
     },
   ],
   hooks: {

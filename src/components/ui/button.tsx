@@ -17,6 +17,12 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        teal:
+          'rounded-full bg-pardes-teal px-6 py-3 text-base font-normal capitalize leading-[1.63] text-pardes-navy-90 hover:bg-pardes-teal-50',
+        outlineRed:
+          'rounded-full border border-pardes-red px-6 py-3 text-base font-normal capitalize leading-[1.63] text-pardes-red hover:bg-pardes-red hover:text-white',
+        outlineRedSmall:
+          'rounded-full border border-pardes-red px-4 py-1.5 text-base font-normal italic capitalize leading-[1.63] text-pardes-red hover:bg-pardes-red hover:text-white',
       },
       size: {
         clear: '',

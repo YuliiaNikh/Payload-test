@@ -11,14 +11,23 @@
 @custom-variant 2xl (@media (width >= theme(--breakpoint-2xl)));
 
 @layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
+  h1 {
+    @apply type-h1;
+  }
+  h2 {
+    @apply type-h2;
+  }
+  h3 {
+    @apply type-h3;
+  }
+  h4 {
+    @apply type-h4;
+  }
+  h5 {
+    @apply type-h5;
+  }
   h6 {
-    font-weight: unset;
-    font-size: unset;
+    @apply type-h6;
   }
 }
 
@@ -44,7 +53,100 @@
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-montserrat);
+  --font-poppins: var(--font-poppins);
+
+  /* Pardes palette (Figma Style Guide: main + supporting colors).
+     Backgrounds: navy / navy-90 / slate (darks) or white / gray / light (brights).
+     Text: navy or red on brights; teal, teal-50 or white on darks only. */
+  --color-pardes-white: #ffffff;
+  --color-pardes-navy: #272d3b;
+  --color-pardes-navy-90: #272d3be5;
+  --color-pardes-slate: #3d424f;
+  --color-pardes-red: #bf1f26;
+  --color-pardes-red-100: #f1a7aa;
+  --color-pardes-red-300: #b01c23;
+  --color-pardes-red-400: #580e11;
+  --color-pardes-red-500: #2c0709;
+  --color-pardes-coral: #fe4553;
+  --color-pardes-teal: #92e6fb;
+  --color-pardes-teal-50: #c7f4ff;
+  --color-pardes-teal-100: #c7f4ff78;
+  --color-pardes-light: #f7f7f7;
+  --color-pardes-gray: #eaeaea;
+  --color-pardes-border: #dedede;
+
+  /* Style Guide: Shadows */
+  --shadow-pardes-xxs: 0 1px 2px 0 #0000000d;
+  --shadow-pardes-xs: 0 1px 3px 0 #0000001a, 0 1px 2px 0 #0000000f;
+  --shadow-pardes-sm: 0 4px 8px -2px #00000014, 0 2px 4px -2px #0000000a;
+  --shadow-pardes-md: 0 12px 16px -4px #00000014, 0 4px 6px -2px #00000008;
+  --shadow-pardes-lg: 0 20px 24px -4px #00000014, 0 8px 8px -4px #00000008;
+  --shadow-pardes-xl: 0 24px 48px -12px #0000002e;
+  --shadow-pardes-xxl: 0 32px 64px -12px #00000024;
+
+  /* Style Guide: Radius (small < 4 columns, medium 2-3 columns, large 1-2 columns) */
+  --radius-pardes-sm: 12px;
+  --radius-pardes-md: 16px;
+  --radius-pardes-lg: 24px;
+}
+
+/* Style Guide: Typography. Mobile size first, desktop from md up.
+   Weights are the defaults; titles may also use regular / medium / bold / extra bold. */
+@utility type-h1 {
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 0.9;
+  @variant md {
+    font-size: 52px;
+  }
+}
+
+@utility type-h2 {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.2;
+  @variant md {
+    font-size: 40px;
+  }
+}
+
+@utility type-h3 {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  @variant md {
+    font-size: 36px;
+  }
+}
+
+@utility type-h4 {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+@utility type-h5 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Regular italic only; for single emphasised paragraphs */
+@utility type-h6 {
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.47;
+  @variant md {
+    line-height: 1.35;
+  }
+}
+
+@utility type-p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
 }
 
 @layer utilities {
@@ -87,8 +189,8 @@
 }
 
 :root {
-  --background: oklch(100% 0 0deg);
-  --foreground: oklch(14.5% 0 0deg);
+  --background: #ffffff;
+  --foreground: #272d3b;
   --card: oklch(96.5% 0.005 265deg);
   --card-foreground: oklch(14.5% 0 0deg);
   --popover: oklch(100% 0 0deg);
@@ -210,7 +312,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    @apply bg-background text-foreground min-h-[100vh] flex flex-col font-sans type-p;
   }
 }
 

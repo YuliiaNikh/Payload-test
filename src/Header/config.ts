@@ -16,6 +16,19 @@ export const Header: GlobalConfig = {
         link({
           appearances: false,
         }),
+        {
+          name: 'subItems',
+          type: 'array',
+          admin: {
+            description: 'Optional dropdown links shown under this item.',
+            initCollapsed: true,
+          },
+          fields: [
+            link({
+              appearances: false,
+            }),
+          ],
+        },
       ],
       maxRows: 6,
       admin: {
@@ -23,6 +36,20 @@ export const Header: GlobalConfig = {
         components: {
           RowLabel: '@/Header/RowLabel#RowLabel',
         },
+      },
+    },
+    link({
+      appearances: false,
+      overrides: {
+        name: 'donateLink',
+        label: 'Donate button',
+      },
+    }),
+    {
+      name: 'dedication',
+      type: 'text',
+      admin: {
+        description: 'Shown in the teal bar under the header. Leave empty to hide it.',
       },
     },
   ],

@@ -42,7 +42,12 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (!href) return null
 
-  const size = appearance === 'link' ? 'clear' : sizeFromProps
+  const ownsSizing =
+    appearance === 'link' ||
+    appearance === 'teal' ||
+    appearance === 'outlineRed' ||
+    appearance === 'outlineRedSmall'
+  const size = ownsSizing ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
   /* Ensure we don't break any styles set by richText */

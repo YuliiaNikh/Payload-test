@@ -1,14 +1,10 @@
 import React from 'react'
 
 import { HeaderThemeProvider } from './HeaderTheme'
-import { ThemeProvider } from './Theme'
 
+// The Pardes design is light-only: <html data-theme="light"> is set in the root layout
 export const Providers: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
-  return (
-    <ThemeProvider>
-      <HeaderThemeProvider>{children}</HeaderThemeProvider>
-    </ThemeProvider>
-  )
+  return <HeaderThemeProvider>{children}</HeaderThemeProvider>
 }

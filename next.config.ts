@@ -44,6 +44,10 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+  // The seed route reads the homepage images from disk
+  outputFileTracingIncludes: {
+    '/next/seed': ['./src/endpoints/seed/pardes/**'],
+  },
   reactStrictMode: true,
   redirects,
   turbopack: {

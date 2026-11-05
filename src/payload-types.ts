@@ -159,7 +159,11 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'pardes';
+    /**
+     * Shown in the white tab on the bottom edge of the image.
+     */
+    title?: string | null;
     richText?: {
       root: {
         type: string;
@@ -201,7 +205,17 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CardsSectionBlock
+    | ImpactBlock
+    | ImageTextBlock
+    | PeopleCarouselBlock
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -439,6 +453,157 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardsSectionBlock".
+ */
+export interface CardsSectionBlock {
+  title?: string | null;
+  /**
+   * Up to 3 cards per row; more start a new row.
+   */
+  cards?:
+    | {
+        media: number | Media;
+        title: string;
+        description?: string | null;
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('teal' | 'outlineRed' | 'outlineRedSmall') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cardsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImpactBlock".
+ */
+export interface ImpactBlock {
+  title?: string | null;
+  description?: string | null;
+  stats?:
+    | {
+        /**
+         * For example "2,321" or "10 Million".
+         */
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  testimonials?:
+    | {
+        quote: string;
+        name: string;
+        location?: string | null;
+        /**
+         * For example the program and year, "Year ’03".
+         */
+        detail?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'impact';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageTextBlock".
+ */
+export interface ImageTextBlock {
+  imagePosition: 'left' | 'right';
+  imageWidth: 'half' | 'third' | 'quarter';
+  background: 'light' | 'gray';
+  media: number | Media;
+  title?: string | null;
+  headingStyle?: ('medium' | 'bold') | null;
+  body?: string | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('teal' | 'outlineRed' | 'outlineRedSmall') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PeopleCarouselBlock".
+ */
+export interface PeopleCarouselBlock {
+  title?: string | null;
+  people?:
+    | {
+        photo: number | Media;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('teal' | 'outlineRed' | 'outlineRedSmall') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'peopleCarousel';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1055,6 +1220,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        title?: T;
         richText?: T;
         links?:
           | T
@@ -1076,6 +1242,10 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        cardsSection?: T | CardsSectionBlockSelect<T>;
+        impact?: T | ImpactBlockSelect<T>;
+        imageText?: T | ImageTextBlockSelect<T>;
+        peopleCarousel?: T | PeopleCarouselBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1095,6 +1265,117 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardsSectionBlock_select".
+ */
+export interface CardsSectionBlockSelect<T extends boolean = true> {
+  title?: T;
+  cards?:
+    | T
+    | {
+        media?: T;
+        title?: T;
+        description?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImpactBlock_select".
+ */
+export interface ImpactBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        name?: T;
+        location?: T;
+        detail?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageTextBlock_select".
+ */
+export interface ImageTextBlockSelect<T extends boolean = true> {
+  imagePosition?: T;
+  imageWidth?: T;
+  background?: T;
+  media?: T;
+  title?: T;
+  headingStyle?: T;
+  body?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PeopleCarouselBlock_select".
+ */
+export interface PeopleCarouselBlockSelect<T extends boolean = true> {
+  title?: T;
+  people?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        id?: T;
+      };
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1647,9 +1928,51 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        /**
+         * Optional dropdown links shown under this item.
+         */
+        subItems?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  donateLink: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
+    url?: string | null;
+    label: string;
+  };
+  /**
+   * Shown in the teal bar under the header. Leave empty to hide it.
+   */
+  dedication?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1659,26 +1982,46 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  columns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        heading: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    linkedin?: string | null;
+    tiktok?: string | null;
+  };
+  newsletter?: {
+    /**
+     * A form with an "email" field. Signups appear under Form Submissions. Leave empty to hide the signup.
+     */
+    form?: (number | null) | Form;
+    heading?: string | null;
+    buttonLabel?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1699,8 +2042,32 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        subItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
         id?: T;
       };
+  donateLink?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+      };
+  dedication?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1710,19 +2077,40 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  columns?:
     | T
     | {
-        link?:
+        heading?: T;
+        links?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
             };
         id?: T;
+      };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        linkedin?: T;
+        tiktok?: T;
+      };
+  newsletter?:
+    | T
+    | {
+        form?: T;
+        heading?: T;
+        buttonLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;

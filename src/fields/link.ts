@@ -2,7 +2,7 @@ import type { Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
 
-export type LinkAppearances = 'default' | 'outline'
+export type LinkAppearances = 'default' | 'outline' | 'teal' | 'outlineRed' | 'outlineRedSmall'
 
 export const appearanceOptions: Record<LinkAppearances, { label: string; value: string }> = {
   default: {
@@ -13,7 +13,22 @@ export const appearanceOptions: Record<LinkAppearances, { label: string; value: 
     label: 'Outline',
     value: 'outline',
   },
+  teal: {
+    label: 'Teal button',
+    value: 'teal',
+  },
+  outlineRed: {
+    label: 'Red outline button',
+    value: 'outlineRed',
+  },
+  outlineRedSmall: {
+    label: 'Small red outline button',
+    value: 'outlineRedSmall',
+  },
 }
+
+// Button styles from the Pardes design system
+export const pardesAppearances: LinkAppearances[] = ['teal', 'outlineRed', 'outlineRedSmall']
 
 type LinkType = (options?: {
   appearances?: LinkAppearances[] | false
@@ -130,7 +145,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       admin: {
         description: 'Choose how the link should be rendered.',
       },
-      defaultValue: 'default',
+      defaultValue: appearanceOptionsToUse[0]?.value,
       options: appearanceOptionsToUse,
     })
   }

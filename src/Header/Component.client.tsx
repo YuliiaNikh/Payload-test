@@ -1,52 +1,57 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState, useSyncExternalStore } from 'react'
+import React, { useState } from 'react'
 
 import type { Header } from '@/payload-types'
 
+import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
+import { HeaderNav, MobileNav } from './Nav'
 
 interface HeaderClientProps {
   data: Header
 }
 
-const subscribeToNothing = () => () => {}
-
-// False on the server and during hydration, true afterwards
-const useHydrated = () =>
-  useSyncExternalStore(
-    subscribeToNothing,
-    () => true,
-    () => false,
-  )
-
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
-
-  const hydrated = useHydrated()
-
-  // Keep the last non-null header theme, applied only after hydration so the first render matches the server
-  if (hydrated && headerTheme && headerTheme !== theme) setTheme(headerTheme)
+  // Remember which page the menu was opened on, so navigating closes it
+  const [menuOpenOn, setMenuOpenOn] = useState<string | null>(null)
+  const menuOpen = menuOpenOn === pathname
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
-        <HeaderNav data={data} />
-      </div>
-    </header>
+    <div className="relative z-20 px-4 md:px-6">
+      <header className="relative rounded-b-[40px] bg-white drop-shadow-[0_4px_2.5px_rgba(0,0,0,0.15)]">
+        <div className="flex items-center justify-between p-5 md:px-20 md:py-6">
+          <Link aria-label="Pardes home" href="/">
+            <Logo loading="eager" priority="high" />
+          </Link>
+          <div className="flex items-center gap-3 lg:gap-12">
+            <HeaderNav data={data} />
+            <Link aria-label="Search" className="hidden p-0.5 lg:block" href="/search">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="size-[21px]" src="/pardes/icon-search.svg" />
+            </Link>
+            {data?.donateLink && <CMSLink {...data.donateLink} appearance="teal" />}
+            <button
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              className="size-6 lg:hidden"
+              onClick={() => setMenuOpenOn(menuOpen ? null : pathname)}
+              type="button"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="size-6" src="/pardes/icon-menu.svg" />
+            </button>
+          </div>
+        </div>
+        {menuOpen && <MobileNav data={data} />}
+      </header>
+      {data?.dedication && (
+        <p className="mt-5 rounded-[20px] bg-pardes-teal px-4 py-3 text-center font-poppins text-[15px] italic text-pardes-navy">
+          {data.dedication}
+        </p>
+      )}
+    </div>
   )
 }

@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import sharp from 'sharp'
 import path from 'path'
@@ -66,6 +67,14 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
   collections: [Pages, Posts, Media, Categories, Users],
+  // Send email through Resend when an API key is set; otherwise Payload logs emails to the console
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        apiKey: process.env.RESEND_API_KEY,
+        defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'onboarding@resend.dev',
+        defaultFromName: process.env.RESEND_FROM_NAME || 'Payload Website',
+      })
+    : undefined,
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

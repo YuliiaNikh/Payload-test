@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    programFinder: ProgramFinder;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    programFinder: ProgramFinderSelect<false> | ProgramFinderSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2026,6 +2028,62 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * The floating "Find a program" chat on every page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programFinder".
+ */
+export interface ProgramFinder {
+  id: number;
+  enabled?: boolean | null;
+  launcherLabel?: string | null;
+  title?: string | null;
+  greeting?: string | null;
+  /**
+   * Quick replies the visitor can pick, each with the programs it suggests.
+   */
+  options?:
+    | {
+        /**
+         * What the visitor "says", e.g. "I’m looking for a short program, 2-3 months".
+         */
+        label: string;
+        reply?: string | null;
+        programs?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null);
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shown after suggestions, above the quick replies.
+   */
+  followUp?: string | null;
+  /**
+   * Shown when typed text matches no program.
+   */
+  noMatch?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2112,6 +2170,42 @@ export interface FooterSelect<T extends boolean = true> {
         heading?: T;
         buttonLabel?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programFinder_select".
+ */
+export interface ProgramFinderSelect<T extends boolean = true> {
+  enabled?: T;
+  launcherLabel?: T;
+  title?: T;
+  greeting?: T;
+  options?:
+    | T
+    | {
+        label?: T;
+        reply?: T;
+        programs?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  followUp?: T;
+  noMatch?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

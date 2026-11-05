@@ -8,6 +8,7 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
+import { ProgramFinder } from '@/ProgramFinder/Component'
 import { Providers } from '@/providers'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
@@ -54,6 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Header />
           {children}
           <Footer />
+          <ProgramFinder />
         </Providers>
       </body>
     </html>

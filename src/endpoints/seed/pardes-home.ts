@@ -160,6 +160,38 @@ export const pardesHeader = {
   dedication: 'Today’s Learning is dedicated to the memory of our loving parents [Name]',
 }
 
+// Quick replies for the floating program finder, built from the Programs list in the footer
+export const pardesProgramFinder = {
+  enabled: true,
+  launcherLabel: 'Lets Find You a Program!',
+  title: 'Hi there 👋',
+  greeting: 'Hi!\nI’m here to help :)\nWhat program are you looking for?',
+  options: [
+    {
+      label: 'I’m looking for a short program, 2-3 months',
+      reply: 'Here are some programs that might fit you:',
+      programs: ['Summer Program', 'Pardes Learning Seminar', 'Pop-Up Beit Midrash'].map(navLink),
+    },
+    {
+      label: 'A year of learning in Jerusalem',
+      reply: 'For a full year in Jerusalem, take a look at:',
+      programs: ['Beit Midrash Program'].map(navLink),
+    },
+    {
+      label: 'I’m an educator',
+      reply: 'These programs are built for educators:',
+      programs: ['Jewish Educators', 'Mahloket Matters Fellowship'].map(navLink),
+    },
+    {
+      label: 'Learning where I live',
+      reply: 'You can learn with Pardes close to home:',
+      programs: ['Pardes in Your Community', 'Events'].map(navLink),
+    },
+  ],
+  followUp: 'Do you want me to narrow it down or look at something else?',
+  noMatch: 'I couldn’t find a program for that. Try one of these:',
+}
+
 const column = (heading: string, labels: string[]) => ({ heading, links: labels.map(navLink) })
 
 export const pardesFooter = (newsletterFormId: number) => ({

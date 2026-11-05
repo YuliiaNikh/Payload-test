@@ -13,6 +13,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { ProgramFinder } from './ProgramFinder/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -80,7 +81,7 @@ export default buildConfig({
       })
     : undefined,
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, ProgramFinder],
   plugins: [
     ...plugins,
     // Store uploads in Vercel Blob when a token is set (production); local dev writes to disk

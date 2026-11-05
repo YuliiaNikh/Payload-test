@@ -5,10 +5,12 @@ import React from 'react'
 // Icons exported from the Pardes Figma file, served from /public/pardes
 const icons = {
   chevronDown: { className: 'h-2 w-[15px]', src: '/pardes/icon-chevron-down.svg' },
+  close: { className: 'size-[19px]', src: '/pardes/icon-close.svg' },
   facebook: { className: 'h-5 w-[11px]', src: '/pardes/icon-facebook.svg' },
   linkedin: { className: 'size-5', src: '/pardes/icon-linkedin.svg' },
   menu: { className: 'size-6', src: '/pardes/icon-menu.svg' },
   search: { className: 'size-[21px]', src: '/pardes/icon-search.svg' },
+  send: { className: 'h-[19px] w-6', src: '/pardes/icon-send.svg' },
   tiktok: { className: 'size-5', src: '/pardes/icon-tiktok.svg' },
 }
 

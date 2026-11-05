@@ -4,7 +4,7 @@ import fs from 'fs/promises'
 import path from 'path'
 
 import { richText } from './lexical'
-import { pardesFooter, pardesHeader, pardesHome } from './pardes-home'
+import { pardesFooter, pardesHeader, pardesHome, pardesProgramFinder } from './pardes-home'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -95,6 +95,11 @@ export const seed = async ({
   await payload.updateGlobal({
     slug: 'footer',
     data: pardesFooter(newsletterForm.id),
+    req,
+  })
+  await payload.updateGlobal({
+    slug: 'programFinder',
+    data: pardesProgramFinder,
     req,
   })
 

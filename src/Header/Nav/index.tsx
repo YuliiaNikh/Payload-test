@@ -4,13 +4,9 @@ import React from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
+import { Icon } from '@/components/Icon'
 import { CMSLink } from '@/components/Link'
 import Link from 'next/link'
-
-const Chevron = () => (
-  // eslint-disable-next-line @next/next/no-img-element
-  <img alt="" className="h-2 w-[15px]" src="/pardes/icon-chevron-down.svg" />
-)
 
 // Desktop: items with sub-links open a dropdown on hover or keyboard focus
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
@@ -27,15 +23,15 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               {...link}
               className="flex items-center gap-1 px-1 pb-2 pt-1 text-[15px] text-pardes-navy hover:text-pardes-red"
             >
-              {hasSubItems && <Chevron />}
+              {hasSubItems && <Icon name="chevronDown" />}
             </CMSLink>
             {hasSubItems && (
-              <ul className="invisible absolute left-0 top-full min-w-52 rounded-2xl bg-white p-3 opacity-0 shadow-lg transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+              <ul className="invisible absolute left-0 top-full min-w-52 rounded-pardes-md bg-white p-3 opacity-0 shadow-pardes-lg transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                 {subItems.map(({ id: subId, link: subLink }) => (
                   <li key={subId}>
                     <CMSLink
                       {...subLink}
-                      className="block rounded-lg px-3 py-2 text-[15px] text-pardes-navy hover:bg-pardes-light hover:text-pardes-red"
+                      className="block rounded-pardes-sm px-3 py-2 text-[15px] text-pardes-navy hover:bg-pardes-light hover:text-pardes-red"
                     />
                   </li>
                 ))}

@@ -89,6 +89,56 @@
   --radius-pardes-sm: 12px;
   --radius-pardes-md: 16px;
   --radius-pardes-lg: 24px;
+  /* Homepage frames: full-width section shells and image cards */
+  --radius-section: 32px;
+  --radius-card: 40px;
+
+  /* Entrance animations (hero on load; sections via <Reveal>) */
+  --ease-pardes: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-rise: rise 0.8s var(--ease-pardes) both;
+  --animate-settle: settle 1.4s var(--ease-pardes) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: scale(1.06);
+    }
+  }
+}
+
+/* Scroll reveal: hidden only when scripts run and motion is welcome, so content
+   never stays invisible without JS. <Reveal> sets data-revealed when in view. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    transition:
+      opacity 0.7s var(--ease-pardes),
+      transform 0.7s var(--ease-pardes);
+  }
+
+  [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+
+  /* Children of a stagger group follow one after another */
+  [data-reveal] [data-reveal-stagger] > * {
+    transition:
+      opacity 0.6s var(--ease-pardes),
+      transform 0.6s var(--ease-pardes);
+    transition-delay: calc(min(var(--reveal-index, 0), 8) * 90ms + 150ms);
+  }
+
+  [data-reveal]:not([data-revealed]) [data-reveal-stagger] > * {
+    opacity: 0;
+    transform: translateY(24px);
+  }
 }
 
 /* Style Guide: Typography. Mobile size first, desktop from md up.
@@ -189,80 +239,43 @@
 }
 
 :root {
+  /* Template UI tokens mapped onto the Pardes palette (see @theme) */
   --background: #ffffff;
   --foreground: #272d3b;
-  --card: oklch(96.5% 0.005 265deg);
-  --card-foreground: oklch(14.5% 0 0deg);
-  --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(14.5% 0 0deg);
-  --primary: oklch(20.5% 0 0deg);
-  --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
-  --secondary-foreground: oklch(20.5% 0 0deg);
-  --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
-  --accent-foreground: oklch(20.5% 0 0deg);
-  --destructive: oklch(57.7% 0.245 27.325deg);
-  --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
-  --chart-1: oklch(64.6% 0.222 41.116deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
-  --chart-3: oklch(39.8% 0.07 227.392deg);
-  --chart-4: oklch(82.8% 0.189 84.429deg);
-  --chart-5: oklch(76.9% 0.188 70.08deg);
-  --radius: 0.625rem;
-  --sidebar: oklch(98.5% 0 0deg);
-  --sidebar-foreground: oklch(14.5% 0 0deg);
-  --sidebar-primary: oklch(20.5% 0 0deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(97% 0 0deg);
-  --sidebar-accent-foreground: oklch(20.5% 0 0deg);
-  --sidebar-border: oklch(92.2% 0 0deg);
-  --sidebar-ring: oklch(70.8% 0 0deg);
-  --success: oklch(78% 0.08 200deg);
-  --warning: oklch(89% 0.1 75deg);
-  --error: oklch(75% 0.15 25deg);
-}
-
-[data-theme='dark'] {
-  --background: oklch(14.5% 0 0deg);
-  --foreground: oklch(98.5% 0 0deg);
-  --card: oklch(17% 0 0deg);
-  --card-foreground: oklch(98.5% 0 0deg);
-  --popover: oklch(14.5% 0 0deg);
-  --popover-foreground: oklch(98.5% 0 0deg);
-  --primary: oklch(98.5% 0 0deg);
-  --primary-foreground: oklch(20.5% 0 0deg);
-  --secondary: oklch(26.9% 0 0deg);
-  --secondary-foreground: oklch(98.5% 0 0deg);
-  --muted: oklch(26.9% 0 0deg);
-  --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(26.9% 0 0deg);
-  --accent-foreground: oklch(98.5% 0 0deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
-  --border: oklch(26.9% 0 0deg);
-  --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
-  --sidebar: oklch(20.5% 0 0deg);
-  --sidebar-foreground: oklch(98.5% 0 0deg);
-  --sidebar-primary: oklch(48.8% 0.243 264.376deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(26.9% 0 0deg);
-  --sidebar-accent-foreground: oklch(98.5% 0 0deg);
-  --sidebar-border: oklch(26.9% 0 0deg);
-  --sidebar-ring: oklch(43.9% 0 0deg);
-  --success: oklch(28% 0.1 200deg);
-  --warning: oklch(35% 0.08 70deg);
-  --error: oklch(45% 0.1 25deg);
+  --card: #f7f7f7;
+  --card-foreground: #272d3b;
+  --popover: #ffffff;
+  --popover-foreground: #272d3b;
+  --primary: #272d3b;
+  --primary-foreground: #ffffff;
+  --secondary: #f7f7f7;
+  --secondary-foreground: #272d3b;
+  --muted: #f7f7f7;
+  --muted-foreground: #3d424f;
+  --accent: #c7f4ff;
+  --accent-foreground: #272d3b;
+  --destructive: #bf1f26;
+  --destructive-foreground: #bf1f26;
+  --border: #dedede;
+  --input: #dedede;
+  --ring: #92e6fb;
+  --chart-1: #272d3b;
+  --chart-2: #bf1f26;
+  --chart-3: #92e6fb;
+  --chart-4: #3d424f;
+  --chart-5: #f1a7aa;
+  --radius: 12px;
+  --sidebar: #f7f7f7;
+  --sidebar-foreground: #272d3b;
+  --sidebar-primary: #272d3b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #c7f4ff;
+  --sidebar-accent-foreground: #272d3b;
+  --sidebar-border: #dedede;
+  --sidebar-ring: #92e6fb;
+  --success: #c7f4ff;
+  --warning: #f1a7aa;
+  --error: #bf1f26;
 }
 
 @theme inline {

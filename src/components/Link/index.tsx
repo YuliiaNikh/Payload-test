@@ -5,6 +5,8 @@ import React from 'react'
 
 import type { Page, Post } from '@/payload-types'
 
+import { type LinkAppearances, pardesAppearances } from '@/fields/link'
+
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
@@ -43,10 +45,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   if (!href) return null
 
   const ownsSizing =
-    appearance === 'link' ||
-    appearance === 'teal' ||
-    appearance === 'outlineRed' ||
-    appearance === 'outlineRedSmall'
+    appearance === 'link' || pardesAppearances.includes(appearance as LinkAppearances)
   const size = ownsSizing ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 

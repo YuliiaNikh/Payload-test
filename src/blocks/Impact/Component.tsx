@@ -3,6 +3,8 @@ import React from 'react'
 import type { ImpactBlock as ImpactBlockProps } from '@/payload-types'
 
 import { Carousel } from '@/components/Carousel'
+import { Section } from '@/components/Section'
+import { SectionHeading } from '@/components/SectionHeading'
 
 export const ImpactBlock: React.FC<ImpactBlockProps> = ({
   description,
@@ -11,14 +13,17 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({
   title,
 }) => {
   return (
-    <section className="mx-4 overflow-hidden rounded-[32px] text-white md:mx-5">
-      <div className="bg-pardes-navy px-6 pb-10 pt-12 md:px-[57px] md:pb-[38px] md:pt-[70px]">
+    <Section tone="navy" width="wide">
+      <div className="px-6 pb-10 pt-12 md:px-[57px] md:pb-[38px] md:pt-[70px]">
         <div className="max-w-[848px]">
-          {title && <h2 className="type-h4">{title}</h2>}
+          {title && <SectionHeading tone="white">{title}</SectionHeading>}
           {description && <p className="type-p mt-6">{description}</p>}
         </div>
         {stats && stats.length > 0 && (
-          <ul className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-stretch md:justify-center md:gap-0 md:px-24 md:pt-8">
+          <ul
+            className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-stretch md:justify-center md:gap-0 md:px-24 md:pt-8"
+            data-reveal-stagger
+          >
             {stats.map(({ id, label, value }) => (
               <li
                 className="flex flex-col items-center gap-3 text-center md:gap-5 md:border-white/50 md:px-10 [&:not(:first-child)]:md:border-l"
@@ -55,6 +60,6 @@ export const ImpactBlock: React.FC<ImpactBlockProps> = ({
           </Carousel>
         </div>
       )}
-    </section>
+    </Section>
   )
 }

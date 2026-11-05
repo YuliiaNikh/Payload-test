@@ -3,6 +3,7 @@ import type { CollectionSlug, File, Payload, PayloadRequest } from 'payload'
 import fs from 'fs/promises'
 import path from 'path'
 
+import { richText } from './lexical'
 import { pardesFooter, pardesHeader, pardesHome } from './pardes-home'
 
 const collections: CollectionSlug[] = [
@@ -70,36 +71,7 @@ export const seed = async ({
       title: 'Newsletter',
       fields: [{ blockType: 'email', name: 'email', label: 'Email', required: true }],
       confirmationType: 'message',
-      confirmationMessage: {
-        root: {
-          type: 'root',
-          children: [
-            {
-              type: 'paragraph',
-              children: [
-                {
-                  type: 'text',
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: 'Thanks for signing up!',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              textFormat: 0,
-              version: 1,
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          version: 1,
-        },
-      },
+      confirmationMessage: richText('Thanks for signing up!'),
     },
     req,
   })

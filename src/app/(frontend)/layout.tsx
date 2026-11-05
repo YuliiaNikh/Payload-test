@@ -42,7 +42,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      {/* Browser extensions (e.g. Grammarly) add attributes to <body> before hydration */}
+      <body suppressHydrationWarning>
         <Providers>
           <AdminBar
             adminBarProps={{

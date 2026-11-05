@@ -2,8 +2,10 @@ import React from 'react'
 
 import type { ImageTextBlock as ImageTextBlockProps } from '@/payload-types'
 
+import { CoverMedia } from '@/components/CoverMedia'
 import { CMSLink } from '@/components/Link'
-import { Media } from '@/components/Media'
+import { Section } from '@/components/Section'
+import { SectionHeading } from '@/components/SectionHeading'
 import { cn } from '@/utilities/ui'
 
 const imageWidths = {
@@ -22,46 +24,31 @@ export const ImageTextBlock: React.FC<ImageTextBlockProps> = ({
   media,
   title,
 }) => {
-  const imageRight = imagePosition === 'right'
-
   return (
-    <section
+    <Section
       className={cn(
-        'mx-4 flex flex-col overflow-hidden rounded-[32px] md:mx-10 md:flex-row md:rounded-[40px]',
-        imageRight && 'flex-col-reverse md:flex-row-reverse',
-        background === 'gray' ? 'bg-pardes-gray' : 'bg-pardes-light',
+        'flex flex-col md:flex-row',
+        imagePosition === 'right' && 'flex-col-reverse md:flex-row-reverse',
       )}
+      tone={background === 'gray' ? 'gray' : 'light'}
     >
-      <div
-        className={cn(
-          'relative min-h-[260px] shrink-0 md:min-h-[560px]',
-          imageWidths[imageWidth || 'half'],
-        )}
-      >
-        {media && typeof media === 'object' && (
-          <Media
-            fill
-            imgClassName="object-cover"
-            pictureClassName="absolute inset-0"
-            resource={media}
-            size="(min-width: 768px) 50vw, 100vw"
-          />
-        )}
-      </div>
+      <CoverMedia
+        className={cn('min-h-[260px] shrink-0 md:min-h-[560px]', imageWidths[imageWidth || 'half'])}
+        resource={media}
+        sizes="(min-width: 768px) 50vw, 100vw"
+      />
       <div className="flex flex-1 flex-col items-start justify-center gap-8 px-6 py-10 md:gap-12 md:px-24 md:py-[72px]">
         {title && (
-          <h2
-            className={cn(
-              'max-w-[556px] text-pardes-navy',
-              headingStyle === 'bold' ? 'type-h3' : 'type-h2 tracking-[-0.03em]',
-            )}
+          <SectionHeading
+            className={cn('max-w-[556px]', headingStyle !== 'bold' && 'tracking-[-0.03em]')}
+            size={headingStyle === 'bold' ? 'h3' : 'h2'}
+            tone="navy"
+            weight={headingStyle === 'bold' ? 'bold' : 'medium'}
           >
             {title}
-          </h2>
+          </SectionHeading>
         )}
-        {body && (
-          <p className="type-p max-w-[564px] whitespace-pre-line text-pardes-navy">{body}</p>
-        )}
+        {body && <p className="type-p max-w-[564px] whitespace-pre-line">{body}</p>}
         {Array.isArray(links) && links.length > 0 && (
           <ul className="flex flex-wrap gap-4 md:gap-6">
             {links.map(({ id, link }) => (
@@ -72,6 +59,6 @@ export const ImageTextBlock: React.FC<ImageTextBlockProps> = ({
           </ul>
         )}
       </div>
-    </section>
+    </Section>
   )
 }

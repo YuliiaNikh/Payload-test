@@ -2,6 +2,8 @@ import type { RequiredDataFromCollectionSlug } from 'payload'
 
 import type { Media } from '@/payload-types'
 
+import { richText } from './lexical'
+
 type HomeMedia = {
   birds: Media
   cardEvents: Media
@@ -11,16 +13,6 @@ type HomeMedia = {
   hero: Media
   tree: Media
 }
-
-const paragraph = (text: string) => ({
-  type: 'paragraph',
-  children: [{ type: 'text', detail: 0, format: 0, mode: 'normal', style: '', text, version: 1 }],
-  direction: 'ltr' as const,
-  format: '' as const,
-  indent: 0,
-  textFormat: 0,
-  version: 1,
-})
 
 const customLink = (
   label: string,
@@ -58,21 +50,10 @@ export const pardesHome = (media: HomeMedia): RequiredDataFromCollectionSlug<'pa
     type: 'pardes',
     title: 'The Art of Jewish Learning.',
     media: media.hero.id,
-    richText: {
-      root: {
-        type: 'root',
-        children: [
-          paragraph('Rooted in tradition. Relevant for today. Transforming the Jewish future.'),
-          paragraph(
-            'Pardes empowers Jews of all backgrounds to engage deeply with Torah, grow as educators and leaders, and bring Jewish learning into communities worldwide. We are proudly based in Israel and deeply committed to its people, its complexity, and its enduring role in Jewish life.',
-          ),
-        ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1,
-      },
-    },
+    richText: richText(
+      'Rooted in tradition. Relevant for today. Transforming the Jewish future.',
+      'Pardes empowers Jews of all backgrounds to engage deeply with Torah, grow as educators and leaders, and bring Jewish learning into communities worldwide. We are proudly based in Israel and deeply committed to its people, its complexity, and its enduring role in Jewish life.',
+    ),
   },
   layout: [
     {

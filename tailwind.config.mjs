@@ -6,8 +6,16 @@ const config = {
         DEFAULT: {
           css: [
             {
-              '--tw-prose-body': 'var(--text)',
-              '--tw-prose-headings': 'var(--text)',
+              '--tw-prose-body': 'var(--color-pardes-navy)',
+              '--tw-prose-headings': 'var(--color-pardes-navy)',
+              '--tw-prose-links': 'var(--color-pardes-red)',
+              '--tw-prose-bold': 'var(--color-pardes-navy)',
+              '--tw-prose-quotes': 'var(--color-pardes-navy)',
+              '--tw-prose-quote-borders': 'var(--color-pardes-teal)',
+              '--tw-prose-bullets': 'var(--color-pardes-red)',
+              '--tw-prose-counters': 'var(--color-pardes-red)',
+              '--tw-prose-hr': 'var(--color-pardes-border)',
+              '--tw-prose-captions': 'var(--color-pardes-slate)',
               h1: {
                 fontWeight: 'normal',
                 marginBottom: '0.25em',

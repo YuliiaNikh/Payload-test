@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 
+import { buttonVariants } from '@/components/ui/button'
 import { getClientSideURL } from '@/utilities/getURL'
 
 type Props = {
@@ -47,7 +48,7 @@ export const NewsletterForm: React.FC<Props> = ({ buttonLabel, formId, heading }
         <div className="flex flex-1 flex-col gap-3 sm:flex-row">
           <input
             autoComplete="email"
-            className="min-w-0 flex-1 rounded-2xl border-b border-pardes-red-500 bg-white p-3 text-[15px] leading-[1.1] text-[#1e1e1e] placeholder:text-[#1e1e1e]"
+            className="min-w-0 flex-1 rounded-pardes-md border-b border-pardes-red-500 bg-white p-3 text-[15px] leading-[1.1] text-[#1e1e1e] placeholder:text-[#1e1e1e]"
             id="newsletter-email"
             name="email"
             placeholder="Your Email"
@@ -55,7 +56,7 @@ export const NewsletterForm: React.FC<Props> = ({ buttonLabel, formId, heading }
             type="email"
           />
           <button
-            className="rounded-full bg-pardes-teal px-6 py-3 capitalize leading-[1.63] text-pardes-navy hover:bg-pardes-teal-50 disabled:opacity-60"
+            className={buttonVariants({ size: 'clear', variant: 'teal' })}
             disabled={status === 'sending'}
             type="submit"
           >

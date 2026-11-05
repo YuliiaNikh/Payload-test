@@ -11,6 +11,7 @@ import { ImageTextBlock } from '@/blocks/ImageText/Component'
 import { ImpactBlock } from '@/blocks/Impact/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { PeopleCarouselBlock } from '@/blocks/PeopleCarousel/Component'
+import { Reveal } from '@/components/Reveal'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -42,10 +43,10 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <Reveal className="my-10 md:my-14" key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
-                </div>
+                </Reveal>
               )
             }
           }

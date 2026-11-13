@@ -13,7 +13,12 @@ import { he } from '@payloadcms/translations/languages/he'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Events } from './collections/Events'
+import { Glossary } from './collections/Glossary'
 import { Pages } from './collections/Pages'
+import { People } from './collections/People'
+import { Posts } from './collections/Posts'
+import { Resources } from './collections/Resources'
 import { hierarchicalTaxonomies, taxonomies } from './collections/taxonomies'
 import { SiteSettings } from './globals/SiteSettings'
 import { defaultLocale, localeLabels, locales } from './i18n/config'
@@ -28,7 +33,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, ...taxonomies, Media, Users],
+  collections: [Pages, Posts, Events, Resources, Glossary, People, ...taxonomies, Media, Users],
   globals: [SiteSettings],
   localization: {
     locales: locales.map((code) => ({ code, label: localeLabels[code], rtl: code === 'he' })),

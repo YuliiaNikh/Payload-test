@@ -68,6 +68,11 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
+    posts: Post;
+    events: Event;
+    resources: Resource;
+    glossary: Glossary;
+    people: Person;
     categories: Category;
     tags: Tag;
     'event-types': EventType;
@@ -82,9 +87,19 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    people: {
+      posts: 'posts';
+      events: 'events';
+    };
+  };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
+    resources: ResourcesSelect<false> | ResourcesSelect<true>;
+    glossary: GlossarySelect<false> | GlossarySelect<true>;
+    people: PeopleSelect<false> | PeopleSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     'event-types': EventTypesSelect<false> | EventTypesSelect<true>;
@@ -163,6 +178,174 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedDate: string;
+  author?: (number | null) | Person;
+  categories?: (number | Category)[] | null;
+  tags?: (number | Tag)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people".
+ */
+export interface Person {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  jobTitle?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  department?: (number | null) | Department;
+  posts?: {
+    docs?: (number | Post)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  events?: {
+    docs?: (number | Event)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "departments".
+ */
+export interface Department {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  startDate: string;
+  endDate?: string | null;
+  location?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  speakers?: (number | Person)[] | null;
+  eventTypes?: (number | EventType)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "event-types".
+ */
+export interface EventType {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -202,9 +385,46 @@ export interface Tag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "event-types".
+ * via the `definition` "resources".
  */
-export interface EventType {
+export interface Resource {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  externalUrl?: string | null;
+  relatedResources?: (number | Resource)[] | null;
+  resourceType?: (number | null) | ResourceType;
+  industries?: (number | Industry)[] | null;
+  topics?: (number | Topic)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resource-types".
+ */
+export interface ResourceType {
   id: number;
   title: string;
   /**
@@ -232,21 +452,6 @@ export interface Industry {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "resource-types".
- */
-export interface ResourceType {
-  id: number;
-  title: string;
-  /**
-   * URL part for this language. Filled from the title when empty.
-   */
-  slug: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "topics".
  */
 export interface Topic {
@@ -262,39 +467,36 @@ export interface Topic {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "departments".
+ * via the `definition` "glossary".
  */
-export interface Department {
+export interface Glossary {
   id: number;
   title: string;
   /**
    * URL part for this language. Filled from the title when empty.
    */
   slug: string;
-  description?: string | null;
+  excerpt?: string | null;
+  featuredImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  relatedTerms?: (number | Glossary)[] | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  prefix?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -353,6 +555,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'resources';
+        value: number | Resource;
+      } | null)
+    | ({
+        relationTo: 'glossary';
+        value: number | Glossary;
+      } | null)
+    | ({
+        relationTo: 'people';
+        value: number | Person;
       } | null)
     | ({
         relationTo: 'categories';
@@ -448,6 +670,95 @@ export interface PagesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  content?: T;
+  publishedDate?: T;
+  author?: T;
+  categories?: T;
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  startDate?: T;
+  endDate?: T;
+  location?: T;
+  content?: T;
+  speakers?: T;
+  eventTypes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "resources_select".
+ */
+export interface ResourcesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  content?: T;
+  externalUrl?: T;
+  relatedResources?: T;
+  resourceType?: T;
+  industries?: T;
+  topics?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "glossary_select".
+ */
+export interface GlossarySelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  content?: T;
+  relatedTerms?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "people_select".
+ */
+export interface PeopleSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  jobTitle?: T;
+  content?: T;
+  department?: T;
+  posts?: T;
+  events?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

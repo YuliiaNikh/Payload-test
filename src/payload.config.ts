@@ -16,6 +16,9 @@ import { Media } from './collections/Media'
 import { Events } from './collections/Events'
 import { Glossary } from './collections/Glossary'
 import { Pages } from './collections/Pages'
+import { ReusableSections } from './collections/ReusableSections'
+import { allBlocks } from './blocks/registry'
+import { CptDefaults } from './globals/CptDefaults'
 import { People } from './collections/People'
 import { Posts } from './collections/Posts'
 import { Resources } from './collections/Resources'
@@ -33,8 +36,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, Posts, Events, Resources, Glossary, People, ...taxonomies, Media, Users],
-  globals: [SiteSettings],
+  blocks: allBlocks,
+  collections: [Pages, Posts, Events, Resources, Glossary, People, ReusableSections, ...taxonomies, Media, Users],
+  globals: [SiteSettings, CptDefaults],
   localization: {
     locales: locales.map((code) => ({ code, label: localeLabels[code], rtl: code === 'he' })),
     defaultLocale,

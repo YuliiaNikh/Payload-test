@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
+import { layoutField } from '@/fields/layout'
 
 import { localizedDrafts } from './shared/drafts'
 
@@ -44,5 +45,6 @@ export const Resources: CollectionConfig = {
       admin: { position: 'sidebar' },
     },
     { name: 'topics', type: 'relationship', relationTo: 'topics', hasMany: true, admin: { position: 'sidebar' } },
+    layoutField({ label: 'Extra sections' }),
   ],
 }

@@ -65,7 +65,24 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
-  blocks: {};
+  blocks: {
+    hero: HeroBlock;
+    richText: RichTextBlock;
+    mediaText: MediaTextBlock;
+    cards: CardsBlock;
+    columns: ColumnsBlock;
+    tabs: TabsBlock;
+    stats: StatsBlock;
+    logos: LogosBlock;
+    testimonials: TestimonialsBlock;
+    faq: FaqBlock;
+    cta: CtaBlock;
+    dynamicField: DynamicFieldBlock;
+    reusableSection: ReusableSectionBlock;
+    colText: ColumnTextBlock;
+    colImage: ColumnImageBlock;
+    colButtons: ColumnButtonsBlock;
+  };
   collections: {
     pages: Page;
     posts: Post;
@@ -73,6 +90,7 @@ export interface Config {
     resources: Resource;
     glossary: Glossary;
     people: Person;
+    'reusable-sections': ReusableSection;
     categories: Category;
     tags: Tag;
     'event-types': EventType;
@@ -100,6 +118,7 @@ export interface Config {
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
     glossary: GlossarySelect<false> | GlossarySelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
+    'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     'event-types': EventTypesSelect<false> | EventTypesSelect<true>;
@@ -120,9 +139,11 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'he') | ('en' | 'he')[];
   globals: {
     'site-settings': SiteSetting;
+    'cpt-defaults': CptDefault;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'cpt-defaults': CptDefaultsSelect<false> | CptDefaultsSelect<true>;
   };
   locale: 'en' | 'he';
   widgets: {
@@ -154,6 +175,62 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  eyebrow?: string | null;
+  heading: string;
+  text?: string | null;
+  links?:
+    | {
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+          appearance?: ('primary' | 'secondary' | 'outline' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  image?: (number | null) | Media;
+  variant?: ('split' | 'centered') | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -163,6 +240,27 @@ export interface Page {
    * URL part for this language. Filled from the title when empty.
    */
   slug: string;
+  /**
+   * Pre-fills the sections when the page is created.
+   */
+  template?: ('blank' | 'landing' | 'about' | 'contact' | 'archive') | null;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -175,6 +273,105 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  width?: ('narrow' | 'wide') | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaTextBlock".
+ */
+export interface MediaTextBlock {
+  heading?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+          appearance?: ('primary' | 'secondary' | 'outline' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  imagePosition?: ('start' | 'end') | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaText';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -208,6 +405,23 @@ export interface Post {
   author?: (number | null) | Person;
   categories?: (number | Category)[] | null;
   tags?: (number | Tag)[] | null;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -273,6 +487,23 @@ export interface Person {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -325,6 +556,23 @@ export interface Event {
   } | null;
   speakers?: (number | Person)[] | null;
   eventTypes?: (number | EventType)[] | null;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -346,42 +594,60 @@ export interface EventType {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
+ * via the `definition` "CardsBlock".
  */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * URL part for this language. Filled from the title when empty.
-   */
-  slug: string;
-  description?: string | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
+export interface CardsBlock {
+  heading?: string | null;
+  intro?: string | null;
+  columns?: ('2' | '3' | '4') | null;
+  cardStyle?: ('default' | 'outline' | 'elevated' | 'horizontal') | null;
+  items?:
     | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
+        image?: (number | null) | Media;
+        title: string;
+        text?: string | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+        };
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: number;
-  title: string;
-  /**
-   * URL part for this language. Filled from the title when empty.
-   */
-  slug: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cards';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -416,6 +682,23 @@ export interface Resource {
   resourceType?: (number | null) | ResourceType;
   industries?: (number | Industry)[] | null;
   topics?: (number | Topic)[] | null;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -467,6 +750,108 @@ export interface Topic {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnsBlock".
+ */
+export interface ColumnsBlock {
+  heading?: string | null;
+  columns?:
+    | {
+        content?: (ColumnTextBlock | ColumnImageBlock | ColumnButtonsBlock)[] | null;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'columns';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnTextBlock".
+ */
+export interface ColumnTextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'colText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnImageBlock".
+ */
+export interface ColumnImageBlock {
+  image: number | Media;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'colImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnButtonsBlock".
+ */
+export interface ColumnButtonsBlock {
+  links?:
+    | {
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+          appearance?: ('primary' | 'secondary' | 'outline' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'colButtons';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "glossary".
  */
 export interface Glossary {
@@ -494,9 +879,324 @@ export interface Glossary {
     [k: string]: unknown;
   } | null;
   relatedTerms?: (number | Glossary)[] | null;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+        | ReusableSectionBlock
+      )[]
+    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsBlock".
+ */
+export interface TabsBlock {
+  heading?: string | null;
+  tabs?:
+    | {
+        label: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock".
+ */
+export interface StatsBlock {
+  heading?: string | null;
+  items?:
+    | {
+        value: string;
+        label: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogosBlock".
+ */
+export interface LogosBlock {
+  heading?: string | null;
+  logos?:
+    | {
+        name: string;
+        url?: string | null;
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logos';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  heading?: string | null;
+  items?:
+    | {
+        quote: string;
+        name: string;
+        role?: string | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  heading?: string | null;
+  items?:
+    | {
+        question: string;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock".
+ */
+export interface CtaBlock {
+  heading: string;
+  text?: string | null;
+  links?:
+    | {
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+          appearance?: ('primary' | 'secondary' | 'outline' | 'ghost' | 'link') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DynamicFieldBlock".
+ */
+export interface DynamicFieldBlock {
+  /**
+   * Shown before the value, e.g. "Event date:"
+   */
+  label?: string | null;
+  /**
+   * Only on CPT items. Fields the item does not have show nothing.
+   */
+  field: 'title' | 'excerpt' | 'publishedDate' | 'startDate' | 'endDate' | 'location' | 'jobTitle';
+  format?: ('text' | 'heading' | 'date') | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'dynamicField';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReusableSectionBlock".
+ */
+export interface ReusableSectionBlock {
+  section: number | ReusableSection;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reusableSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reusable-sections".
+ */
+export interface ReusableSection {
+  id: number;
+  /**
+   * Admin name only, not shown on the site.
+   */
+  title: string;
+  layout?:
+    | (
+        | HeroBlock
+        | RichTextBlock
+        | MediaTextBlock
+        | CardsBlock
+        | ColumnsBlock
+        | TabsBlock
+        | StatsBlock
+        | LogosBlock
+        | TestimonialsBlock
+        | FaqBlock
+        | CtaBlock
+        | DynamicFieldBlock
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -575,6 +1275,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'people';
         value: number | Person;
+      } | null)
+    | ({
+        relationTo: 'reusable-sections';
+        value: number | ReusableSection;
       } | null)
     | ({
         relationTo: 'categories';
@@ -661,6 +1365,8 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  template?: T;
+  layout?: T | {};
   parent?: T;
   breadcrumbs?:
     | T
@@ -688,6 +1394,7 @@ export interface PostsSelect<T extends boolean = true> {
   author?: T;
   categories?: T;
   tags?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -707,6 +1414,7 @@ export interface EventsSelect<T extends boolean = true> {
   content?: T;
   speakers?: T;
   eventTypes?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -726,6 +1434,7 @@ export interface ResourcesSelect<T extends boolean = true> {
   resourceType?: T;
   industries?: T;
   topics?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -741,6 +1450,7 @@ export interface GlossarySelect<T extends boolean = true> {
   featuredImage?: T;
   content?: T;
   relatedTerms?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -759,6 +1469,18 @@ export interface PeopleSelect<T extends boolean = true> {
   department?: T;
   posts?: T;
   events?: T;
+  layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reusable-sections_select".
+ */
+export interface ReusableSectionsSelect<T extends boolean = true> {
+  title?: T;
+  layout?: T | {};
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -958,6 +1680,112 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Sections added after every item of each content type.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cpt-defaults".
+ */
+export interface CptDefault {
+  id: number;
+  posts?: {
+    after?:
+      | (
+          | HeroBlock
+          | RichTextBlock
+          | MediaTextBlock
+          | CardsBlock
+          | ColumnsBlock
+          | TabsBlock
+          | StatsBlock
+          | LogosBlock
+          | TestimonialsBlock
+          | FaqBlock
+          | CtaBlock
+          | DynamicFieldBlock
+          | ReusableSectionBlock
+        )[]
+      | null;
+  };
+  events?: {
+    after?:
+      | (
+          | HeroBlock
+          | RichTextBlock
+          | MediaTextBlock
+          | CardsBlock
+          | ColumnsBlock
+          | TabsBlock
+          | StatsBlock
+          | LogosBlock
+          | TestimonialsBlock
+          | FaqBlock
+          | CtaBlock
+          | DynamicFieldBlock
+          | ReusableSectionBlock
+        )[]
+      | null;
+  };
+  resources?: {
+    after?:
+      | (
+          | HeroBlock
+          | RichTextBlock
+          | MediaTextBlock
+          | CardsBlock
+          | ColumnsBlock
+          | TabsBlock
+          | StatsBlock
+          | LogosBlock
+          | TestimonialsBlock
+          | FaqBlock
+          | CtaBlock
+          | DynamicFieldBlock
+          | ReusableSectionBlock
+        )[]
+      | null;
+  };
+  glossary?: {
+    after?:
+      | (
+          | HeroBlock
+          | RichTextBlock
+          | MediaTextBlock
+          | CardsBlock
+          | ColumnsBlock
+          | TabsBlock
+          | StatsBlock
+          | LogosBlock
+          | TestimonialsBlock
+          | FaqBlock
+          | CtaBlock
+          | DynamicFieldBlock
+          | ReusableSectionBlock
+        )[]
+      | null;
+  };
+  people?: {
+    after?:
+      | (
+          | HeroBlock
+          | RichTextBlock
+          | MediaTextBlock
+          | CardsBlock
+          | ColumnsBlock
+          | TabsBlock
+          | StatsBlock
+          | LogosBlock
+          | TestimonialsBlock
+          | FaqBlock
+          | CtaBlock
+          | DynamicFieldBlock
+          | ReusableSectionBlock
+        )[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -972,6 +1800,40 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         resources?: T;
         glossary?: T;
         people?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cpt-defaults_select".
+ */
+export interface CptDefaultsSelect<T extends boolean = true> {
+  posts?:
+    | T
+    | {
+        after?: T | {};
+      };
+  events?:
+    | T
+    | {
+        after?: T | {};
+      };
+  resources?:
+    | T
+    | {
+        after?: T | {};
+      };
+  glossary?:
+    | T
+    | {
+        after?: T | {};
+      };
+  people?:
+    | T
+    | {
+        after?: T | {};
       };
   updatedAt?: T;
   createdAt?: T;

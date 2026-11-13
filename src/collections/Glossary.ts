@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
+import { layoutField } from '@/fields/layout'
 
 import { localizedDrafts } from './shared/drafts'
 
@@ -26,5 +27,6 @@ export const Glossary: CollectionConfig = {
       hasMany: true,
       filterOptions: ({ id }) => (id ? { id: { not_equals: id } } : true),
     },
+    layoutField({ label: 'Extra sections' }),
   ],
 }

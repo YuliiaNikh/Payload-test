@@ -6,6 +6,7 @@ import * as migration_20261113_091529_phase4_listing from './20261113_091529_pha
 import * as migration_20261113_092713_phase5_navigation from './20261113_092713_phase5_navigation';
 import * as migration_20261113_094343_phase6_visibility from './20261113_094343_phase6_visibility';
 import * as migration_20261113_095541_phase7_seo from './20261113_095541_phase7_seo';
+import * as migration_20261113_100930_phase8_workflow from './20261113_100930_phase8_workflow';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20261113_095541_phase7_seo.up,
     down: migration_20261113_095541_phase7_seo.down,
-    name: '20261113_095541_phase7_seo'
+    name: '20261113_095541_phase7_seo',
+  },
+  {
+    up: migration_20261113_100930_phase8_workflow.up,
+    down: migration_20261113_100930_phase8_workflow.down,
+    name: '20261113_100930_phase8_workflow'
   },
 ];

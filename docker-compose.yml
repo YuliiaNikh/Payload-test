@@ -1,0 +1,18 @@
+# Optional: a local Postgres matching the `payload-test-postgres` container this repo uses.
+# DATABASE_URL=postgresql://payload:<password>@127.0.0.1:5432/payload
+services:
+  postgres:
+    image: postgres:17
+    container_name: payload-test-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payload
+      POSTGRES_DB: payload
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

@@ -1343,7 +1343,7 @@ Then rehearse the upgrade production will take: a phase-1 database that already 
 ```bash
 docker exec payload-test-postgres psql -U payload -d postgres -qc "CREATE DATABASE rehearse"
 git worktree add -f ../payload-test-p1 ad9731c
-ln -s "$PWD/node_modules" ../payload-test-p1/node_modules
+ln -s "$PWD/node_modules" ../payload-test-p1/node_modules && cp .env ../payload-test-p1/.env
 (cd ../payload-test-p1 && DATABASE_URL="$U" NODE_ENV=production pnpm payload migrate)
 docker exec payload-test-postgres psql -U payload -d rehearse -qc "INSERT INTO site_settings (id) VALUES (1)" -c "INSERT INTO site_settings_locales (site_name, _locale, _parent_id) VALUES ('Demo', 'en', 1)" -c "INSERT INTO users (email) VALUES ('owner@example.test')"
 DATABASE_URL="$U" NODE_ENV=production pnpm payload migrate

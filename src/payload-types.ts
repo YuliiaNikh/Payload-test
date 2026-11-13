@@ -385,6 +385,7 @@ export interface Post {
    */
   slug: string;
   excerpt?: string | null;
+  letter?: string | null;
   featuredImage?: (number | null) | Media;
   content?: {
     root: {
@@ -459,6 +460,7 @@ export interface Person {
    */
   slug: string;
   excerpt?: string | null;
+  letter?: string | null;
   featuredImage?: (number | null) | Media;
   jobTitle?: string | null;
   content?: {
@@ -535,6 +537,7 @@ export interface Event {
    */
   slug: string;
   excerpt?: string | null;
+  letter?: string | null;
   featuredImage?: (number | null) | Media;
   startDate: string;
   endDate?: string | null;
@@ -661,6 +664,7 @@ export interface Resource {
    */
   slug: string;
   excerpt?: string | null;
+  letter?: string | null;
   featuredImage?: (number | null) | Media;
   content?: {
     root: {
@@ -862,6 +866,7 @@ export interface Glossary {
    */
   slug: string;
   excerpt?: string | null;
+  letter?: string | null;
   featuredImage?: (number | null) | Media;
   content?: {
     root: {
@@ -1388,6 +1393,7 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
+  letter?: T;
   featuredImage?: T;
   content?: T;
   publishedDate?: T;
@@ -1407,6 +1413,7 @@ export interface EventsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
+  letter?: T;
   featuredImage?: T;
   startDate?: T;
   endDate?: T;
@@ -1427,6 +1434,7 @@ export interface ResourcesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
+  letter?: T;
   featuredImage?: T;
   content?: T;
   externalUrl?: T;
@@ -1447,6 +1455,7 @@ export interface GlossarySelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
+  letter?: T;
   featuredImage?: T;
   content?: T;
   relatedTerms?: T;
@@ -1463,6 +1472,7 @@ export interface PeopleSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   excerpt?: T;
+  letter?: T;
   featuredImage?: T;
   jobTitle?: T;
   content?: T;

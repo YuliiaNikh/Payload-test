@@ -303,3 +303,4 @@ details[open] > summary.nav__link::after { transform: rotate(-135deg); margin-bl
 }
 [dir='rtl'] .preview-banner { translate: 50% 0; }
 .preview-banner a { color: inherit; font-weight: 600; }
+.site-footer ul.site-footer__social { display: flex; flex-wrap: wrap; }

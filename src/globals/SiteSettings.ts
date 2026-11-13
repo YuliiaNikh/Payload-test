@@ -92,5 +92,11 @@ export const SiteSettings: GlobalConfig = {
         },
       })),
     },
+    {
+      // Version of the demo content already loaded (scripts/seed-demo.ts never runs twice)
+      name: 'demoSeed',
+      type: 'number',
+      admin: { hidden: true },
+    },
   ],
 }

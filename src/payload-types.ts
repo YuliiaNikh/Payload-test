@@ -3320,6 +3320,7 @@ export interface SiteSetting {
     glossary: string;
     people: string;
   };
+  demoSeed?: number | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3471,6 +3472,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         glossary?: T;
         people?: T;
       };
+  demoSeed?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

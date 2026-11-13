@@ -1,4 +1,4 @@
-import type { CollectionConfig, Field } from 'payload'
+import type { CollectionConfig, Field, GroupField } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptSlugs } from '@/content/types'
@@ -135,7 +135,8 @@ export const Headers: CollectionConfig = {
       ],
     },
     { name: 'logo', type: 'upload', relationTo: 'media' },
-    linkField({ name: 'cta', label: 'Header button' }),
+    // Label and target per language
+    { ...linkField({ name: 'cta', label: 'Header button' }), localized: true } as GroupField,
     {
       name: 'menu',
       type: 'array',

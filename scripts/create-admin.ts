@@ -23,7 +23,7 @@ if (docs[0]) {
   await payload.update({
     collection: 'users',
     id: docs[0].id,
-    data: { password },
+    data: { password, role: 'admin' },
   })
   // Failed logins lock the account; a new password doesn't clear that
   await payload.db.updateOne({
@@ -35,7 +35,7 @@ if (docs[0]) {
 } else {
   await payload.create({
     collection: 'users',
-    data: { email, password },
+    data: { email, password, role: 'admin' },
   })
   console.log(`Created admin ${email}.`)
 }

@@ -3,6 +3,7 @@ import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 import { isStaff, publishedOrStaff } from '@/access/roles'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
+import { previewLinkField } from '@/fields/previewLink'
 import { slugField } from '@/fields/slug'
 import { autoRedirectHooks } from '@/hooks/autoRedirect'
 import { pageTemplateOptions, pageTemplates, type PageTemplate } from '@/templates/pageTemplates'
@@ -56,5 +57,6 @@ export const Pages: CollectionConfig = {
     },
     layoutField(),
     appearanceField(),
+    previewLinkField(),
   ],
 }

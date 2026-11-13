@@ -32,12 +32,29 @@ import { defaultLocale, localeLabels, locales } from './i18n/config'
 import { cptSlugs, taxonomySlugs } from './content/types'
 import { isAdmin } from './access/roles'
 
+const serverURL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000')
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
     user: Users.slug,
+    // Live preview beside the editor; the preview route enables draft mode for logged-in users
+    livePreview: {
+      collections: ['pages', ...cptSlugs],
+      url: ({ data, collectionConfig, locale }) =>
+        data?.id
+          ? `${serverURL}/next/preview?collection=${collectionConfig?.slug}&id=${data.id}&locale=${locale?.code ?? 'en'}`
+          : null,
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 390, height: 844 },
+        { label: 'Tablet', name: 'tablet', width: 820, height: 1180 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -53,6 +70,17 @@ export default buildConfig({
   },
   experimental: {
     localizeStatus: true,
+  },
+  jobs: {
+    access: {
+      // Logged-in users, or the Vercel cron with CRON_SECRET (scheduled publishing)
+      run: ({ req }) =>
+        Boolean(req.user) ||
+        Boolean(process.env.CRON_SECRET && req.headers.get('authorization') === `Bearer ${process.env.CRON_SECRET}`),
+    },
+    // Locally there is no cron: run due jobs every minute while the dev server is up
+    autoRun: [{ cron: '* * * * *', allQueues: true }],
+    shouldAutoRun: () => process.env.NODE_ENV !== 'production',
   },
   i18n: {
     supportedLanguages: { en, he },

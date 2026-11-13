@@ -4,6 +4,7 @@ import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
+import { previewLinkField } from '@/fields/previewLink'
 import { autoRedirectHooks } from '@/hooks/autoRedirect'
 
 import { localizedDrafts } from './shared/drafts'
@@ -37,5 +38,6 @@ export const Glossary: CollectionConfig = {
     },
     layoutField({ label: 'Extra sections' }),
     appearanceField(),
+    previewLinkField(),
   ],
 }

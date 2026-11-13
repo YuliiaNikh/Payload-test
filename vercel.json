@@ -1,5 +1,11 @@
 {
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "buildCommand": "node scripts/reset-production.mjs && pnpm payload migrate && pnpm build"
+  "buildCommand": "node scripts/reset-production.mjs && pnpm payload migrate && pnpm build",
+  "crons": [
+    {
+      "path": "/api/payload-jobs/run",
+      "schedule": "0 6 * * *"
+    }
+  ]
 }

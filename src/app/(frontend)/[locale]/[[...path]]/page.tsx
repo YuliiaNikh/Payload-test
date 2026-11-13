@@ -1,5 +1,6 @@
 import config from '@payload-config'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound, permanentRedirect, redirect } from 'next/navigation'
 import Script from 'next/script'
 import { getPayload } from 'payload'
@@ -15,11 +16,13 @@ import { isLocale, type Locale } from '@/i18n/config'
 import { localizePath, normalizePath } from '@/i18n/paths'
 import { getCptBases, getRouteAlternates, resolveRoute } from '@/lib/queries/content'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { PreviewBanner } from '@/components/PreviewBanner'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { loadChrome } from '@/lib/chrome/load'
 import { findRedirect } from '@/lib/queries/redirects'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { buildCrumbs, buildJsonLd } from '@/lib/seo/structured'
+import { siteUrl } from '@/lib/siteUrl'
 import { getHomePageId } from '@/lib/queries/pages'
 
 type Props = {
@@ -31,14 +34,16 @@ async function resolve(params: Props['params']) {
   const { locale, path } = await params
   if (!isLocale(locale)) notFound()
   const pathname = localizePath(locale, normalizePath(path))
-  const route = await resolveRoute(normalizePath(path), locale)
+  // Draft mode (live preview or a share link) shows the latest, unpublished versions
+  const { isEnabled: draft } = await draftMode()
+  const route = await resolveRoute(normalizePath(path), locale, draft)
   if (!route) {
     // Old URLs from the redirects manager (and automatic slug-change redirects)
     const target = await findRedirect(pathname)
     if (target) (target.permanent ? permanentRedirect : redirect)(target.href)
     notFound()
   }
-  return { locale, route, pathname }
+  return { locale, route, pathname, draft }
 }
 
 async function getSiteSettings(locale: Locale) {
@@ -58,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PageRoute({ params, searchParams }: Props) {
-  const { locale, route, pathname } = await resolve(params)
+  const { locale, route, pathname, draft } = await resolve(params)
   const [alternates, settings, bases, homeId, chrome] = await Promise.all([
     getRouteAlternates(route),
     getSiteSettings(locale),
@@ -106,6 +111,14 @@ export default async function PageRoute({ params, searchParams }: Props) {
         )}
       </main>
       {chrome.footer !== 'none' && <SiteFooter footer={chrome.footer} siteName={siteName} ctx={ctx} />}
+      {draft && (
+        <PreviewBanner
+          serverURL={siteUrl()}
+          exitHref={`/next/exit-preview?path=${encodeURIComponent(pathname)}`}
+          label={locale === 'he' ? 'תצוגה מקדימה של טיוטה' : 'Draft preview'}
+          exitLabel={locale === 'he' ? 'יציאה' : 'Exit preview'}
+        />
+      )}
       {hubspot?.tracking && hubspot.portalId && (
         <Script
           id="hs-script-loader"

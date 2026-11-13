@@ -29,25 +29,27 @@ export async function findPublishedItem(
   collection: CptSlug,
   locale: Locale,
   by: { slug: string } | { id: number },
+  draft = false,
 ): Promise<CptDoc | null> {
   const payload = await getPayload({ config })
   const match: Where = 'slug' in by ? { slug: { equals: by.slug } } : { id: { equals: by.id } }
   const { docs } = await payload.find({
     collection,
     locale,
-    draft: false,
+    draft,
     limit: 1,
     depth: 2,
-    where: { and: [match, published] },
+    where: draft ? match : { and: [match, published] },
   })
   return (docs[0] as CptDoc | undefined) ?? null
 }
 
-export async function resolveRoute(path: string, locale: Locale): Promise<Route | null> {
+// draft = preview mode (latest versions, including unpublished ones)
+export async function resolveRoute(path: string, locale: Locale, draft = false): Promise<Route | null> {
   const bases = await getCptBases(locale)
   const match = matchCptPath(path, bases)
   if (match) {
-    const doc = await findPublishedItem(match.collection, locale, { slug: match.slug })
+    const doc = await findPublishedItem(match.collection, locale, { slug: match.slug }, draft)
     if (doc) return { kind: 'item', collection: match.collection, doc }
   }
   const term = matchTermArchivePath(path, bases)
@@ -61,7 +63,7 @@ export async function resolveRoute(path: string, locale: Locale): Promise<Route 
       limit: 1,
       where: { slug: { equals: term.slug } },
     })
-    const archive = docs[0] && (await findPublishedPageByPath(`/${bases[term.collection]}`, locale))
+    const archive = docs[0] && (await findPublishedPageByPath(`/${bases[term.collection]}`, locale, draft))
     if (docs[0] && archive) {
       return {
         kind: 'page',
@@ -71,7 +73,7 @@ export async function resolveRoute(path: string, locale: Locale): Promise<Route 
     }
   }
 
-  const page = await findPublishedPageByPath(path, locale)
+  const page = await findPublishedPageByPath(path, locale, draft)
   return page ? { kind: 'page', doc: page } : null
 }
 

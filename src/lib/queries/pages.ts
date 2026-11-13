@@ -17,22 +17,23 @@ export async function getHomePageId(): Promise<Page['id'] | null> {
   return typeof home === 'object' ? home.id : home
 }
 
-export async function findPublishedPageById(id: Page['id'], locale: Locale): Promise<Page | null> {
+// draft = preview mode: the latest version, published or not
+export async function findPublishedPageById(id: Page['id'], locale: Locale, draft = false): Promise<Page | null> {
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
     collection: 'pages',
     locale,
-    draft: false,
+    draft,
     limit: 1,
-    where: { and: [{ id: { equals: id } }, published] },
+    where: draft ? { id: { equals: id } } : { and: [{ id: { equals: id } }, published] },
   })
   return docs[0] ?? null
 }
 
-export async function findPublishedPageByPath(path: string, locale: Locale): Promise<Page | null> {
+export async function findPublishedPageByPath(path: string, locale: Locale, draft = false): Promise<Page | null> {
   if (path === '/') {
     const homeId = await getHomePageId()
-    return homeId == null ? null : findPublishedPageById(homeId, locale)
+    return homeId == null ? null : findPublishedPageById(homeId, locale, draft)
   }
 
   const payload = await getPayload({ config })
@@ -40,9 +41,9 @@ export async function findPublishedPageByPath(path: string, locale: Locale): Pro
   const { docs } = await payload.find({
     collection: 'pages',
     locale,
-    draft: false,
+    draft,
     limit: 50,
-    where: { and: [{ 'breadcrumbs.url': { equals: path } }, published] },
+    where: draft ? { 'breadcrumbs.url': { equals: path } } : { and: [{ 'breadcrumbs.url': { equals: path } }, published] },
   })
   return docs.find((doc) => doc.breadcrumbs?.at(-1)?.url === path) ?? null
 }

@@ -3,9 +3,12 @@ import type { CollectionConfig } from 'payload'
 import { isStaff, publishedOrStaff } from '@/access/roles'
 import { slugField } from '@/fields/slug'
 
+import { localizedDrafts } from './shared/drafts'
+
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
   },
@@ -15,14 +18,7 @@ export const Pages: CollectionConfig = {
     update: isStaff,
     delete: isStaff,
   },
-  versions: {
-    drafts: {
-      autosave: { interval: 2000 },
-      // Each language has its own draft/published status (needs experimental.localizeStatus)
-      localizeStatus: true,
-    },
-    maxPerDoc: 50,
-  },
+  versions: localizedDrafts,
   fields: [
     {
       name: 'title',

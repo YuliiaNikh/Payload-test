@@ -14,6 +14,7 @@ import { he } from '@payloadcms/translations/languages/he'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { hierarchicalTaxonomies, taxonomies } from './collections/taxonomies'
 import { SiteSettings } from './globals/SiteSettings'
 import { defaultLocale, localeLabels, locales } from './i18n/config'
 
@@ -27,7 +28,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, Media, Users],
+  collections: [Pages, ...taxonomies, Media, Users],
   globals: [SiteSettings],
   localization: {
     locales: locales.map((code) => ({ code, label: localeLabels[code], rtl: code === 'he' })),
@@ -64,7 +65,7 @@ export default buildConfig({
   sharp,
   plugins: [
     nestedDocsPlugin({
-      collections: ['pages'],
+      collections: ['pages', ...hierarchicalTaxonomies],
       generateLabel: (_, doc) => String(doc.title ?? ''),
       // Breadcrumbs are localized, so this builds the path per language
       generateURL: (docs) => `/${docs.map((doc) => doc.slug ?? '').join('/')}`,

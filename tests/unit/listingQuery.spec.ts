@@ -27,6 +27,12 @@ describe('buildListingWhere', () => {
     expect(where.and).toContainEqual({ categories: { in: [9] } })
   })
 
+  it('narrows fixed terms further with a term archive preset', () => {
+    const where = buildListingWhere({ ...base, fixedTermIds: { categories: [1, 2] }, presetTermIds: { categories: [1] } })
+    expect(where.and).toContainEqual({ categories: { in: [1, 2] } })
+    expect(where.and).toContainEqual({ categories: { in: [1] } })
+  })
+
   it('splits events into upcoming and past by start date', () => {
     const upcoming = buildListingWhere({ ...base, collection: 'events', state: { terms: {}, when: 'upcoming', page: 1 } })
     expect(upcoming.and).toContainEqual({ startDate: { greater_than_equal: now.toISOString() } })

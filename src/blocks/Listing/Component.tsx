@@ -79,7 +79,7 @@ export async function ListingBlock({ block, ctx, index = 0 }: { block: ListingDa
     const id = typeof term.value === 'object' ? term.value.id : term.value
     if (tax) (fixedTermIds[tax.field] ??= []).push(id)
   }
-  if (ctx.preset?.collection === collection) (fixedTermIds[ctx.preset.field] ??= []).push(ctx.preset.termId)
+  const presetTermIds = ctx.preset?.collection === collection ? { [ctx.preset.field]: [ctx.preset.termId] } : undefined
 
   const onOwnItem = ctx.item?.collection === collection ? ctx.item.doc : null
   const relatedTermIds =
@@ -92,6 +92,7 @@ export async function ListingBlock({ block, ctx, index = 0 }: { block: ListingDa
     state,
     termIds,
     fixedTermIds,
+    presetTermIds,
     fixedWhen: block.when,
     personId,
     excludeId: block.excludeCurrent && onOwnItem ? onOwnItem.id : null,

@@ -11,6 +11,8 @@ type Input = {
   termIds: Record<string, number[]>
   // relationship field -> ids fixed by the editor (or by a term archive)
   fixedTermIds?: Record<string, number[]>
+  // relationship field -> ids from a term archive URL; ANDed on top of the fixed terms
+  presetTermIds?: Record<string, number[]>
   fixedWhen?: 'upcoming' | 'past' | 'all' | null
   personId?: number | null
   excludeId?: number | null
@@ -28,6 +30,10 @@ export function buildListingWhere(input: Input): Where & { and: Where[] } {
   const dateField = cptDateField[collection]
 
   for (const [field, ids] of Object.entries(input.fixedTermIds ?? {})) {
+    if (ids.length) and.push({ [field]: { in: ids } })
+  }
+
+  for (const [field, ids] of Object.entries(input.presetTermIds ?? {})) {
     if (ids.length) and.push({ [field]: { in: ids } })
   }
 

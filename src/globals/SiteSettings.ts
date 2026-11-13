@@ -35,6 +35,46 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
+      name: 'seo',
+      label: 'SEO defaults',
+      type: 'group',
+      fields: [
+        {
+          name: 'titlePattern',
+          type: 'text',
+          localized: true,
+          defaultValue: '%title% | %site%',
+          admin: { description: 'Used when a page has no SEO title. %title% = page title, %site% = site name.' },
+        },
+        { name: 'description', label: 'Default meta description', type: 'textarea', localized: true },
+        { name: 'image', label: 'Default social image', type: 'upload', relationTo: 'media' },
+      ],
+    },
+    {
+      name: 'hubspot',
+      label: 'HubSpot',
+      type: 'group',
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'portalId', label: 'Portal ID', type: 'text', admin: { width: '40%' } },
+            {
+              name: 'region',
+              type: 'select',
+              defaultValue: 'na1',
+              options: [
+                { label: 'North America (na1)', value: 'na1' },
+                { label: 'Europe (eu1)', value: 'eu1' },
+              ],
+              admin: { width: '30%' },
+            },
+            { name: 'tracking', label: 'Load tracking code', type: 'checkbox', admin: { width: '30%' } },
+          ],
+        },
+      ],
+    },
+    {
       name: 'cptBases',
       label: 'URL bases',
       type: 'group',

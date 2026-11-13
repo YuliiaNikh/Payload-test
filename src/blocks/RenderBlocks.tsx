@@ -10,6 +10,7 @@ import { CtaBlock } from './Cta/Component'
 import { DynamicFieldBlock } from './DynamicField/Component'
 import { FaqBlock } from './Faq/Component'
 import { HeroBlock } from './Hero/Component'
+import { HubSpotFormBlock } from './HubSpotForm/Component'
 import { ListingBlock } from './Listing/Component'
 import { LogosBlock } from './Logos/Component'
 import { MediaTextBlock } from './MediaText/Component'
@@ -36,6 +37,7 @@ const components: Record<string, ComponentType<{ block: any; ctx: BlockContext; 
   testimonials: TestimonialsBlock,
   faq: FaqBlock,
   cta: CtaBlock,
+  hubspotForm: HubSpotFormBlock,
   dynamicField: DynamicFieldBlock,
   reusableSection: ReusableSectionBlock,
 }

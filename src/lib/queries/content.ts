@@ -7,7 +7,7 @@ import { localizePath } from '@/i18n/paths'
 import { cptItemPath, matchCptPath, matchTermArchivePath, type CptBases } from '@/lib/routing/cptPaths'
 import type { Config, Page } from '@/payload-types'
 
-import { findPublishedPageByPath, getPageAlternates } from './pages'
+import { findPublishedPageById, findPublishedPageByPath, getHomePageId, pagePath } from './pages'
 
 export type CptDoc = Config['collections'][CptSlug]
 
@@ -75,16 +75,26 @@ export async function resolveRoute(path: string, locale: Locale): Promise<Route 
   return page ? { kind: 'page', doc: page } : null
 }
 
-// Href of this route in every language; that language's home page when it has no published version
-export async function getRouteAlternates(route: Route): Promise<Record<Locale, string>> {
-  if (route.kind === 'page') return getPageAlternates(route.doc.id)
-
+// The real URL of this route in every language, or null where it is not published (for hreflang)
+export async function getRouteTranslations(route: Route): Promise<Record<Locale, string | null>> {
+  const homeId = route.kind === 'page' ? await getHomePageId() : null
   const entries = await Promise.all(
     locales.map(async (locale) => {
+      if (route.kind === 'page') {
+        const page = await findPublishedPageById(route.doc.id, locale)
+        return [locale, page ? localizePath(locale, pagePath(page, homeId)) : null] as const
+      }
       const doc = await findPublishedItem(route.collection, locale, { id: route.doc.id })
-      const path = doc?.slug ? cptItemPath(route.collection, doc.slug, await getCptBases(locale)) : '/'
-      return [locale, localizePath(locale, path)] as const
+      return [locale, doc?.slug ? localizePath(locale, cptItemPath(route.collection, doc.slug, await getCptBases(locale))) : null] as const
     }),
   )
-  return Object.fromEntries(entries) as Record<Locale, string>
+  return Object.fromEntries(entries) as Record<Locale, string | null>
+}
+
+// For the language switcher: missing translations fall back to that language's home page
+export async function getRouteAlternates(route: Route): Promise<Record<Locale, string>> {
+  const translations = await getRouteTranslations(route)
+  return Object.fromEntries(
+    locales.map((locale) => [locale, translations[locale] ?? localizePath(locale, '/')]),
+  ) as Record<Locale, string>
 }

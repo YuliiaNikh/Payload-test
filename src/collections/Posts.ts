@@ -4,8 +4,11 @@ import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
+import { autoRedirectHooks } from '@/hooks/autoRedirect'
 
 import { localizedDrafts } from './shared/drafts'
+
+const postsRedirects = autoRedirectHooks('posts')
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -17,6 +20,10 @@ export const Posts: CollectionConfig = {
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: localizedDrafts,
+  hooks: {
+    beforeChange: [postsRedirects.beforeChange],
+    afterChange: [postsRedirects.afterChange],
+  },
   defaultSort: '-publishedDate',
   fields: [
     ...cptBaseFields(),

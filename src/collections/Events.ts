@@ -4,8 +4,11 @@ import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
+import { autoRedirectHooks } from '@/hooks/autoRedirect'
 
 import { localizedDrafts } from './shared/drafts'
+
+const eventsRedirects = autoRedirectHooks('events')
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -16,6 +19,10 @@ export const Events: CollectionConfig = {
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: localizedDrafts,
+  hooks: {
+    beforeChange: [eventsRedirects.beforeChange],
+    afterChange: [eventsRedirects.afterChange],
+  },
   defaultSort: 'startDate',
   fields: [
     ...cptBaseFields(),

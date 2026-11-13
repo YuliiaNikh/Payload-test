@@ -25,6 +25,8 @@
     "@payloadcms/email-resend": "3.93.0",
     "@payloadcms/next": "3.93.0",
     "@payloadcms/plugin-nested-docs": "3.93.0",
+    "@payloadcms/plugin-redirects": "3.93.0",
+    "@payloadcms/plugin-seo": "3.93.0",
     "@payloadcms/richtext-lexical": "3.93.0",
     "@payloadcms/storage-vercel-blob": "3.93.0",
     "@payloadcms/translations": "3.93.0",

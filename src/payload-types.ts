@@ -78,6 +78,7 @@ export interface Config {
     testimonials: TestimonialsBlock;
     faq: FaqBlock;
     cta: CtaBlock;
+    hubspotForm: HubSpotFormBlock;
     dynamicField: DynamicFieldBlock;
     reusableSection: ReusableSectionBlock;
     colText: ColumnTextBlock;
@@ -103,6 +104,7 @@ export interface Config {
     departments: Department;
     media: Media;
     users: User;
+    redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -133,6 +135,7 @@ export interface Config {
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -299,6 +302,7 @@ export interface Page {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -308,6 +312,16 @@ export interface Page {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   parent?: (number | null) | Page;
   breadcrumbs?:
@@ -540,6 +554,7 @@ export interface Post {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -549,6 +564,16 @@ export interface Post {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -630,6 +655,7 @@ export interface Person {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -639,6 +665,16 @@ export interface Person {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -656,6 +692,16 @@ export interface Department {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -707,6 +753,7 @@ export interface Event {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -716,6 +763,16 @@ export interface Event {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -733,6 +790,16 @@ export interface EventType {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -877,6 +944,7 @@ export interface Resource {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -886,6 +954,16 @@ export interface Resource {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -903,6 +981,16 @@ export interface ResourceType {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -918,6 +1006,16 @@ export interface Industry {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -933,6 +1031,16 @@ export interface Topic {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1049,6 +1157,16 @@ export interface Category {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   parent?: (number | null) | Category;
   breadcrumbs?:
     | {
@@ -1073,6 +1191,16 @@ export interface Tag {
    */
   slug: string;
   description?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1258,6 +1386,7 @@ export interface Glossary {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
@@ -1267,6 +1396,16 @@ export interface Glossary {
     headerRef?: (number | null) | Header;
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    noindex?: boolean | null;
+    canonical?: string | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1686,6 +1825,64 @@ export interface CtaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HubSpotFormBlock".
+ */
+export interface HubSpotFormBlock {
+  heading?: string | null;
+  text?: string | null;
+  /**
+   * From HubSpot → Marketing → Forms → Share → Embed code ("formId"). The portal ID is in Site settings.
+   */
+  formId: string;
+  display?: ('inline' | 'popup') | null;
+  buttonLabel?: string | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hubspotForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "DynamicFieldBlock".
  */
 export interface DynamicFieldBlock {
@@ -1777,6 +1974,7 @@ export interface ReusableSection {
         | TestimonialsBlock
         | FaqBlock
         | CtaBlock
+        | HubSpotFormBlock
         | DynamicFieldBlock
       )[]
     | null;
@@ -2139,6 +2337,46 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  from: string;
+  to?: {
+    type?: ('reference' | 'custom') | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
+        } | null)
+      | ({
+          relationTo: 'resources';
+          value: number | Resource;
+        } | null)
+      | ({
+          relationTo: 'glossary';
+          value: number | Glossary;
+        } | null)
+      | ({
+          relationTo: 'people';
+          value: number | Person;
+        } | null);
+    url?: string | null;
+  };
+  type: '301' | '302';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -2232,6 +2470,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2292,6 +2534,15 @@ export interface PagesSelect<T extends boolean = true> {
         footer?: T;
         footerRef?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -2329,6 +2580,15 @@ export interface PostsSelect<T extends boolean = true> {
         footer?: T;
         footerRef?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2357,6 +2617,15 @@ export interface EventsSelect<T extends boolean = true> {
         headerRef?: T;
         footer?: T;
         footerRef?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2387,6 +2656,15 @@ export interface ResourcesSelect<T extends boolean = true> {
         footer?: T;
         footerRef?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2411,6 +2689,15 @@ export interface GlossarySelect<T extends boolean = true> {
         headerRef?: T;
         footer?: T;
         footerRef?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2439,6 +2726,15 @@ export interface PeopleSelect<T extends boolean = true> {
         headerRef?: T;
         footer?: T;
         footerRef?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2615,6 +2911,15 @@ export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -2635,6 +2940,15 @@ export interface TagsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2646,6 +2960,15 @@ export interface EventTypesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2657,6 +2980,15 @@ export interface IndustriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2668,6 +3000,15 @@ export interface ResourceTypesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2679,6 +3020,15 @@ export interface TopicsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2690,6 +3040,15 @@ export interface DepartmentsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        noindex?: T;
+        canonical?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2736,6 +3095,23 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?:
+    | T
+    | {
+        type?: T;
+        reference?: T;
+        url?: T;
+      };
+  type?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2790,6 +3166,19 @@ export interface SiteSetting {
   homePage?: (number | null) | Page;
   defaultHeader?: (number | null) | Header;
   defaultFooter?: (number | null) | Footer;
+  seo?: {
+    /**
+     * Used when a page has no SEO title. %title% = page title, %site% = site name.
+     */
+    titlePattern?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  hubspot?: {
+    portalId?: string | null;
+    region?: ('na1' | 'eu1') | null;
+    tracking?: boolean | null;
+  };
   /**
    * First part of the URL for each content type, per language (like WPML "translate slugs").
    */
@@ -2826,6 +3215,7 @@ export interface CptDefault {
           | TestimonialsBlock
           | FaqBlock
           | CtaBlock
+          | HubSpotFormBlock
           | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
@@ -2846,6 +3236,7 @@ export interface CptDefault {
           | TestimonialsBlock
           | FaqBlock
           | CtaBlock
+          | HubSpotFormBlock
           | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
@@ -2866,6 +3257,7 @@ export interface CptDefault {
           | TestimonialsBlock
           | FaqBlock
           | CtaBlock
+          | HubSpotFormBlock
           | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
@@ -2886,6 +3278,7 @@ export interface CptDefault {
           | TestimonialsBlock
           | FaqBlock
           | CtaBlock
+          | HubSpotFormBlock
           | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
@@ -2906,6 +3299,7 @@ export interface CptDefault {
           | TestimonialsBlock
           | FaqBlock
           | CtaBlock
+          | HubSpotFormBlock
           | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
@@ -2923,6 +3317,20 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   homePage?: T;
   defaultHeader?: T;
   defaultFooter?: T;
+  seo?:
+    | T
+    | {
+        titlePattern?: T;
+        description?: T;
+        image?: T;
+      };
+  hubspot?:
+    | T
+    | {
+        portalId?: T;
+        region?: T;
+        tracking?: T;
+      };
   cptBases?:
     | T
     | {

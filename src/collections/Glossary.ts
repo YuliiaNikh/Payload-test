@@ -4,8 +4,11 @@ import { isStaff, publishedOrStaff } from '@/access/roles'
 import { cptBaseFields } from '@/fields/cptBase'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
+import { autoRedirectHooks } from '@/hooks/autoRedirect'
 
 import { localizedDrafts } from './shared/drafts'
+
+const glossaryRedirects = autoRedirectHooks('glossary')
 
 export const Glossary: CollectionConfig = {
   slug: 'glossary',
@@ -17,6 +20,10 @@ export const Glossary: CollectionConfig = {
   },
   access: { read: publishedOrStaff, create: isStaff, update: isStaff, delete: isStaff },
   versions: localizedDrafts,
+  hooks: {
+    beforeChange: [glossaryRedirects.beforeChange],
+    afterChange: [glossaryRedirects.afterChange],
+  },
   defaultSort: 'title',
   fields: [
     ...cptBaseFields({ titleLabel: 'Term' }),

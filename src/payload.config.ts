@@ -8,6 +8,8 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { en } from '@payloadcms/translations/languages/en'
 import { he } from '@payloadcms/translations/languages/he'
 
@@ -27,6 +29,8 @@ import { Resources } from './collections/Resources'
 import { hierarchicalTaxonomies, taxonomies } from './collections/taxonomies'
 import { SiteSettings } from './globals/SiteSettings'
 import { defaultLocale, localeLabels, locales } from './i18n/config'
+import { cptSlugs, taxonomySlugs } from './content/types'
+import { isAdmin } from './access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -75,6 +79,27 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [
+    // Yoast-style SEO tab on pages, CPT items and taxonomy terms
+    seoPlugin({
+      collections: ['pages', ...cptSlugs, ...taxonomySlugs],
+      uploadsCollection: 'media',
+      tabbedUI: true,
+      generateTitle: ({ doc }) => String((doc as { title?: string })?.title ?? ''),
+      generateDescription: ({ doc }) => String((doc as { excerpt?: string })?.excerpt ?? ''),
+      fields: ({ defaultFields }) => [
+        ...defaultFields,
+        { name: 'noindex', label: 'Hide from search engines (noindex)', type: 'checkbox' },
+        { name: 'canonical', label: 'Canonical URL (optional override)', type: 'text', localized: true },
+      ],
+    }),
+    redirectsPlugin({
+      collections: ['pages', ...cptSlugs],
+      redirectTypes: ['301', '302'],
+      overrides: {
+        admin: { group: 'Site' },
+        access: { read: () => true, create: isAdmin, update: isAdmin, delete: isAdmin },
+      },
+    }),
     nestedDocsPlugin({
       collections: ['pages', ...hierarchicalTaxonomies],
       generateLabel: (_, doc) => String(doc.title ?? ''),

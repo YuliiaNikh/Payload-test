@@ -6,6 +6,7 @@ import { CtaBlock } from './Cta/config'
 import { DynamicFieldBlock } from './DynamicField/config'
 import { FaqBlock } from './Faq/config'
 import { HeroBlock } from './Hero/config'
+import { HubSpotFormBlock } from './HubSpotForm/config'
 import { ListingBlock } from './Listing/config'
 import { LogosBlock } from './Logos/config'
 import { MediaTextBlock } from './MediaText/config'
@@ -29,6 +30,7 @@ export const sectionBlocks: Block[] = [
   TestimonialsBlock,
   FaqBlock,
   CtaBlock,
+  HubSpotFormBlock,
   DynamicFieldBlock,
   ReusableSectionBlock,
 ]

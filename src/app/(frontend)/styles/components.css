@@ -280,3 +280,17 @@ details[open] > summary.nav__link::after { transform: rotate(-135deg); margin-bl
 @media (min-width: 1025px) { .hide-on-desktop { display: none; } }
 @media (min-width: 601px) and (max-width: 1024px) { .hide-on-tablet { display: none; } }
 @media (max-width: 600px) { .hide-on-mobile { display: none; } }
+
+/* Breadcrumbs */
+.breadcrumbs { padding-block: var(--space-3) 0; font-size: var(--text-sm); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: var(--space-2); list-style: none; margin: 0; padding: 0; color: var(--color-text-muted); }
+.breadcrumbs li + li::before { content: '/'; margin-inline-end: var(--space-2); color: var(--color-border); }
+.breadcrumbs a { color: var(--color-text-muted); text-decoration: none; }
+.breadcrumbs a:hover { color: var(--color-accent); }
+
+/* HubSpot */
+.hubspot__target { max-inline-size: 640px; }
+.section--align-center .hubspot__target { margin-inline: auto; }
+.hubspot__dialog { inline-size: min(640px, 92vw); border: 0; border-radius: var(--radius-lg); padding: var(--space-6); box-shadow: var(--shadow-md); background: var(--color-bg); color: var(--color-text); }
+.hubspot__dialog::backdrop { background: rgb(0 0 0 / 0.45); }
+.hubspot__close { display: flex; justify-content: flex-end; }

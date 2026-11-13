@@ -4,6 +4,7 @@ import { isStaff, publishedOrStaff } from '@/access/roles'
 import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
 import { slugField } from '@/fields/slug'
+import { autoRedirectHooks } from '@/hooks/autoRedirect'
 import { pageTemplateOptions, pageTemplates, type PageTemplate } from '@/templates/pageTemplates'
 
 import { localizedDrafts } from './shared/drafts'
@@ -14,6 +15,8 @@ const applyTemplate: CollectionBeforeChangeHook = ({ data, operation }) => {
   if (operation !== 'create' || !template || template === 'blank' || data.layout?.length) return data
   return { ...data, layout: structuredClone(pageTemplates[template]) }
 }
+
+const pagesRedirects = autoRedirectHooks('pages')
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -30,7 +33,8 @@ export const Pages: CollectionConfig = {
   },
   versions: localizedDrafts,
   hooks: {
-    beforeChange: [applyTemplate],
+    beforeChange: [applyTemplate, pagesRedirects.beforeChange],
+    afterChange: [pagesRedirects.afterChange],
   },
   fields: [
     {

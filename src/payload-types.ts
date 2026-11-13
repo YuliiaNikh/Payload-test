@@ -92,6 +92,8 @@ export interface Config {
     glossary: Glossary;
     people: Person;
     'reusable-sections': ReusableSection;
+    headers: Header;
+    footers: Footer;
     categories: Category;
     tags: Tag;
     'event-types': EventType;
@@ -120,6 +122,8 @@ export interface Config {
     glossary: GlossarySelect<false> | GlossarySelect<true>;
     people: PeopleSelect<false> | PeopleSelect<true>;
     'reusable-sections': ReusableSectionsSelect<false> | ReusableSectionsSelect<true>;
+    headers: HeadersSelect<false> | HeadersSelect<true>;
+    footers: FootersSelect<false> | FootersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     'event-types': EventTypesSelect<false> | EventTypesSelect<true>;
@@ -263,6 +267,12 @@ export interface Page {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   parent?: (number | null) | Page;
   breadcrumbs?:
     | {
@@ -426,6 +436,12 @@ export interface Post {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -510,6 +526,12 @@ export interface Person {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -581,6 +603,12 @@ export interface Event {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -709,6 +737,12 @@ export interface Resource {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1012,6 +1046,12 @@ export interface Glossary {
         | ReusableSectionBlock
       )[]
     | null;
+  appearance?: {
+    header?: ('default' | 'custom' | 'none') | null;
+    headerRef?: (number | null) | Header;
+    footer?: ('default' | 'custom' | 'none') | null;
+    footerRef?: (number | null) | Footer;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1277,6 +1317,329 @@ export interface ReusableSection {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Header designs with their menus. Site settings choose the default; pages can pick another.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers".
+ */
+export interface Header {
+  id: number;
+  /**
+   * Admin name, e.g. "Main header".
+   */
+  title: string;
+  variant?: ('default' | 'minimal' | 'transparent') | null;
+  showLanguageSwitcher?: boolean | null;
+  logo?: (number | null) | Media;
+  cta?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
+        } | null)
+      | ({
+          relationTo: 'resources';
+          value: number | Resource;
+        } | null)
+      | ({
+          relationTo: 'glossary';
+          value: number | Glossary;
+        } | null)
+      | ({
+          relationTo: 'people';
+          value: number | Person;
+        } | null);
+    url?: string | null;
+    label?: string | null;
+    appearance?: ('primary' | 'secondary' | 'outline' | 'ghost' | 'link') | null;
+  };
+  menu?:
+    | {
+        label: string;
+        type?: ('link' | 'dropdown' | 'mega') | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'resources';
+                value: number | Resource;
+              } | null)
+            | ({
+                relationTo: 'glossary';
+                value: number | Glossary;
+              } | null)
+            | ({
+                relationTo: 'people';
+                value: number | Person;
+              } | null);
+          url?: string | null;
+          label?: string | null;
+        };
+        links?:
+          | {
+              link?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'events';
+                      value: number | Event;
+                    } | null)
+                  | ({
+                      relationTo: 'resources';
+                      value: number | Resource;
+                    } | null)
+                  | ({
+                      relationTo: 'glossary';
+                      value: number | Glossary;
+                    } | null)
+                  | ({
+                      relationTo: 'people';
+                      value: number | Person;
+                    } | null);
+                url?: string | null;
+                label?: string | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        mega?: {
+          columns?:
+            | {
+                heading?: string | null;
+                links?:
+                  | {
+                      link?: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'posts';
+                              value: number | Post;
+                            } | null)
+                          | ({
+                              relationTo: 'events';
+                              value: number | Event;
+                            } | null)
+                          | ({
+                              relationTo: 'resources';
+                              value: number | Resource;
+                            } | null)
+                          | ({
+                              relationTo: 'glossary';
+                              value: number | Glossary;
+                            } | null)
+                          | ({
+                              relationTo: 'people';
+                              value: number | Person;
+                            } | null);
+                        url?: string | null;
+                        label?: string | null;
+                      };
+                      description?: string | null;
+                      icon?:
+                        | (
+                            | 'none'
+                            | 'star'
+                            | 'chart'
+                            | 'book'
+                            | 'calendar'
+                            | 'users'
+                            | 'globe'
+                            | 'bolt'
+                            | 'shield'
+                            | 'chat'
+                          )
+                        | null;
+                      id?: string | null;
+                    }[]
+                  | null;
+                id?: string | null;
+              }[]
+            | null;
+          auto?: {
+            enabled?: boolean | null;
+            heading?: string | null;
+            collection?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+            count?: number | null;
+          };
+          promo?: {
+            enabled?: boolean | null;
+            image?: (number | null) | Media;
+            title?: string | null;
+            text?: string | null;
+            link?: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'posts';
+                    value: number | Post;
+                  } | null)
+                | ({
+                    relationTo: 'events';
+                    value: number | Event;
+                  } | null)
+                | ({
+                    relationTo: 'resources';
+                    value: number | Resource;
+                  } | null)
+                | ({
+                    relationTo: 'glossary';
+                    value: number | Glossary;
+                  } | null)
+                | ({
+                    relationTo: 'people';
+                    value: number | Person;
+                  } | null);
+              url?: string | null;
+              label?: string | null;
+            };
+          };
+          bottomLink?: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null)
+              | ({
+                  relationTo: 'events';
+                  value: number | Event;
+                } | null)
+              | ({
+                  relationTo: 'resources';
+                  value: number | Resource;
+                } | null)
+              | ({
+                  relationTo: 'glossary';
+                  value: number | Glossary;
+                } | null)
+              | ({
+                  relationTo: 'people';
+                  value: number | Person;
+                } | null);
+            url?: string | null;
+            label?: string | null;
+          };
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * Admin name, e.g. "Main footer".
+   */
+  title: string;
+  text?: string | null;
+  columns?:
+    | {
+        heading?: string | null;
+        links?:
+          | {
+              link?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: number | Post;
+                    } | null)
+                  | ({
+                      relationTo: 'events';
+                      value: number | Event;
+                    } | null)
+                  | ({
+                      relationTo: 'resources';
+                      value: number | Resource;
+                    } | null)
+                  | ({
+                      relationTo: 'glossary';
+                      value: number | Glossary;
+                    } | null)
+                  | ({
+                      relationTo: 'people';
+                      value: number | Person;
+                    } | null);
+                url?: string | null;
+                label?: string | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  social?:
+    | {
+        platform: 'linkedin' | 'facebook' | 'instagram' | 'x' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  legal?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1357,6 +1720,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reusable-sections';
         value: number | ReusableSection;
+      } | null)
+    | ({
+        relationTo: 'headers';
+        value: number | Header;
+      } | null)
+    | ({
+        relationTo: 'footers';
+        value: number | Footer;
       } | null)
     | ({
         relationTo: 'categories';
@@ -1445,6 +1816,14 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   template?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   parent?: T;
   breadcrumbs?:
     | T
@@ -1474,6 +1853,14 @@ export interface PostsSelect<T extends boolean = true> {
   categories?: T;
   tags?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1495,6 +1882,14 @@ export interface EventsSelect<T extends boolean = true> {
   speakers?: T;
   eventTypes?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1516,6 +1911,14 @@ export interface ResourcesSelect<T extends boolean = true> {
   industries?: T;
   topics?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1533,6 +1936,14 @@ export interface GlossarySelect<T extends boolean = true> {
   content?: T;
   relatedTerms?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1553,6 +1964,14 @@ export interface PeopleSelect<T extends boolean = true> {
   posts?: T;
   events?: T;
   layout?: T | {};
+  appearance?:
+    | T
+    | {
+        header?: T;
+        headerRef?: T;
+        footer?: T;
+        footerRef?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1564,6 +1983,158 @@ export interface PeopleSelect<T extends boolean = true> {
 export interface ReusableSectionsSelect<T extends boolean = true> {
   title?: T;
   layout?: T | {};
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers_select".
+ */
+export interface HeadersSelect<T extends boolean = true> {
+  title?: T;
+  variant?: T;
+  showLanguageSwitcher?: T;
+  logo?: T;
+  cta?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  menu?:
+    | T
+    | {
+        label?: T;
+        type?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        mega?:
+          | T
+          | {
+              columns?:
+                | T
+                | {
+                    heading?: T;
+                    links?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          description?: T;
+                          icon?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              auto?:
+                | T
+                | {
+                    enabled?: T;
+                    heading?: T;
+                    collection?: T;
+                    count?: T;
+                  };
+              promo?:
+                | T
+                | {
+                    enabled?: T;
+                    image?: T;
+                    title?: T;
+                    text?: T;
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                  };
+              bottomLink?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers_select".
+ */
+export interface FootersSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  columns?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  social?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  legal?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1749,6 +2320,8 @@ export interface SiteSetting {
    * Shown at / (and /he in Hebrew), like "Your homepage displays" in WordPress.
    */
   homePage?: (number | null) | Page;
+  defaultHeader?: (number | null) | Header;
+  defaultFooter?: (number | null) | Footer;
   /**
    * First part of the URL for each content type, per language (like WPML "translate slugs").
    */
@@ -1880,6 +2453,8 @@ export interface CptDefault {
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   homePage?: T;
+  defaultHeader?: T;
+  defaultFooter?: T;
   cptBases?:
     | T
     | {

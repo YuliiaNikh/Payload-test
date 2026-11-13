@@ -123,3 +123,13 @@ a:focus-visible {
   padding-inline: var(--space-3);
   font-size: var(--text-sm);
 }
+
+body {
+  min-block-size: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body > main {
+  flex: 1;
+}

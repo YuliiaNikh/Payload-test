@@ -1,6 +1,7 @@
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access/roles'
+import { appearanceField } from '@/fields/appearance'
 import { layoutField } from '@/fields/layout'
 import { slugField } from '@/fields/slug'
 import { pageTemplateOptions, pageTemplates, type PageTemplate } from '@/templates/pageTemplates'
@@ -50,5 +51,6 @@ export const Pages: CollectionConfig = {
       },
     },
     layoutField(),
+    appearanceField(),
   ],
 }

@@ -15,6 +15,8 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Events } from './collections/Events'
 import { Glossary } from './collections/Glossary'
+import { Footers } from './collections/Footers'
+import { Headers } from './collections/Headers'
 import { Pages } from './collections/Pages'
 import { ReusableSections } from './collections/ReusableSections'
 import { allBlocks } from './blocks/registry'
@@ -37,7 +39,7 @@ export default buildConfig({
     },
   },
   blocks: allBlocks,
-  collections: [Pages, Posts, Events, Resources, Glossary, People, ReusableSections, ...taxonomies, Media, Users],
+  collections: [Pages, Posts, Events, Resources, Glossary, People, ReusableSections, Headers, Footers, ...taxonomies, Media, Users],
   globals: [SiteSettings, CptDefaults],
   localization: {
     locales: locales.map((code) => ({ code, label: localeLabels[code], rtl: code === 'he' })),

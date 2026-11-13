@@ -7,11 +7,13 @@ import type { BlockContext } from '@/blocks/context'
 import type { SearchParams } from '@/blocks/Listing/state'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { ItemView } from '@/components/items/ItemView'
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { SiteFooter } from '@/components/chrome/SiteFooter'
+import { SiteHeader } from '@/components/chrome/SiteHeader'
 import type { CptSlug } from '@/content/types'
 import { isLocale, type Locale } from '@/i18n/config'
 import { localizePath, normalizePath } from '@/i18n/paths'
 import { getCptBases, getRouteAlternates, resolveRoute } from '@/lib/queries/content'
+import { loadChrome } from '@/lib/chrome/load'
 import { getHomePageId } from '@/lib/queries/pages'
 
 type Props = {
@@ -48,11 +50,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PageRoute({ params, searchParams }: Props) {
   const { locale, route } = await resolve(params)
   const { path } = await params
-  const [alternates, siteName, bases, homeId] = await Promise.all([
+  const [alternates, siteName, bases, homeId, chrome] = await Promise.all([
     getRouteAlternates(route),
     getSiteName(locale),
     getCptBases(locale),
     getHomePageId(),
+    loadChrome(route.doc.appearance, locale),
   ])
   const ctx: BlockContext = {
     locale,
@@ -66,14 +69,7 @@ export default async function PageRoute({ params, searchParams }: Props) {
 
   return (
     <>
-      <header className="site-bar">
-        <div className="container">
-          <a className="site-name" href={localizePath(locale, '/')}>
-            {siteName}
-          </a>
-          <LanguageSwitcher current={locale} hrefs={alternates} />
-        </div>
-      </header>
+      {chrome.header !== 'none' && <SiteHeader header={chrome.header} siteName={siteName} alternates={alternates} ctx={ctx} />}
       <main>
         {route.kind === 'item' ? (
           <>
@@ -95,6 +91,7 @@ export default async function PageRoute({ params, searchParams }: Props) {
           </section>
         )}
       </main>
+      {chrome.footer !== 'none' && <SiteFooter footer={chrome.footer} siteName={siteName} ctx={ctx} />}
     </>
   )
 }

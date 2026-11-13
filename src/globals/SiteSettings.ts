@@ -28,6 +28,13 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      type: 'row',
+      fields: [
+        { name: 'defaultHeader', type: 'relationship', relationTo: 'headers', admin: { width: '50%' } },
+        { name: 'defaultFooter', type: 'relationship', relationTo: 'footers', admin: { width: '50%' } },
+      ],
+    },
+    {
       name: 'cptBases',
       label: 'URL bases',
       type: 'group',

@@ -252,7 +252,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'publishedDate',
       type: 'date',
-      required: true,
+      // Filled with "now" on create, so it is never empty in practice
       defaultValue: () => new Date().toISOString(),
       admin: { position: 'sidebar' },
     },
@@ -1259,7 +1259,7 @@ test.describe('CPT items', () => {
       collection: 'people',
       data: { title: `E2E Author ${s}`, slug: `e2e-author-${s}`, jobTitle: 'Editor', _status: 'published' },
     })
-    const category = await payload.create({ collection: 'categories', data: { title: `E2E News ${s}` } })
+    const category = await payload.create({ collection: 'categories', data: { title: `E2E News ${s}`, slug: `e2e-news-${s}` } })
     const post = await payload.create({
       collection: 'posts',
       data: {

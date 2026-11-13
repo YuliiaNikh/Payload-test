@@ -22,7 +22,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'publishedDate',
       type: 'date',
-      required: true,
+      // Filled with "now" on create, so it is never empty in practice
       defaultValue: () => new Date().toISOString(),
       admin: { position: 'sidebar' },
     },

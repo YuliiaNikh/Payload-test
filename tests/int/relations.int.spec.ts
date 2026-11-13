@@ -15,14 +15,14 @@ describe('relations', () => {
     payload = await getPayload({ config })
     const person = await payload.create({
       collection: 'people',
-      data: { title: `Rel Person ${s}`, _status: 'published' },
+      data: { title: `Rel Person ${s}`, slug: `rel-person-${s}`, _status: 'published' },
     })
     personId = person.id
     ids.people.push(person.id)
 
     const post = await payload.create({
       collection: 'posts',
-      data: { title: `Rel Post ${s}`, author: person.id, _status: 'published' },
+      data: { title: `Rel Post ${s}`, slug: `rel-post-${s}`, author: person.id, _status: 'published' },
     })
     ids.posts.push(post.id)
 
@@ -30,6 +30,7 @@ describe('relations', () => {
       collection: 'events',
       data: {
         title: `Rel Event ${s}`,
+        slug: `rel-event-${s}`,
         startDate: new Date().toISOString(),
         speakers: [person.id],
         _status: 'published',
@@ -53,10 +54,10 @@ describe('relations', () => {
   })
 
   it('builds category breadcrumbs from the parent', async () => {
-    const parent = await payload.create({ collection: 'categories', data: { title: `News ${s}` } })
+    const parent = await payload.create({ collection: 'categories', data: { title: `News ${s}`, slug: `news-${s}` } })
     const child = await payload.create({
       collection: 'categories',
-      data: { title: `Company ${s}`, parent: parent.id },
+      data: { title: `Company ${s}`, slug: `company-${s}`, parent: parent.id },
     })
     ids.categories.push(child.id, parent.id)
     expect(child.breadcrumbs?.map((b) => b.url)).toEqual([`/news-${s}`, `/news-${s}/company-${s}`])

@@ -204,7 +204,7 @@ export interface Post {
     };
     [k: string]: unknown;
   } | null;
-  publishedDate: string;
+  publishedDate?: string | null;
   author?: (number | null) | Person;
   categories?: (number | Category)[] | null;
   tags?: (number | Tag)[] | null;
@@ -944,6 +944,16 @@ export interface SiteSetting {
    * Shown at / (and /he in Hebrew), like "Your homepage displays" in WordPress.
    */
   homePage?: (number | null) | Page;
+  /**
+   * First part of the URL for each content type, per language (like WPML "translate slugs").
+   */
+  cptBases: {
+    posts: string;
+    events: string;
+    resources: string;
+    glossary: string;
+    people: string;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -954,6 +964,15 @@ export interface SiteSetting {
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   homePage?: T;
+  cptBases?:
+    | T
+    | {
+        posts?: T;
+        events?: T;
+        resources?: T;
+        glossary?: T;
+        people?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

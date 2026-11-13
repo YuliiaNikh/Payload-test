@@ -843,7 +843,7 @@ Create `src/lib/queries/content.ts`:
 
 ```ts
 import config from '@payload-config'
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
 
 import { defaultCptBases, type CptSlug } from '@/content/types'
 import { locales, type Locale } from '@/i18n/config'
@@ -873,7 +873,7 @@ export async function findPublishedItem(
   by: { slug: string } | { id: number },
 ): Promise<CptDoc | null> {
   const payload = await getPayload({ config })
-  const match = 'slug' in by ? { slug: { equals: by.slug } } : { id: { equals: by.id } }
+  const match: Where = 'slug' in by ? { slug: { equals: by.slug } } : { id: { equals: by.id } }
   const { docs } = await payload.find({
     collection,
     locale,

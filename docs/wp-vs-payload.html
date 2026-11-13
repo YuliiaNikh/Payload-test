@@ -1,0 +1,420 @@
+<title>WordPress vs Payload</title>
+<meta name="description" content="Agency evaluation: can Payload CMS replace our WordPress + Elementor/Gutenberg + JetEngine + WPML stack?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; tables are the core, each in its own scroll box. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6577;
+  --line: #dfe3ea;
+  --accent: #2c55c9;
+  --accent-soft: #e7edfb;
+  --ok: #1f7a4d;   --ok-bg: #e3f3ea;
+  --plug: #2c55c9; --plug-bg: #e7edfb;
+  --dev: #9a5b00;  --dev-bg: #fbf0dc;
+  --gap: #b4232f;  --gap-bg: #fbe5e7;
+  --dec: #6b3fb0;  --dec-bg: #efe8fa;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161d; --surface: #18202a; --ink: #e6eaf0; --muted: #9aa5b5; --line: #2a3442;
+    --accent: #86a6ff; --accent-soft: #1d2a47;
+    --ok: #6fd3a0; --ok-bg: #16352a; --plug: #86a6ff; --plug-bg: #1d2a47;
+    --dev: #f0b65a; --dev-bg: #3a2c12; --gap: #ff8a93; --gap-bg: #3d1a1e; --dec: #c3a5ff; --dec-bg: #2c2147;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161d; --surface: #18202a; --ink: #e6eaf0; --muted: #9aa5b5; --line: #2a3442;
+  --accent: #86a6ff; --accent-soft: #1d2a47;
+  --ok: #6fd3a0; --ok-bg: #16352a; --plug: #86a6ff; --plug-bg: #1d2a47;
+  --dev: #f0b65a; --dev-bg: #3a2c12; --gap: #ff8a93; --gap-bg: #3d1a1e; --dec: #c3a5ff; --dec-bg: #2c2147;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--font-body); padding-inline: 16px; padding-block: 0 64px; }
+.wrap { max-width: 1180px; margin-inline: auto; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } nav.toc { display: none; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-block: 32px; font-size: 13px; }
+nav.toc a { display: block; color: var(--muted); text-decoration: none; padding-block: 3px; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+nav.toc .label { font: 500 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-block-end: 8px; }
+main { min-width: 0; }
+header.hero { padding-block: 40px 24px; border-block-end: 1px solid var(--line); }
+.eyebrow { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 5vw, 46px)/1.08 var(--font-display); margin-block: 10px 14px; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font: 700 26px/1.2 var(--font-display); margin-block: 0 6px; text-wrap: balance; }
+h3 { font: 600 17px/1.3 var(--font-body); margin-block: 0 8px; }
+p { max-width: 68ch; margin-block: 0 12px; }
+.lede { font-size: 17px; color: var(--muted); }
+.meta { font: 13px var(--font-mono); color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+section { padding-block: 40px 8px; scroll-margin-top: 16px; }
+.sub { color: var(--muted); margin-block-end: 18px; }
+.verdict { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-block: 20px 8px; }
+@media (max-width: 760px) { .verdict { grid-template-columns: minmax(0, 1fr); } }
+.verdict > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.verdict ul { margin: 0; padding-inline-start: 18px; }
+.verdict li { margin-block-end: 6px; }
+.verdict h3 { display: flex; align-items: center; gap: 8px; }
+.counts { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 18px 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-block: 8px 4px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); padding-block: 10px; z-index: 2; }
+.filters span { font: 500 12px var(--font-mono); color: var(--muted); margin-inline-end: 4px; }
+.chip { font: 500 12.5px var(--font-body); border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.chip:focus-visible, .chip:hover { border-color: var(--accent); }
+.chip .n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; opacity: .8; }
+.badge { display: inline-block; white-space: nowrap; font: 500 12px/1 var(--font-body); padding: 5px 8px; border-radius: 6px; }
+.s-built { color: var(--ok); background: var(--ok-bg); }
+.s-plugin { color: var(--plug); background: var(--plug-bg); }
+.s-custom { color: var(--dev); background: var(--dev-bg); }
+.s-gap { color: var(--gap); background: var(--gap-bg); }
+.s-decision { color: var(--dec); background: var(--dec-bg); }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-block: 14px 8px; }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th, td { text-align: start; vertical-align: top; padding: 11px 14px; border-block-end: 1px solid var(--line); }
+tr:last-child td { border-block-end: 0; }
+th { font: 500 11.5px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+td:first-child { font-weight: 600; width: 19%; }
+td.wp, td.pl { width: 33%; }
+td.st { width: 15%; }
+td small { display: block; color: var(--muted); margin-block-start: 4px; font-size: 12.5px; }
+.decisions { display: grid; gap: 14px; margin-block-start: 14px; }
+.decision { background: var(--surface); border: 1px solid var(--line); border-inline-start: 4px solid var(--dec); border-radius: 10px; padding: 16px 18px; }
+.decision ol { margin: 8px 0 0; padding-inline-start: 20px; }
+.decision li { margin-block-end: 6px; }
+.decision .rec { font-size: 13.5px; color: var(--muted); margin-block-start: 8px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-block-start: 14px; }
+@media (max-width: 860px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.steps > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.steps ol { margin: 0; padding-inline-start: 20px; }
+.steps li { margin-block-end: 6px; }
+.kit { columns: 2 280px; column-gap: 32px; padding-inline-start: 18px; }
+.kit li { break-inside: avoid; margin-block-end: 6px; }
+code { font: 13px var(--font-mono); background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+a { color: var(--accent); }
+.links { display: flex; flex-wrap: wrap; gap: 12px; }
+.links a { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; text-decoration: none; font-weight: 500; }
+.links a small { display: block; color: var(--muted); font-weight: 400; font-size: 12.5px; }
+tr[hidden] { display: none !important; }
+@media (prefers-reduced-motion: no-preference) { .chip { transition: border-color .15s, background .15s; } }
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Sections">
+    <div class="label">Contents</div>
+    <a href="#summary">Summary</a>
+    <a href="#tables">Feature comparison</a>
+    <div id="toc-groups"></div>
+    <a href="#decisions">Decisions needed</a>
+    <a href="#walkthrough">Client walkthroughs</a>
+    <a href="#kit">Starter kit</a>
+    <a href="#links">Demo links</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Agency evaluation · draft 1</div>
+      <h1>Can Payload replace our WordPress stack?</h1>
+      <p class="lede">Our sites run on WordPress with Elementor or Gutenberg, JetEngine, WPML, Yoast and HubSpot forms. This page compares each part with Payload CMS 3 (on Next.js) and marks what is built in, what needs a plugin, and what we would build ourselves.</p>
+      <div class="meta"><span>Payload 3.93 · Next.js 16</span><span>Languages tested: EN + HE (RTL)</span><span>Updated 13 Nov 2026</span></div>
+    </header>
+
+    <section id="summary">
+      <h2>Summary</h2>
+      <p class="sub">Short version: Payload covers the content model, languages, workflow and security better than our WP stack. What it does not give out of the box is a drag-and-drop canvas and ready-made filter/listing widgets. Those become our own reusable code, built once in a starter kit.</p>
+      <div class="verdict">
+        <div>
+          <h3><span class="badge s-built">Strong</span></h3>
+          <ul>
+            <li>Fields, CPTs and relations (ACF + JetEngine relations) in typed code</li>
+            <li>Field-level translation, per-language layouts and slugs (WPML)</li>
+            <li>Drafts, autosave, live preview, scheduling, revisions with diff</li>
+            <li>No plugin marketplace to break or get hacked</li>
+            <li>Fast pages by default (server rendering, CDN cache)</li>
+          </ul>
+        </div>
+        <div>
+          <h3><span class="badge s-custom">We build once</span></h3>
+          <ul>
+            <li>Block library from Figma (our "widgets")</li>
+            <li>Listing block with filters (JetEngine listings + JetSmartFilters)</li>
+            <li>Dynamic visibility, open to any condition we add</li>
+            <li>Mega menu, multiple headers and footers</li>
+            <li>Sitemap, hreflang, schema, language switcher</li>
+          </ul>
+        </div>
+        <div>
+          <h3><span class="badge s-gap">Watch out</span></h3>
+          <ul>
+            <li>No on-canvas drag and drop. Editing is a form beside a live preview</li>
+            <li>Clients cannot install plugins. New features need a developer</li>
+            <li>Team needs TypeScript and React, not PHP</li>
+            <li>Hosting needs Node + Postgres, not shared WP hosting</li>
+            <li>No built-in translation jobs or Yoast-style readability score</li>
+          </ul>
+        </div>
+      </div>
+      <div class="counts" id="counts" aria-label="Rows by status"></div>
+    </section>
+
+    <section id="tables">
+      <h2>Feature comparison</h2>
+      <p class="sub">One row per thing our clients use today. Filter by status to see, for example, only what needs custom work.</p>
+      <div class="filters" role="group" aria-label="Filter rows by status">
+        <span>Show</span>
+        <button class="chip" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" data-f="built" aria-pressed="false"><span class="badge s-built">Built in</span></button>
+        <button class="chip" data-f="plugin" aria-pressed="false"><span class="badge s-plugin">Official plugin</span></button>
+        <button class="chip" data-f="custom" aria-pressed="false"><span class="badge s-custom">Custom code</span></button>
+        <button class="chip" data-f="gap" aria-pressed="false"><span class="badge s-gap">Gap / trade-off</span></button>
+        <button class="chip" data-f="decision" aria-pressed="false"><span class="badge s-decision">Needs decision</span></button>
+      </div>
+      <div id="groups"></div>
+    </section>
+
+    <section id="decisions">
+      <h2>Decisions needed</h2>
+      <p class="sub">These are open on purpose. The demo implements the recommended option and keeps the others possible.</p>
+      <div class="decisions">
+        <div class="decision">
+          <h3>1. How do clients build new sections from Figma?</h3>
+          <ol>
+            <li><b>A. Layered (recommended for the demo).</b> Developers build ready-made section blocks from Figma. Clients also get a few flexible layout blocks (columns, rich text, image, buttons) for simple new sections.</li>
+            <li><b>B. Ready-made blocks only.</b> Every new design is a developer task. Most consistent design, least client freedom.</li>
+            <li><b>C. Free nested builder.</b> Section → columns → widgets, like Elementor. Most freedom, and the same risk of broken layouts we want to leave behind.</li>
+          </ol>
+          <p class="rec">Open question: how much layout freedom each client tier gets, and whether a new Figma section is included in support or billed.</p>
+        </div>
+        <div class="decision">
+          <h3>2. Forms: HubSpot embed or Payload form builder?</h3>
+          <ol>
+            <li><b>HubSpot embed (demo).</b> Same as today. The client builds forms in HubSpot.</li>
+            <li><b>Payload form builder plugin.</b> Forms and entries live in the CMS, with emails, and are sent to the CRM through a hook. Works for clients without HubSpot.</li>
+          </ol>
+        </div>
+        <div class="decision">
+          <h3>3. Hosting per client</h3>
+          <ol>
+            <li><b>Vercel + Neon Postgres + Vercel Blob</b> (this demo). Zero server work. Vercel Hobby is non-commercial, so client sites need a paid plan.</li>
+            <li><b>Our own VPS or cloud with Docker.</b> Payload runs anywhere Node runs. More control and predictable cost, but we maintain servers.</li>
+          </ol>
+          <p class="rec"><b>To be reviewed by the backend team:</b> hosting, database, storage, backups, security and costs.</p>
+        </div>
+        <div class="decision">
+          <h3>4. Translation help</h3>
+          <ol>
+            <li><b>Manual + "Copy to locale"</b> (demo). Editors copy the English page into Hebrew and translate.</li>
+            <li><b>AI translate button</b> (Claude API) that fills the Hebrew fields for review. Not in the demo; easy to add later.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="walkthrough">
+      <h2>Client walkthroughs</h2>
+      <p class="sub">What an editor does in the Payload admin. These steps will be verified on the demo once it is built.</p>
+      <div class="steps">
+        <div>
+          <h3>Create a page</h3>
+          <ol>
+            <li>Pages → Create new, choose a template (Blank, Landing, About, Contact, Archive).</li>
+            <li>The page fills with that template's sections.</li>
+            <li>Edit text and images in the form; the live preview on the right updates as you type.</li>
+            <li>Add sections with "Add block", drag to reorder, or paste a block copied from another page.</li>
+            <li>Set header and footer in Page appearance, fill the SEO tab.</li>
+            <li>Save draft, share a preview link, then Publish or schedule it.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Translate a page</h3>
+          <ol>
+            <li>Open the page and switch the language selector to Hebrew.</li>
+            <li>Use Copy to locale to bring over the English sections, or start empty for a different Hebrew layout.</li>
+            <li>Translate texts, swap images, set the Hebrew slug.</li>
+            <li>Preview shows the page right-to-left.</li>
+            <li>Publish Hebrew. English stays as it is, and each language shows its own status.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Add a menu item</h3>
+          <ol>
+            <li>Headers → Main header → Menu.</li>
+            <li>Add an item: Link, Dropdown or Mega menu.</li>
+            <li>For a link, pick the page from a list. It keeps working if the page slug changes.</li>
+            <li>For a mega menu, add columns, links with descriptions, an optional promo card or an automatic "latest posts" column.</li>
+            <li>Switch to Hebrew to edit the Hebrew menu, which can be different.</li>
+            <li>Save and publish.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="kit">
+      <h2>Starter kit</h2>
+      <p class="sub">What we build once and reuse for every client. Each new site then only needs its design tokens, its Figma blocks and its content model.</p>
+      <ul class="kit">
+        <li>EN/HE routing, translated slugs and CPT bases, language switcher, hreflang</li>
+        <li>Block library: hero, cards, tabs, stats, logos, CTA, testimonials, FAQ, media, columns</li>
+        <li>Listing block with filters, sorting, A–Z, pagination and load more</li>
+        <li>Visibility conditions with a registry for new conditions</li>
+        <li>Headers and footers collections with mega menu</li>
+        <li>SEO tab, sitemap, robots, JSON-LD, redirects with auto 301 on slug change</li>
+        <li>HubSpot form block and tracking toggle</li>
+        <li>Page templates, reusable sections, CPT default blocks</li>
+        <li>Roles (admin, editor), drafts, scheduling, preview links</li>
+        <li>Design tokens in CSS, RTL-safe components</li>
+        <li>Deploy setup: migrations in build, storage, email</li>
+        <li>Tests for routing, filters, visibility and access</li>
+      </ul>
+    </section>
+
+    <section id="links">
+      <h2>Demo links</h2>
+      <p class="sub">The demo site is being built from this plan. Until then the links open an empty project.</p>
+      <div class="links">
+        <a href="https://payload-test-sand-nu.vercel.app">Demo website<small>payload-test-sand-nu.vercel.app</small></a>
+        <a href="https://payload-test-sand-nu.vercel.app/admin">Admin panel<small>/admin (login needed)</small></a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const S = {
+  built: ['s-built', 'Built in'],
+  plugin: ['s-plugin', 'Official plugin'],
+  custom: ['s-custom', 'Custom code'],
+  gap: ['s-gap', 'Gap / trade-off'],
+  decision: ['s-decision', 'Needs decision'],
+};
+
+// [feature, WordPress today, Payload, status, optional note]
+const GROUPS = [
+  { id: 'g-builder', title: 'Page building (Elementor / Gutenberg)', rows: [
+    ['Editing experience', 'Elementor: drag and drop on the page itself. Gutenberg: blocks in the page.', 'Blocks edited in a form, with a live preview beside it that updates as you type. Desktop, tablet and mobile preview sizes.', 'built', 'No editing directly on the page canvas. Clients confirmed live preview is enough.'],
+    ['Sections from Figma', 'Elementor templates or custom widgets; Gutenberg custom blocks.', 'A developer builds each section as a block (fields + React component). Clients add it to any page.', 'custom', 'Built once per design, reused across pages.'],
+    ['Client-made layouts', 'Elementor containers and widgets, full freedom.', 'Small set of flexible blocks (columns, text, image, buttons) next to the ready-made ones.', 'decision', 'See decision 1: A, B or C.'],
+    ['Reorder, add, remove sections', 'Drag on the canvas or in the navigator.', 'Drag in the block list, collapse, duplicate, remove.', 'built'],
+    ['Copy a section to another page', 'Elementor copy and paste.', 'Copy and paste blocks between pages and between languages.', 'built'],
+    ['Duplicate a page', 'Plugin or Elementor template.', 'Duplicate button on every document.', 'built'],
+    ['Page templates', 'Elementor saved templates.', 'Template choice on a new page pre-fills its blocks.', 'custom'],
+    ['Global widgets / synced patterns', 'Elementor global widget, Gutenberg synced pattern.', 'Reusable sections collection. Edit once, every page using it updates.', 'custom'],
+    ['Single templates for CPTs', 'Elementor Pro theme builder, JetEngine listings.', 'Code template per CPT for fixed parts, plus a block area per item and per-CPT default blocks.', 'custom'],
+    ['Stability after updates', 'Builder and add-on updates often break layouts.', 'Blocks are our own typed code in git. Nothing changes until we upgrade and test.', 'built'],
+  ]},
+  { id: 'g-content', title: 'CPTs, taxonomies and fields (ACF, CPT UI)', rows: [
+    ['Custom post types', 'CPT UI, JetEngine or code.', 'Collections defined in code, with their own admin list, search and permissions.', 'built'],
+    ['Custom fields', 'ACF: text, repeater, flexible content, relationship…', 'Text, number, date, select, upload, relationship, array (repeater), blocks (flexible content), group, tabs, rich text, JSON, map point.', 'built'],
+    ['Conditional fields', 'ACF conditional logic.', 'Show or hide a field based on other values, in the admin.', 'built'],
+    ['Validation', 'Limited; plugins.', 'Required, unique, min/max and any custom rule per field.', 'built'],
+    ['Taxonomies', 'Categories, tags, custom taxonomies.', 'One small collection per taxonomy, grouped under "Taxonomies" in the admin.', 'custom', 'Simple pattern, reused in the starter kit.'],
+    ['Hierarchical terms and pages', 'Parent / child built in.', 'Parent field with breadcrumbs and full paths through the nested docs plugin.', 'plugin'],
+    ['Term archive pages', 'Automatic in the theme.', 'Route per taxonomy that reuses the Listing block with the term preset.', 'custom'],
+    ['Admin list views', 'WP list table, quick edit, bulk edit.', 'Choose columns, filter with conditions, search, bulk edit and bulk publish.', 'built'],
+  ]},
+  { id: 'g-jet', title: 'JetEngine (listings, relations, queries, visibility)', rows: [
+    ['Relations between CPTs', 'JetEngine relations, shown on both sides.', 'Relationship field plus "join" field, so the other side lists linked items automatically.', 'built'],
+    ['Listing grids', 'JetEngine listing item + listing grid.', 'Listing block: choose CPT, card style, grid, list or slider, pagination or load more.', 'custom'],
+    ['Query builder', 'JetEngine query builder (meta, terms, dates).', 'Payload queries support all of these in code. The Listing block exposes the common ones to clients.', 'custom'],
+    ['Front-end filters', 'JetSmartFilters: checkboxes, tabs, search, sort, A–Z.', 'Filters in the Listing block: taxonomy (tabs, select, checkboxes), author, date, search, A–Z, sort. Shareable URLs, no full reload.', 'custom', 'No ready-made filter plugin for Payload.'],
+    ['Dynamic tags', 'Insert a field value into a widget.', 'Blocks can show fields of the current item, for example the event date.', 'custom'],
+    ['Dynamic visibility', 'JetEngine visibility conditions.', 'Visibility tab on every block: device, date window, field of current item, URL parameter, empty listing. Combine with AND / OR.', 'custom', 'Open system: developers can add any condition (country, logged-in user, A/B variant, cookie consent…).'],
+  ]},
+  { id: 'g-lang', title: 'Languages (WPML)', rows: [
+    ['Multiple languages', 'WPML: a separate post per language, linked.', 'One document, fields marked as translatable store a value per language.', 'built'],
+    ['Same layout, translated', 'WPML translation editor.', '"Copy to locale" copies the English content into Hebrew to translate.', 'built'],
+    ['Different layout per language', 'Separate Elementor layouts per translation.', 'The page block list is per language, so Hebrew can have other sections.', 'built'],
+    ['Page in one language only', 'Only create the translation you need.', 'Publish status per language (Payload experimental setting) and a per-language badge in lists.', 'built', 'Flag is marked experimental in Payload 3.93; tested in the demo.'],
+    ['Translated slugs', 'WPML translates post slugs and CPT bases.', 'Slugs per language. CPT and taxonomy bases per language in Site settings.', 'custom', 'Item slugs are built in; translated CPT bases are our routing.'],
+    ['Default language without prefix', 'WPML setting.', '/about for English, /he/about for Hebrew.', 'custom'],
+    ['Language switcher and hreflang', 'WPML switcher and hreflang tags.', 'Switcher goes to the same item in the other language, or that language\'s home page if missing. hreflang in head and sitemap.', 'custom'],
+    ['Menus per language', 'WPML menu sync or separate menus.', 'Menu tree stored per language.', 'built'],
+    ['RTL', 'Theme RTL stylesheet.', 'Front end uses dir="rtl" and logical CSS. Admin panel can also run in Hebrew.', 'built'],
+    ['Translation jobs and translators', 'WPML Advanced Translation Editor, translation services.', 'No built-in translation management.', 'gap', 'See decision 4. AI translate button can be added later.'],
+  ]},
+  { id: 'g-menu', title: 'Menus, headers and footers', rows: [
+    ['Menu editing', 'Appearance → Menus.', 'Menu tree inside each header document, edited by the client.', 'custom'],
+    ['Mega menu', 'Mega menu plugin or Elementor.', 'Columns with headings and links (label, description, icon), promo card, automatic "latest posts" column, bottom bar.', 'custom'],
+    ['Links that survive renames', 'Menu items link to post IDs.', 'Menu items reference the page or item, not a typed URL.', 'built'],
+    ['Several header and footer designs', 'Elementor Pro theme builder conditions.', 'Headers and footers are collections. Site settings sets the defaults.', 'custom'],
+    ['Page without header or footer', 'Canvas template or theme builder rule.', 'Page appearance: default, another one, or none. Also on CPT items.', 'custom'],
+  ]},
+  { id: 'g-seo', title: 'SEO (Yoast / RankMath)', rows: [
+    ['Meta title, description, OG image', 'Yoast fields.', 'SEO tab from the official SEO plugin, with snippet preview and length hints.', 'plugin'],
+    ['Noindex and canonical', 'Yoast advanced tab.', 'Extra fields on the SEO tab.', 'custom'],
+    ['XML sitemap', 'Yoast sitemap.', 'Generated by Next.js from published items in both languages.', 'custom'],
+    ['Redirects', 'Redirection plugin.', 'Official redirects plugin; the client manages 301 and 302.', 'plugin'],
+    ['Redirect when a slug changes', 'Yoast Premium.', 'Hook creates a 301 when a published slug changes.', 'custom'],
+    ['Breadcrumbs', 'Yoast breadcrumbs.', 'From the nested docs plugin, shown on the page and as schema.', 'plugin'],
+    ['Schema (JSON-LD)', 'Yoast schema graph.', 'Organization, Article, Event and BreadcrumbList from our templates.', 'custom'],
+    ['Readability and keyphrase score', 'Yoast traffic lights.', 'Not available.', 'gap', 'Could be added later with AI suggestions.'],
+  ]},
+  { id: 'g-forms', title: 'Forms (HubSpot, Gravity Forms, CF7)', rows: [
+    ['HubSpot forms', 'HubSpot embed or plugin.', 'HubSpot form block: paste the form ID. Different form per language possible. Inline or popup.', 'custom'],
+    ['HubSpot tracking code', 'HubSpot plugin.', 'Toggle in Site settings.', 'custom'],
+    ['Forms built in the CMS', 'Gravity Forms, CF7.', 'Official form builder plugin: fields, confirmation, emails, entries in admin.', 'plugin', 'Not used in the demo. See decision 2.'],
+  ]},
+  { id: 'g-flow', title: 'Editorial workflow and roles', rows: [
+    ['Drafts and autosave', 'Built in.', 'Built in, per language.', 'built'],
+    ['Preview', 'Preview button.', 'Live preview beside the form, plus a shareable preview link for people without a login.', 'built', 'Shareable link is a small custom addition.'],
+    ['Scheduled publish', 'Built in (publish only).', 'Schedule publish and unpublish, run by the job queue on a cron.', 'built'],
+    ['Revisions', 'Revisions list.', 'Version history with side-by-side diff and restore.', 'built'],
+    ['Two people editing at once', 'Post lock notice.', 'Document locking: others see who is editing.', 'built'],
+    ['Roles', 'Administrator, Editor, Author…', 'Admin and Editor in the demo. Access rules in code can go down to single fields.', 'built'],
+    ['Approval workflow, comments', 'PublishPress and similar plugins.', 'Not built in.', 'gap', 'Can be built with a status field and access rules.'],
+  ]},
+  { id: 'g-media', title: 'Media', rows: [
+    ['Media library', 'Built in.', 'Media collection with folders, bulk upload, alt text, focal point and image sizes.', 'built'],
+    ['Cloud storage', 'Offload plugins.', 'Official storage adapters (Vercel Blob, S3, R2, Azure, GCS).', 'plugin'],
+    ['Image optimisation', 'Optimisation plugins.', 'Resized sizes on upload plus Next.js image optimisation on the front end.', 'built'],
+  ]},
+  { id: 'g-ops', title: 'Security, performance, hosting, maintenance', note: 'To be reviewed by the backend team.', rows: [
+    ['Security surface', 'Plugins and themes are the usual entry point; wp-login brute force; files writable on server.', 'No plugin marketplace, no PHP. Access control per collection and field. Login lockout after failed attempts.', 'built', 'npm dependencies still need updating and auditing.'],
+    ['Two-factor login', 'Plugins.', 'Not built in.', 'gap', 'Possible with custom auth or SSO.'],
+    ['Page speed', 'Caching and optimisation plugins; builder adds weight.', 'Server rendered, cached at the CDN, refreshed only for pages that changed.', 'built'],
+    ['Hosting', 'Any shared or managed WP host.', 'Node host + Postgres + file storage (Vercel/Neon/Blob, or Docker on our servers).', 'decision', 'See decision 3. To be reviewed by the backend team.'],
+    ['Updates', 'Core and plugin updates, sometimes automatic, sometimes breaking.', 'Updates are a developer task: upgrade, run tests, deploy. Nothing changes by itself.', 'built'],
+    ['Database changes', 'Not needed for most plugins.', 'Migrations are generated, reviewed and run on deploy.', 'built'],
+    ['Client adds a feature alone', 'Install a plugin.', 'Not possible. New features are development work.', 'gap', 'This is also why sites stop breaking.'],
+    ['Team skills', 'PHP, WP theme and plugin APIs.', 'TypeScript, React, Next.js, Postgres.', 'gap', 'Reskilling or new hires needed.'],
+  ]},
+  { id: 'g-ai', title: 'AI (comparison only, not in the demo)', rows: [
+    ['AI in the editor', 'AI plugins (various quality).', 'Hooks and custom buttons calling the Claude API: translate, SEO meta, alt text.', 'custom'],
+    ['AI agents managing content', 'REST API, plugins.', 'Official MCP plugin lets Claude and other agents read and edit content with set permissions.', 'plugin'],
+    ['AI in development', 'Limited by PHP plugin sprawl.', 'Everything is typed code in git, which AI coding tools handle well.', 'built'],
+  ]},
+];
+
+const groupsEl = document.getElementById('groups');
+const tocEl = document.getElementById('toc-groups');
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const totals = {};
+for (const g of GROUPS) {
+  const rows = g.rows.map(([f, wp, pl, st, note]) => {
+    totals[st] = (totals[st] || 0) + 1;
+    const [cls, label] = S[st];
+    return `<tr data-s="${st}"><td>${esc(f)}</td><td class="wp">${esc(wp)}</td><td class="pl">${esc(pl)}${note ? `<small>${esc(note)}</small>` : ''}</td><td class="st"><span class="badge ${cls}">${label}</span></td></tr>`;
+  }).join('');
+  groupsEl.insertAdjacentHTML('beforeend', `<div class="group" id="${g.id}" style="scroll-margin-top:64px;padding-block-start:22px"><h3>${esc(g.title)}</h3>${g.note ? `<p class="sub" style="margin-block:-4px 0">${esc(g.note)}</p>` : ''}<div class="tbl"><table><thead><tr><th>Feature</th><th>WordPress today</th><th>Payload</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div>`);
+  tocEl.insertAdjacentHTML('beforeend', `<a href="#${g.id}" style="padding-inline-start:12px">${esc(g.title.split(' (')[0])}</a>`);
+}
+const total = Object.values(totals).reduce((a, b) => a + b, 0);
+document.getElementById('counts').innerHTML = Object.keys(S).map(k => `<span class="badge ${S[k][0]}">${S[k][1]}: ${totals[k] || 0}</span>`).join('') + `<span class="badge" style="color:var(--muted)">${total} features compared</span>`;
+document.querySelectorAll('.filters .chip').forEach(btn => {
+  const f = btn.dataset.f;
+  const n = f === 'all' ? total : (totals[f] || 0);
+  btn.insertAdjacentHTML('beforeend', `<span class="n">${n}</span>`);
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters .chip').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    document.querySelectorAll('#groups tr[data-s]').forEach(tr => { tr.hidden = f !== 'all' && tr.dataset.s !== f; });
+    document.querySelectorAll('#groups .group').forEach(g => { g.hidden = !g.querySelector('tr[data-s]:not([hidden])'); });
+  });
+});
+</script>

@@ -108,7 +108,7 @@ test.describe('Listing block', () => {
 
   test('filters the glossary by letter with its own URL prefix, and loads more', async ({ page }) => {
     await page.goto(`${base}/${blogBase}`)
-    await expect(glossary(page).locator('label[aria-disabled="true"]', { hasText: /^C$/ })).toHaveCount(1)
+    await expect(glossary(page).locator('label[aria-disabled="true"]', { hasText: /^X$/ })).toHaveCount(1)
     await glossary(page).locator('label', { hasText: /^B$/ }).click()
     await expect(page).toHaveURL(/l2_letter=B/)
     await expect(glossary(page).getByRole('status')).toHaveText('2 results')

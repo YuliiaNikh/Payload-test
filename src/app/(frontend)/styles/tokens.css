@@ -1,0 +1,41 @@
+/* Neutral system modelled on Astryx: 4px spacing grid, quiet greys, one blue accent. */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f5f6f8;
+  --color-text: #1c1e21;
+  --color-text-muted: #65676b;
+  --color-border: #dadde1;
+  --color-accent: #0866ff;
+  --color-accent-contrast: #ffffff;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Hebrew', Arial, sans-serif;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --container: 1120px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #18191a;
+    --color-surface: #242526;
+    --color-text: #e4e6eb;
+    --color-text-muted: #b0b3b8;
+    --color-border: #3e4042;
+    --color-accent: #4599ff;
+    --color-accent-contrast: #0b0c0d;
+  }
+}

@@ -7,8 +7,15 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { en } from '@payloadcms/translations/languages/en'
+import { he } from '@payloadcms/translations/languages/he'
+
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { SiteSettings } from './globals/SiteSettings'
+import { defaultLocale, localeLabels, locales } from './i18n/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,7 +27,20 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Pages, Media, Users],
+  globals: [SiteSettings],
+  localization: {
+    locales: locales.map((code) => ({ code, label: localeLabels[code], rtl: code === 'he' })),
+    defaultLocale,
+    // A missing Hebrew version must not show English text on the site
+    fallback: false,
+  },
+  experimental: {
+    localizeStatus: true,
+  },
+  i18n: {
+    supportedLanguages: { en, he },
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -43,6 +63,12 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [
+    nestedDocsPlugin({
+      collections: ['pages'],
+      generateLabel: (_, doc) => String(doc.title ?? ''),
+      // Breadcrumbs are localized, so this builds the path per language
+      generateURL: (docs) => `/${docs.map((doc) => doc.slug ?? '').join('/')}`,
+    }),
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       // Add the blob fields even when disabled, so local migrations match production

@@ -79,7 +79,6 @@ export interface Config {
     faq: FaqBlock;
     cta: CtaBlock;
     hubspotForm: HubSpotFormBlock;
-    dynamicField: DynamicFieldBlock;
     reusableSection: ReusableSectionBlock;
     colText: ColumnTextBlock;
     colImage: ColumnImageBlock;
@@ -311,7 +310,6 @@ export interface Page {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -563,7 +561,6 @@ export interface Post {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -664,7 +661,6 @@ export interface Person {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -762,7 +758,6 @@ export interface Event {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -953,7 +948,6 @@ export interface Resource {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -1105,9 +1099,20 @@ export interface ListingBlock {
         id?: string | null;
       }[]
     | null;
-  cardStyle?: ('standard' | 'horizontal' | 'compact' | 'person' | 'event') | null;
+  cardStyle?: ('standard' | 'horizontal' | 'compact' | 'person' | 'event' | 'feature') | null;
   layout?: ('grid2' | 'grid3' | 'grid4' | 'list' | 'slider') | null;
   paging?: ('numbers' | 'loadMore' | 'none') | null;
+  slider?: {
+    /**
+     * Phones show 1, tablets at most 2.
+     */
+    perView?: ('1' | '2' | '3' | '4') | null;
+    arrows?: boolean | null;
+    dots?: boolean | null;
+    fullWidth?: boolean | null;
+    autoplay?: boolean | null;
+    interval?: number | null;
+  };
   style?: {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
@@ -1395,7 +1400,6 @@ export interface Glossary {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
         | ReusableSectionBlock
       )[]
     | null;
@@ -1557,6 +1561,8 @@ export interface StatsBlock {
  */
 export interface LogosBlock {
   heading?: string | null;
+  display?: ('row' | 'marquee') | null;
+  speed?: ('slow' | 'normal' | 'fast') | null;
   logos?:
     | {
         name: string;
@@ -1891,65 +1897,6 @@ export interface HubSpotFormBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DynamicFieldBlock".
- */
-export interface DynamicFieldBlock {
-  /**
-   * Shown before the value, e.g. "Event date:"
-   */
-  label?: string | null;
-  /**
-   * Only on CPT items. Fields the item does not have show nothing.
-   */
-  field: 'title' | 'excerpt' | 'publishedDate' | 'startDate' | 'endDate' | 'location' | 'jobTitle';
-  format?: ('text' | 'heading' | 'date') | null;
-  style?: {
-    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
-    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
-    align?: ('start' | 'center') | null;
-  };
-  vis?: {
-    match?: ('all' | 'any') | null;
-    /**
-     * No conditions = always visible. Device rules apply on top.
-     */
-    rules?:
-      | {
-          type: 'device' | 'date' | 'field' | 'url' | 'items';
-          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
-          date_from?: string | null;
-          date_until?: string | null;
-          field_name?:
-            | (
-                | 'title'
-                | 'excerpt'
-                | 'publishedDate'
-                | 'startDate'
-                | 'endDate'
-                | 'location'
-                | 'jobTitle'
-                | 'speakers'
-                | 'categories'
-                | 'tags'
-                | 'featuredImage'
-              )
-            | null;
-          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
-          field_value?: string | null;
-          url_param?: string | null;
-          url_value?: string | null;
-          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
-          items_when?: ('all' | 'upcoming') | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'dynamicField';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ReusableSectionBlock".
  */
 export interface ReusableSectionBlock {
@@ -1983,7 +1930,6 @@ export interface ReusableSection {
         | FaqBlock
         | CtaBlock
         | HubSpotFormBlock
-        | DynamicFieldBlock
       )[]
     | null;
   updatedAt: string;
@@ -3348,7 +3294,6 @@ export interface CptDefault {
           | FaqBlock
           | CtaBlock
           | HubSpotFormBlock
-          | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
       | null;
@@ -3369,7 +3314,6 @@ export interface CptDefault {
           | FaqBlock
           | CtaBlock
           | HubSpotFormBlock
-          | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
       | null;
@@ -3390,7 +3334,6 @@ export interface CptDefault {
           | FaqBlock
           | CtaBlock
           | HubSpotFormBlock
-          | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
       | null;
@@ -3411,7 +3354,6 @@ export interface CptDefault {
           | FaqBlock
           | CtaBlock
           | HubSpotFormBlock
-          | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
       | null;
@@ -3432,7 +3374,6 @@ export interface CptDefault {
           | FaqBlock
           | CtaBlock
           | HubSpotFormBlock
-          | DynamicFieldBlock
           | ReusableSectionBlock
         )[]
       | null;

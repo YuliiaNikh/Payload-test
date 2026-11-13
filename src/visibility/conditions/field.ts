@@ -1,4 +1,4 @@
-import { dynamicFieldNames } from '@/content/types'
+import { itemFieldNames } from '@/content/types'
 
 import type { VisibilityCondition } from '../types'
 
@@ -17,7 +17,7 @@ export const fieldCondition: VisibilityCondition = {
           name: 'field_name',
           label: 'Field',
           type: 'select',
-          options: [...dynamicFieldNames, 'speakers', 'categories', 'tags', 'featuredImage'].map((value) => ({ label: value, value })),
+          options: [...itemFieldNames, 'speakers', 'categories', 'tags', 'featuredImage'].map((value) => ({ label: value, value })),
           admin: { width: '34%' },
         },
         {

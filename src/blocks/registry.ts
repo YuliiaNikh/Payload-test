@@ -3,7 +3,6 @@ import type { Block } from 'payload'
 import { CardsBlock } from './Cards/config'
 import { ColumnButtonsBlock, ColumnImageBlock, ColumnsBlock, ColumnTextBlock } from './Columns/config'
 import { CtaBlock } from './Cta/config'
-import { DynamicFieldBlock } from './DynamicField/config'
 import { FaqBlock } from './Faq/config'
 import { HeroBlock } from './Hero/config'
 import { HubSpotFormBlock } from './HubSpotForm/config'
@@ -31,7 +30,6 @@ export const sectionBlocks: Block[] = [
   FaqBlock,
   CtaBlock,
   HubSpotFormBlock,
-  DynamicFieldBlock,
   ReusableSectionBlock,
 ]
 

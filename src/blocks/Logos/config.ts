@@ -7,6 +7,32 @@ export const LogosBlock = sectionBlock({
   fields: [
     { name: 'heading', type: 'text' },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'display',
+          type: 'select',
+          defaultValue: 'row',
+          options: [
+            { label: 'Row', value: 'row' },
+            { label: 'Marquee (scrolling)', value: 'marquee' },
+          ],
+          admin: { width: '50%' },
+        },
+        {
+          name: 'speed',
+          type: 'select',
+          defaultValue: 'normal',
+          options: [
+            { label: 'Slow', value: 'slow' },
+            { label: 'Normal', value: 'normal' },
+            { label: 'Fast', value: 'fast' },
+          ],
+          admin: { width: '50%', condition: (_, sibling) => sibling?.display === 'marquee' },
+        },
+      ],
+    },
+    {
       name: 'logos',
       type: 'array',
       minRows: 1,

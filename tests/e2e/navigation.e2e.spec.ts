@@ -144,7 +144,10 @@ test.describe('Headers, mega menu and footers', () => {
     await page.goto(`${base}/nav-about-${s}`)
     const nav = page.getByRole('navigation', { name: 'Main' })
     await expect(nav).toBeHidden()
-    await page.getByRole('button', { name: 'Menu' }).click()
-    await expect(nav).toBeVisible()
+    // The button only works once React has hydrated; retry the click until it does
+    await expect(async () => {
+      await page.getByRole('button', { name: 'Menu' }).click()
+      await expect(nav).toBeVisible({ timeout: 1000 })
+    }).toPass()
   })
 })

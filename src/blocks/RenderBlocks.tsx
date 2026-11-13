@@ -7,7 +7,6 @@ import { CardsBlock } from './Cards/Component'
 import { ColumnsBlock } from './Columns/Component'
 import type { BlockContext } from './context'
 import { CtaBlock } from './Cta/Component'
-import { DynamicFieldBlock } from './DynamicField/Component'
 import { FaqBlock } from './Faq/Component'
 import { HeroBlock } from './Hero/Component'
 import { HubSpotFormBlock } from './HubSpotForm/Component'
@@ -38,7 +37,6 @@ const components: Record<string, ComponentType<{ block: any; ctx: BlockContext; 
   faq: FaqBlock,
   cta: CtaBlock,
   hubspotForm: HubSpotFormBlock,
-  dynamicField: DynamicFieldBlock,
   reusableSection: ReusableSectionBlock,
 }
 

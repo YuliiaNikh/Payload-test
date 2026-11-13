@@ -131,6 +131,7 @@ export const ListingBlock = sectionBlock({
             { label: 'Compact', value: 'compact' },
             { label: 'Person', value: 'person' },
             { label: 'Event', value: 'event' },
+            { label: 'Feature (image background)', value: 'feature' },
           ],
           admin: { width: '33%' },
         },
@@ -157,6 +158,45 @@ export const ListingBlock = sectionBlock({
             { label: 'None', value: 'none' },
           ],
           admin: { width: '33%' },
+        },
+      ],
+    },
+    {
+      name: 'slider',
+      label: 'Slider settings',
+      type: 'group',
+      admin: { condition: (_, sibling) => sibling?.layout === 'slider' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'perView',
+              label: 'Slides per view',
+              type: 'select',
+              defaultValue: '3',
+              options: ['1', '2', '3', '4'].map((value) => ({ label: value, value })),
+              admin: { width: '25%', description: 'Phones show 1, tablets at most 2.' },
+            },
+            { name: 'arrows', type: 'checkbox', defaultValue: true, admin: { width: '25%' } },
+            { name: 'dots', type: 'checkbox', defaultValue: false, admin: { width: '25%' } },
+            { name: 'fullWidth', label: 'Full width, tall slides', type: 'checkbox', admin: { width: '25%' } },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'autoplay', type: 'checkbox', admin: { width: '50%' } },
+            {
+              name: 'interval',
+              label: 'Seconds per slide',
+              type: 'number',
+              defaultValue: 5,
+              min: 2,
+              max: 20,
+              admin: { width: '50%', condition: (_, sibling) => Boolean(sibling?.autoplay) },
+            },
+          ],
         },
       ],
     },

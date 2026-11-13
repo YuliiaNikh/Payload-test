@@ -57,5 +57,5 @@ export const cptPersonField: Partial<Record<CptSlug, string>> = {
   events: 'speakers',
 }
 
-// Item fields a Dynamic field block can show (and a visibility rule can test)
-export const dynamicFieldNames = ['title', 'excerpt', 'publishedDate', 'startDate', 'endDate', 'location', 'jobTitle'] as const
+// Item fields a visibility rule can test
+export const itemFieldNames = ['title', 'excerpt', 'publishedDate', 'startDate', 'endDate', 'location', 'jobTitle'] as const

@@ -6,7 +6,7 @@ import { cptItemPath } from '@/lib/routing/cptPaths'
 
 import type { BlockContext } from '../context'
 
-export type CardStyle = 'standard' | 'horizontal' | 'compact' | 'person' | 'event'
+export type CardStyle = 'standard' | 'horizontal' | 'compact' | 'person' | 'event' | 'feature'
 
 const dateFormat = (locale: string, value: string, options: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', options).format(new Date(value))
@@ -20,6 +20,19 @@ export function ListingCard({ doc, collection, style, ctx }: { doc: CptDoc; coll
       ? dateFormat(ctx.locale, dateValue, { dateStyle: 'medium' })
       : null
   const subtitle = (record.jobTitle ?? record.location) as string | undefined
+
+  if (style === 'feature') {
+    return (
+      <a className="feature-card" href={href}>
+        {doc.featuredImage && <Media media={doc.featuredImage} sizes="100vw" className="feature-card__image" />}
+        <span className="feature-card__body">
+          {date && <span className="feature-card__meta">{date}</span>}
+          <span className="feature-card__title">{doc.title}</span>
+          {doc.excerpt && <span className="feature-card__text">{doc.excerpt}</span>}
+        </span>
+      </a>
+    )
+  }
 
   if (style === 'person') {
     return (

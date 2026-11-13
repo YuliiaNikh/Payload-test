@@ -2,6 +2,8 @@ import { localizePath } from '@/i18n/paths'
 import { linkHref, type LinkContext } from '@/lib/links'
 import type { Footer } from '@/payload-types'
 
+import { SocialIcon, socialName } from './SocialIcon'
+
 export function SiteFooter({ footer, siteName, ctx }: { footer: Footer | 'fallback'; siteName: string; ctx: LinkContext }) {
   const year = new Date().getFullYear()
   if (footer === 'fallback') {
@@ -26,8 +28,15 @@ export function SiteFooter({ footer, siteName, ctx }: { footer: Footer | 'fallba
             <ul className="cluster site-footer__social">
               {footer.social.map((item, i) => (
                 <li key={item.id ?? i}>
-                  <a href={item.url} className="chip" target="_blank" rel="noopener noreferrer">
-                    {item.platform}
+                  <a
+                    href={item.url}
+                    className="social-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={socialName(item.platform)}
+                    title={socialName(item.platform)}
+                  >
+                    <SocialIcon platform={item.platform} />
                   </a>
                 </li>
               ))}

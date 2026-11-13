@@ -22,6 +22,7 @@ const strings = {
     person: 'Person',
     pagination: 'Pagination',
     readMore: 'Read more',
+    slide: 'Slide',
     sortLabels: { newest: 'Newest', oldest: 'Oldest', az: 'A–Z', za: 'Z–A', updated: 'Recently updated' },
   },
   he: {
@@ -44,6 +45,7 @@ const strings = {
     person: 'אדם',
     pagination: 'עימוד',
     readMore: 'קרא עוד',
+    slide: 'שקופית',
     sortLabels: { newest: 'החדש ביותר', oldest: 'הישן ביותר', az: 'א–ת', za: 'ת–א', updated: 'עודכן לאחרונה' },
   },
 } satisfies Record<Locale, unknown>

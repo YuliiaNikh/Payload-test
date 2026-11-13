@@ -290,9 +290,10 @@ tr[hidden] { display: none !important; }
       <h2>Demo tour</h2>
       <p class="sub">Every feature on this page, live on the demo site (Northwind, a made-up payments company, in English and Hebrew).</p>
       <ul class="tour">
-          <li><a href="https://payload-test-sand-nu.vercel.app/">Page built from blocks</a><span>Hero, logos, cards, stats, blog slider, upcoming events, testimonials, reusable newsletter section.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/">Page built from blocks</a><span>Hero, scrolling logo marquee, cards, stats, blog slider, upcoming events, testimonials, reusable newsletter section.</span></li>
           <li><a href="https://payload-test-sand-nu.vercel.app/he">Same page in Hebrew (RTL)</a><span>Different, shorter layout; Hebrew slugs and menu.</span></li>
           <li><a href="https://payload-test-sand-nu.vercel.app/">Mega menu</a><span>Hover "Solutions": columns with icons and descriptions, automatic latest posts, promo card, bottom link.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/blog">Blog sliders</a><span>Four slider variants: full-width with autoplay, 2 per view with dots, 3 per view with arrows, 4 per view with both.</span></li>
           <li><a href="https://payload-test-sand-nu.vercel.app/blog">Blog listing</a><span>Category tabs, tag dropdown, author, search, sort, numbered pages; URL updates as you filter.</span></li>
           <li><a href="https://payload-test-sand-nu.vercel.app/blog/category/news">Term archive</a><span>The blog archive page filtered to one category.</span></li>
           <li><a href="https://payload-test-sand-nu.vercel.app/resources">Faceted filters</a><span>Resources: checkboxes across type, industry and topic, plus search.</span></li>
@@ -354,6 +355,8 @@ const GROUPS = [
     ['Copy a section to another page', 'Elementor copy and paste.', 'Copy and paste blocks between pages and between languages.', 'built'],
     ['Duplicate a page', 'Plugin or Elementor template.', 'Duplicate button on every document.', 'built'],
     ['Page templates', 'Elementor saved templates.', 'Template choice on a new page pre-fills its blocks.', 'custom'],
+    ['Sliders and carousels', 'Elementor carousel widgets, slider plugins.', 'Listing block as a slider: slides per view (1–4), arrows, dots, autoplay, full-width tall slides; swipe on phones; works right to left.', 'custom'],
+    ['Logo marquee', 'Marquee widgets or add-ons.', 'Logos block can scroll endlessly (slow / normal / fast), pauses on hover, stops for reduced-motion users.', 'custom'],
     ['Global widgets / synced patterns', 'Elementor global widget, Gutenberg synced pattern.', 'Reusable sections collection. Edit once, every page using it updates.', 'custom'],
     ['Single templates for CPTs', 'Elementor Pro theme builder, JetEngine listings.', 'Code template per CPT for fixed parts, plus a block area per item and per-CPT default blocks.', 'custom'],
     ['Stability after updates', 'Builder and add-on updates often break layouts.', 'Blocks are our own typed code in git. Nothing changes until we upgrade and test.', 'built'],
@@ -373,7 +376,7 @@ const GROUPS = [
     ['Listing grids', 'JetEngine listing item + listing grid.', 'Listing block: choose CPT, card style, grid, list or slider, pagination or load more.', 'custom'],
     ['Query builder', 'JetEngine query builder (meta, terms, dates).', 'Payload queries support all of these in code. The Listing block exposes the common ones to clients.', 'custom'],
     ['Front-end filters', 'JetSmartFilters: checkboxes, tabs, search, sort, A–Z.', 'Filters in the Listing block: taxonomy (tabs, select, checkboxes), author, date, search, A–Z, sort. Shareable URLs, no full reload.', 'custom', 'No ready-made filter plugin for Payload.'],
-    ['Dynamic tags', 'Insert a field value into a widget.', 'Blocks can show fields of the current item, for example the event date.', 'custom'],
+    ['Dynamic tags', 'Insert a field value into a widget.', 'Item templates show their own fields; visibility rules can test any field.', 'custom', 'A separate "dynamic field" block was tried and removed from the demo: it looked out of place for editors.'],
     ['Dynamic visibility', 'JetEngine visibility conditions.', 'Visibility tab on every block: device, date window, field of current item, URL parameter, empty listing. Combine with AND / OR.', 'custom', 'Open system: developers can add any condition (country, logged-in user, A/B variant, cookie consent…).'],
   ]},
   { id: 'g-lang', title: 'Languages (WPML)', rows: [

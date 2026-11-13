@@ -72,3 +72,60 @@ h1 {
 .page-main {
   padding-block: var(--space-12);
 }
+
+.item {
+  display: grid;
+  gap: var(--space-6);
+  max-inline-size: 760px;
+}
+
+.item__meta,
+.item__excerpt {
+  color: var(--color-text-muted);
+  margin-block: 0;
+}
+
+.item__excerpt {
+  font-size: var(--text-lg);
+}
+
+.item__image {
+  border-radius: var(--radius-md);
+}
+
+.item__footer {
+  display: grid;
+  gap: var(--space-3);
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-4);
+}
+
+.term-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.term-list ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.term-list__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.chip {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+}

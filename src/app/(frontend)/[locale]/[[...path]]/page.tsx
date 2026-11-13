@@ -3,10 +3,11 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 
+import { ItemView } from '@/components/items/ItemView'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { isLocale, type Locale } from '@/i18n/config'
 import { localizePath, normalizePath } from '@/i18n/paths'
-import { findPublishedPageByPath, getPageAlternates } from '@/lib/queries/pages'
+import { getCptBases, getRouteAlternates, resolveRoute } from '@/lib/queries/content'
 
 type Props = {
   params: Promise<{ locale: string; path?: string[] }>
@@ -15,9 +16,9 @@ type Props = {
 async function resolve(params: Props['params']) {
   const { locale, path } = await params
   if (!isLocale(locale)) notFound()
-  const page = await findPublishedPageByPath(normalizePath(path), locale)
-  if (!page) notFound()
-  return { locale, page }
+  const route = await resolveRoute(normalizePath(path), locale)
+  if (!route) notFound()
+  return { locale, route }
 }
 
 async function getSiteName(locale: Locale): Promise<string> {
@@ -27,14 +28,18 @@ async function getSiteName(locale: Locale): Promise<string> {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, page } = await resolve(params)
+  const { locale, route } = await resolve(params)
   const siteName = await getSiteName(locale)
-  return { title: siteName ? `${page.title} | ${siteName}` : page.title }
+  return { title: siteName ? `${route.doc.title} | ${siteName}` : route.doc.title }
 }
 
 export default async function PageRoute({ params }: Props) {
-  const { locale, page } = await resolve(params)
-  const [alternates, siteName] = await Promise.all([getPageAlternates(page.id), getSiteName(locale)])
+  const { locale, route } = await resolve(params)
+  const [alternates, siteName, bases] = await Promise.all([
+    getRouteAlternates(route),
+    getSiteName(locale),
+    getCptBases(locale),
+  ])
 
   return (
     <>
@@ -47,7 +52,11 @@ export default async function PageRoute({ params }: Props) {
         </div>
       </header>
       <main className="page-main container">
-        <h1>{page.title}</h1>
+        {route.kind === 'item' ? (
+          <ItemView collection={route.collection} doc={route.doc} locale={locale} bases={bases} />
+        ) : (
+          <h1>{route.doc.title}</h1>
+        )}
       </main>
     </>
   )

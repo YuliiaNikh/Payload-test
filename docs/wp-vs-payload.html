@@ -103,6 +103,15 @@ a { color: var(--accent); }
 .links a { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; text-decoration: none; font-weight: 500; }
 .links a small { display: block; color: var(--muted); font-weight: 400; font-size: 12.5px; }
 tr[hidden] { display: none !important; }
+.tour { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+@media (max-width: 760px) { .tour { grid-template-columns: minmax(0, 1fr); } }
+.tour li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; display: grid; gap: 4px; min-width: 0; }
+.tour a { font-weight: 600; }
+.tour span { color: var(--muted); font-size: 13.5px; }
+.lessons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-block-start: 14px; }
+@media (max-width: 760px) { .lessons { grid-template-columns: minmax(0, 1fr); } }
+.lessons > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.lessons p { margin: 0; color: var(--muted); font-size: 14px; }
 @media (prefers-reduced-motion: no-preference) { .chip { transition: border-color .15s, background .15s; } }
 </style>
 
@@ -115,15 +124,17 @@ tr[hidden] { display: none !important; }
     <a href="#decisions">Decisions needed</a>
     <a href="#walkthrough">Client walkthroughs</a>
     <a href="#kit">Starter kit</a>
+    <a href="#tour">Demo tour</a>
+    <a href="#lessons">What we learned</a>
     <a href="#links">Demo links</a>
   </nav>
 
   <main>
     <header class="hero">
-      <div class="eyebrow">Agency evaluation · draft 1</div>
+      <div class="eyebrow">Agency evaluation · demo built</div>
       <h1>Can Payload replace our WordPress stack?</h1>
       <p class="lede">Our sites run on WordPress with Elementor or Gutenberg, JetEngine, WPML, Yoast and HubSpot forms. This page compares each part with Payload CMS 3 (on Next.js) and marks what is built in, what needs a plugin, and what we would build ourselves.</p>
-      <div class="meta"><span>Payload 3.93 · Next.js 16</span><span>Languages tested: EN + HE (RTL)</span><span>Updated 13 Nov 2026</span></div>
+      <div class="meta"><span>Payload 3.93 · Next.js 16</span><span>Languages tested: EN + HE (RTL)</span><span>Updated 13 Nov 2026 · demo live</span></div>
     </header>
 
     <section id="summary">
@@ -219,7 +230,7 @@ tr[hidden] { display: none !important; }
 
     <section id="walkthrough">
       <h2>Client walkthroughs</h2>
-      <p class="sub">What an editor does in the Payload admin. These steps will be verified on the demo once it is built.</p>
+      <p class="sub">What an editor does in the Payload admin. Each flow works on the demo site.</p>
       <div class="steps">
         <div>
           <h3>Create a page</h3>
@@ -275,12 +286,50 @@ tr[hidden] { display: none !important; }
       </ul>
     </section>
 
+<section id="tour">
+      <h2>Demo tour</h2>
+      <p class="sub">Every feature on this page, live on the demo site (Northwind, a made-up payments company, in English and Hebrew).</p>
+      <ul class="tour">
+          <li><a href="https://payload-test-sand-nu.vercel.app/">Page built from blocks</a><span>Hero, logos, cards, stats, blog slider, upcoming events, testimonials, reusable newsletter section.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/he">Same page in Hebrew (RTL)</a><span>Different, shorter layout; Hebrew slugs and menu.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/">Mega menu</a><span>Hover "Solutions": columns with icons and descriptions, automatic latest posts, promo card, bottom link.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/blog">Blog listing</a><span>Category tabs, tag dropdown, author, search, sort, numbered pages; URL updates as you filter.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/blog/category/news">Term archive</a><span>The blog archive page filtered to one category.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/resources">Faceted filters</a><span>Resources: checkboxes across type, industry and topic, plus search.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/events">Events</a><span>Upcoming / past + date range, event cards, load more. "Save your seat" shows only on future events.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/glossary">Glossary A–Z</a><span>Letter bar with empty letters disabled; Hebrew alphabet on the Hebrew page.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/people">People</a><span>Department tabs, person cards; each person lists their posts in the admin (reverse relation).</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/solutions">Tabs, columns, FAQ</a><span>Solutions and Contact pages; Contact has a HubSpot form block (inline in English, popup in Hebrew).</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/spring-offer">Campaign landing page</a><span>Minimal header, no footer, a date-window section and a desktop-only section.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/?utm_campaign=bf">Visibility by URL</a><span>The Black Friday banner on the home page appears only with ?utm_campaign=bf.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/ui-kit">UI kit</a><span>Palette, fluid type, spacing, buttons, cards used by every block.</span></li>
+          <li><a href="https://payload-test-sand-nu.vercel.app/sitemap.xml">SEO files</a><span>Sitemap with hreflang for both languages; robots.txt.</span></li>
+      </ul>
+    </section>
+
+    <section id="lessons">
+      <h2>What we learned building it</h2>
+      <p class="sub">Findings from building the demo in one day with Payload 3.93 and Next.js 16.</p>
+      <div class="lessons">
+          <div><h3>Per-language publishing works</h3><p>Payload's experimental per-locale status kept English-only pages out of Hebrew and hid drafts correctly. Every front-end query must filter on "published" explicitly; otherwise unpublished languages come back as empty drafts.</p></div>
+          <div><h3>Database names hit Postgres limits</h3><p>Deeply nested blocks produce table names over 63 characters. Short field names or a dbName fix it; worth a convention in the starter kit.</p></div>
+          <div><h3>Migrations are large but safe</h3><p>Each block exists per collection in the database, so the block library migration had ~400 tables. Every migration was rehearsed on an empty and an upgraded copy before deploy; none lost data.</p></div>
+          <div><h3>Live preview refreshes on save</h3><p>Blocks render on the server, so the preview updates on every autosave (about 2 seconds), not per keystroke.</p></div>
+          <div><h3>Scheduling needs a cron</h3><p>Scheduled publish runs from a job queue. On the Vercel Hobby plan the cron can only run daily; per-minute scheduling needs Pro (or our own server).</p></div>
+          <div><h3>Share links are coarse</h3><p>A preview link turns on draft mode for that browser, so it shows drafts of other pages too until "Exit preview". Fine for clients, not for secrets.</p></div>
+          <div><h3>No caching yet</h3><p>Pages render on each request (fast enough for the demo). Production sites should add per-page caching with refresh on publish.</p></div>
+          <div><h3>Testing pays off</h3><p>~100 unit/integration tests and ~34 browser tests run against a local database; they caught real bugs (filter logic, slug-change loops, a header label shared between languages).</p></div>
+      </div>
+    </section>
+
     <section id="links">
       <h2>Demo links</h2>
-      <p class="sub">The demo site is being built from this plan. Until then the links open an empty project.</p>
+      <p class="sub">The admin needs a login; ask for an account.</p>
       <div class="links">
         <a href="https://payload-test-sand-nu.vercel.app">Demo website<small>payload-test-sand-nu.vercel.app</small></a>
+        <a href="https://payload-test-sand-nu.vercel.app/he">Hebrew site<small>/he</small></a>
         <a href="https://payload-test-sand-nu.vercel.app/admin">Admin panel<small>/admin (login needed)</small></a>
+        <a href="https://payload-test-sand-nu.vercel.app/ui-kit">UI kit<small>/ui-kit</small></a>
       </div>
     </section>
   </main>
@@ -331,7 +380,7 @@ const GROUPS = [
     ['Multiple languages', 'WPML: a separate post per language, linked.', 'One document, fields marked as translatable store a value per language.', 'built'],
     ['Same layout, translated', 'WPML translation editor.', '"Copy to locale" copies the English content into Hebrew to translate.', 'built'],
     ['Different layout per language', 'Separate Elementor layouts per translation.', 'The page block list is per language, so Hebrew can have other sections.', 'built'],
-    ['Page in one language only', 'Only create the translation you need.', 'Publish status per language (Payload experimental setting) and a per-language badge in lists.', 'built', 'Flag is marked experimental in Payload 3.93; tested in the demo.'],
+    ['Page in one language only', 'Only create the translation you need.', 'Publish status per language (Payload experimental setting) and a per-language badge in lists.', 'built', 'Marked experimental in Payload 3.93; verified in the demo (English-only pages 404 in Hebrew).'],
     ['Translated slugs', 'WPML translates post slugs and CPT bases.', 'Slugs per language. CPT and taxonomy bases per language in Site settings.', 'custom', 'Item slugs are built in; translated CPT bases are our routing.'],
     ['Default language without prefix', 'WPML setting.', '/about for English, /he/about for Hebrew.', 'custom'],
     ['Language switcher and hreflang', 'WPML switcher and hreflang tags.', 'Switcher goes to the same item in the other language, or that language\'s home page if missing. hreflang in head and sitemap.', 'custom'],
@@ -363,8 +412,8 @@ const GROUPS = [
   ]},
   { id: 'g-flow', title: 'Editorial workflow and roles', rows: [
     ['Drafts and autosave', 'Built in.', 'Built in, per language.', 'built'],
-    ['Preview', 'Preview button.', 'Live preview beside the form, plus a shareable preview link for people without a login.', 'built', 'Shareable link is a small custom addition.'],
-    ['Scheduled publish', 'Built in (publish only).', 'Schedule publish and unpublish, run by the job queue on a cron.', 'built'],
+    ['Preview', 'Preview button.', 'Live preview beside the form (mobile/tablet/desktop), refreshed on every autosave, plus a 7-day share link for people without a login.', 'built', 'Share link is a small custom addition.'],
+    ['Scheduled publish', 'Built in (publish only).', 'Schedule publish and unpublish per language, run by the job queue on a cron.', 'built', 'Vercel Hobby cron runs daily only; per-minute needs Pro or our own server.'],
     ['Revisions', 'Revisions list.', 'Version history with side-by-side diff and restore.', 'built'],
     ['Two people editing at once', 'Post lock notice.', 'Document locking: others see who is editing.', 'built'],
     ['Roles', 'Administrator, Editor, Author…', 'Admin and Editor in the demo. Access rules in code can go down to single fields.', 'built'],

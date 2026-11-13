@@ -2,7 +2,7 @@ import config from '@payload-config'
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 
-import type { Locale } from '@/i18n/config'
+import { localeTags, type Locale } from '@/i18n/config'
 import { getRouteTranslations, type Route } from '@/lib/queries/content'
 import { absoluteUrl, siteUrl } from '@/lib/siteUrl'
 import type { Media } from '@/payload-types'
@@ -50,7 +50,7 @@ export async function buildMetadata(route: Route, locale: Locale, pathname: stri
       description,
       url: absoluteUrl(pathname),
       siteName: settings.siteName ?? undefined,
-      locale: locale === 'he' ? 'he_IL' : 'en_US',
+      locale: localeTags[locale].replace('-', '_'),
       type: route.kind === 'item' && route.collection === 'posts' ? 'article' : 'website',
       images: image ? [{ url: image }] : undefined,
     },

@@ -1,3 +1,4 @@
+import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs'
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access/roles'
@@ -58,5 +59,7 @@ export const Pages: CollectionConfig = {
     layoutField(),
     appearanceField(),
     previewLinkField(),
+    // Kept up to date by the nested docs plugin; editors never need to see it
+    createBreadcrumbsField('pages', { admin: { hidden: true } }),
   ],
 }

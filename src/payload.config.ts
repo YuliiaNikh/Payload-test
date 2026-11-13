@@ -11,6 +11,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { en } from '@payloadcms/translations/languages/en'
+import { fr } from '@payloadcms/translations/languages/fr'
 import { he } from '@payloadcms/translations/languages/he'
 
 import { Users } from './collections/Users'
@@ -83,7 +84,7 @@ export default buildConfig({
     shouldAutoRun: () => process.env.NODE_ENV !== 'production',
   },
   i18n: {
-    supportedLanguages: { en, he },
+    supportedLanguages: { en, he, fr },
   },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -107,6 +108,13 @@ export default buildConfig({
     : undefined,
   sharp,
   plugins: [
+    // Before the SEO plugin wraps fields in tabs, so it finds the (hidden) breadcrumbs field
+    nestedDocsPlugin({
+      collections: ['pages', ...hierarchicalTaxonomies],
+      generateLabel: (_, doc) => String(doc.title ?? ''),
+      // Breadcrumbs are localized, so this builds the path per language
+      generateURL: (docs) => `/${docs.map((doc) => doc.slug ?? '').join('/')}`,
+    }),
     // Yoast-style SEO tab on pages, CPT items and taxonomy terms
     seoPlugin({
       collections: ['pages', ...cptSlugs, ...taxonomySlugs],
@@ -114,6 +122,12 @@ export default buildConfig({
       tabbedUI: true,
       generateTitle: ({ doc }) => String((doc as { title?: string })?.title ?? ''),
       generateDescription: ({ doc }) => String((doc as { excerpt?: string })?.excerpt ?? ''),
+      // Snippet preview URL: pages use their nested path; items show the slug (the base is per language)
+      generateURL: ({ doc, locale }) => {
+        const d = doc as { slug?: string; breadcrumbs?: { url?: string }[] }
+        const path = d?.breadcrumbs?.at(-1)?.url ?? (d?.slug ? `/…/${d.slug}` : '')
+        return `${serverURL}${locale && locale !== defaultLocale ? `/${locale}` : ''}${path}`
+      },
       fields: ({ defaultFields }) => [
         ...defaultFields,
         { name: 'noindex', label: 'Hide from search engines (noindex)', type: 'checkbox' },
@@ -127,12 +141,6 @@ export default buildConfig({
         admin: { group: 'Site' },
         access: { read: () => true, create: isAdmin, update: isAdmin, delete: isAdmin },
       },
-    }),
-    nestedDocsPlugin({
-      collections: ['pages', ...hierarchicalTaxonomies],
-      generateLabel: (_, doc) => String(doc.title ?? ''),
-      // Breadcrumbs are localized, so this builds the path per language
-      generateURL: (docs) => `/${docs.map((doc) => doc.slug ?? '').join('/')}`,
     }),
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),

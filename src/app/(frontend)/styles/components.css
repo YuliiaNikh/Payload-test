@@ -262,6 +262,7 @@ details[open] > summary.nav__link::after { transform: rotate(-135deg); margin-bl
   .mega { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .site-header .lang-switcher { display: none; }
   .site-header[data-open='true'] .lang-switcher { display: block; }
+  .site-header .lang-switcher__menu { position: static; box-shadow: none; border: 0; padding-inline-start: var(--space-4); }
 }
 
 /* Footer */

@@ -10,10 +10,12 @@ import {
 
 import { richText } from '@/utilities/richText'
 
+import { french } from './french'
 import { avatarImage, logoImage, placeholderImage } from './images'
+import { localizeCopy } from './localizeCopy'
 
 // Bump when the demo content changes; a site already at this version is left alone
-export const DEMO_SEED_VERSION = 3
+export const DEMO_SEED_VERSION = 4
 
 type Data = Record<string, unknown>
 type Ref = { id: number }
@@ -66,6 +68,7 @@ export async function seedDemo(
     // Upgrades only add to what is there, so editors' changes survive
     if (current < 2) await upgradeTo2(payload, req)
     if (current < 3) await upgradeTo3(payload, req)
+    if (current < 4) await upgradeTo4(payload, req)
     await payload.updateGlobal({
       slug: 'site-settings',
       data: { demoSeed: DEMO_SEED_VERSION },
@@ -1885,5 +1888,76 @@ async function upgradeTo3(payload: Payload, req: PayloadRequest): Promise<void> 
       data: { layout: next, _status: 'published' } as never,
       req,
     })
+  }
+}
+
+// French copy of everything published in English. Only empty French fields are filled,
+// so anything an editor already wrote in French stays as it is.
+const isEmpty = (value: unknown) =>
+  value === undefined || value === null || value === '' || (Array.isArray(value) && value.length === 0)
+
+function fillEmpty(current: unknown, copy: unknown): unknown {
+  if (isEmpty(current)) return copy
+  if (Array.isArray(current) && Array.isArray(copy) && current.length === copy.length) {
+    return current.map((row, i) => fillEmpty(row, copy[i]))
+  }
+  if (current && copy && typeof current === 'object' && typeof copy === 'object' && !Array.isArray(current)) {
+    const out: Data = { ...(current as Data) }
+    for (const [key, value] of Object.entries(copy as Data)) out[key] = fillEmpty((current as Data)[key], value)
+    return out
+  }
+  return current
+}
+
+async function upgradeTo4(payload: Payload, req: PayloadRequest): Promise<void> {
+  payload.logger.info('[seed] upgrade 4: French copy')
+  const t = (text: string) => french[text] ?? text
+  const skip = new Set(['users', 'media'])
+
+  for (const slug of Object.keys(payload.collections) as CollectionSlug[]) {
+    const { config } = payload.collections[slug]
+    if (skip.has(slug) || slug.startsWith('payload-') || slug === 'redirects') continue
+    const drafts = Boolean(config.versions && typeof config.versions === 'object' && config.versions.drafts)
+    const { docs } = await payload.find({
+      collection: slug,
+      locale: 'en',
+      fallbackLocale: false,
+      depth: 0,
+      pagination: false,
+      ...(drafts ? { where: { _status: { equals: 'published' } } } : {}),
+      req,
+    })
+    // Children first: saving a parent re-saves its children in French (nested docs plugin),
+    // which needs their French titles in place and then rebuilds their French breadcrumbs
+    const depth = (doc: Data) => (Array.isArray(doc.breadcrumbs) ? doc.breadcrumbs.length : 0)
+    for (const doc of (docs as unknown as Data[]).sort((a, b) => depth(b) - depth(a))) {
+      const copy = localizeCopy(payload, config.flattenedFields, doc, t)
+      const current = (await payload.findByID({
+        collection: slug,
+        id: doc.id as number,
+        locale: 'fr',
+        fallbackLocale: false,
+        depth: 0,
+        req,
+      })) as unknown as Data
+      const data = Object.fromEntries(Object.keys(copy).map((key) => [key, fillEmpty(current[key], copy[key])]))
+      await payload.update({
+        collection: slug,
+        id: doc.id as number,
+        locale: 'fr',
+        data: { ...data, ...(drafts ? { _status: 'published' } : {}) } as never,
+        context: { seeding: true },
+        req,
+      })
+    }
+  }
+
+  for (const global of payload.config.globals) {
+    const read = (locale: 'en' | 'fr') =>
+      payload.findGlobal({ slug: global.slug as never, locale, fallbackLocale: false, depth: 0, req }) as Promise<Data>
+    const copy = localizeCopy(payload, global.flattenedFields, await read('en'), t)
+    const current = await read('fr')
+    const data = Object.fromEntries(Object.keys(copy).map((key) => [key, fillEmpty(current[key], copy[key])]))
+    await payload.updateGlobal({ slug: global.slug as never, locale: 'fr', data: data as never, req })
   }
 }

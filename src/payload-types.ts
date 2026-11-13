@@ -145,7 +145,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'he') | ('en' | 'he')[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'he' | 'fr') | ('en' | 'he' | 'fr')[];
   globals: {
     'site-settings': SiteSetting;
     'cpt-defaults': CptDefault;
@@ -154,7 +154,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'cpt-defaults': CptDefaultsSelect<false> | CptDefaultsSelect<true>;
   };
-  locale: 'en' | 'he';
+  locale: 'en' | 'he' | 'fr';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -319,6 +319,15 @@ export interface Page {
     footer?: ('default' | 'custom' | 'none') | null;
     footerRef?: (number | null) | Footer;
   };
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Page;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  parent?: (number | null) | Page;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -329,15 +338,6 @@ export interface Page {
     noindex?: boolean | null;
     canonical?: string | null;
   };
-  parent?: (number | null) | Page;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Page;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1170,6 +1170,15 @@ export interface Category {
    */
   slug: string;
   description?: string | null;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  parent?: (number | null) | Category;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1180,15 +1189,6 @@ export interface Category {
     noindex?: boolean | null;
     canonical?: string | null;
   };
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2580,6 +2580,15 @@ export interface PagesSelect<T extends boolean = true> {
         footer?: T;
         footerRef?: T;
       };
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  parent?: T;
   meta?:
     | T
     | {
@@ -2588,15 +2597,6 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
         noindex?: T;
         canonical?: T;
-      };
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -2957,6 +2957,15 @@ export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   description?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  parent?: T;
   meta?:
     | T
     | {
@@ -2965,15 +2974,6 @@ export interface CategoriesSelect<T extends boolean = true> {
         image?: T;
         noindex?: T;
         canonical?: T;
-      };
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

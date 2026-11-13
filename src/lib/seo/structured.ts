@@ -1,17 +1,16 @@
 import type { Crumb } from '@/components/Breadcrumbs'
 import type { Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
+import { ui } from '@/i18n/ui'
 import type { Route } from '@/lib/queries/content'
 import { findPublishedPageByPath } from '@/lib/queries/pages'
 import type { CptBases } from '@/lib/routing/cptPaths'
 import { absoluteUrl } from '@/lib/siteUrl'
 import type { Event, Media, Person, Post } from '@/payload-types'
 
-const homeLabel = (locale: Locale) => (locale === 'he' ? 'בית' : 'Home')
-
 // Home › parents › page, or Home › archive page › item
 export async function buildCrumbs(route: Route, locale: Locale, bases: CptBases, homeId: number | null, pathname: string): Promise<Crumb[]> {
-  const home = { label: homeLabel(locale), href: localizePath(locale, '/') }
+  const home = { label: ui(locale).home, href: localizePath(locale, '/') }
   if (route.kind === 'page') {
     if (route.doc.id === homeId) return []
     const trail = (route.doc.breadcrumbs ?? []).map((b) => ({ label: b.label ?? '', href: localizePath(locale, b.url ?? '/') }))

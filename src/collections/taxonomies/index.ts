@@ -1,6 +1,6 @@
 import { createTaxonomy } from './createTaxonomy'
 
-export const Categories = createTaxonomy({ slug: 'categories', singular: 'Category', plural: 'Categories' })
+export const Categories = createTaxonomy({ slug: 'categories', singular: 'Category', plural: 'Categories', hierarchical: true })
 export const Tags = createTaxonomy({ slug: 'tags', singular: 'Tag', plural: 'Tags' })
 export const EventTypes = createTaxonomy({ slug: 'event-types', singular: 'Event type', plural: 'Event types' })
 export const Industries = createTaxonomy({ slug: 'industries', singular: 'Industry', plural: 'Industries' })

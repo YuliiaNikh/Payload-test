@@ -1,7 +1,7 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { cptTaxonomies, type CptSlug } from '@/content/types'
-import type { Locale } from '@/i18n/config'
+import { localeTags, type Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
 import { cptItemPath, termArchivePath, type CptBases } from '@/lib/routing/cptPaths'
 import type { CptDoc } from '@/lib/queries/content'
@@ -18,7 +18,7 @@ type Props = {
 
 const formatDate = (value: string | null | undefined, locale: Locale) =>
   value
-    ? new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', { dateStyle: 'long' }).format(new Date(value))
+    ? new Intl.DateTimeFormat(localeTags[locale], { dateStyle: 'long' }).format(new Date(value))
     : null
 
 function PersonLink({ person, locale, bases }: { person: Person; locale: Locale; bases: CptBases }) {

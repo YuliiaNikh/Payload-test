@@ -1,6 +1,7 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import { ui } from '@/i18n/ui'
 import type { HubSpotFormBlock as HubSpotFormData } from '@/payload-types'
 
 import type { BlockContext } from '../context'
@@ -21,8 +22,8 @@ export async function HubSpotFormBlock({ block, ctx }: { block: HubSpotFormData;
           formId={block.formId}
           region={settings.hubspot?.region ?? 'na1'}
           display={block.display === 'popup' ? 'popup' : 'inline'}
-          buttonLabel={block.buttonLabel || (ctx.locale === 'he' ? 'צור קשר' : 'Contact us')}
-          closeLabel={ctx.locale === 'he' ? 'סגירה' : 'Close'}
+          buttonLabel={block.buttonLabel || ui(ctx.locale).contactUs}
+          closeLabel={ui(ctx.locale).close}
         />
       ) : (
         <p className="muted small">Add the HubSpot portal ID in Site settings to show this form.</p>

@@ -7,6 +7,7 @@ import { Media } from '@/components/Media'
 import { cptDateField, type CptSlug } from '@/content/types'
 import type { Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
+import { ui } from '@/i18n/ui'
 import { linkHref, type LinkContext, type LinkValue } from '@/lib/links'
 import { cptItemPath } from '@/lib/routing/cptPaths'
 import type { Header } from '@/payload-types'
@@ -141,7 +142,7 @@ function MenuEntry({ item, ctx }: { item: MenuItem; ctx: LinkContext }) {
 
 export function SiteHeader({ header, siteName, alternates, ctx }: Props) {
   const home = localizePath(ctx.locale, '/')
-  const menuLabel = ctx.locale === 'he' ? 'תפריט' : 'Menu'
+  const t = ui(ctx.locale)
 
   if (header === 'fallback') {
     return (
@@ -151,7 +152,7 @@ export function SiteHeader({ header, siteName, alternates, ctx }: Props) {
             {siteName}
           </a>
           <div className="site-header__actions">
-            <LanguageSwitcher current={ctx.locale} hrefs={alternates} />
+            <LanguageSwitcher current={ctx.locale} hrefs={alternates} label={t.language} />
           </div>
         </div>
       </header>
@@ -162,17 +163,17 @@ export function SiteHeader({ header, siteName, alternates, ctx }: Props) {
   const actions = (
     <div className="site-header__actions">
       <Button link={header.cta} ctx={{ ...ctx, item: undefined, pathname: '', searchParams: {} }} className={`btn btn--${header.cta?.appearance ?? 'primary'} btn--sm`} />
-      {header.showLanguageSwitcher !== false && <LanguageSwitcher current={ctx.locale} hrefs={alternates} />}
+      {header.showLanguageSwitcher !== false && <LanguageSwitcher current={ctx.locale} hrefs={alternates} label={t.language} />}
     </div>
   )
 
   return (
-    <HeaderShell className={`site-header site-header--${variant}`} menuLabel={menuLabel} actions={actions}>
+    <HeaderShell className={`site-header site-header--${variant}`} menuLabel={t.menu} actions={actions}>
       <a className="site-header__brand" href={home}>
         {header.logo ? <Media media={header.logo} sizes="160px" className="site-header__logo" /> : siteName}
       </a>
       {variant !== 'minimal' && header.menu?.length ? (
-        <nav id="site-nav" className="nav" aria-label={ctx.locale === 'he' ? 'ראשי' : 'Main'}>
+        <nav id="site-nav" className="nav" aria-label={t.mainNav}>
           <ul className="nav__list">
             {header.menu.map((item, i) => (
               <MenuEntry key={item.id ?? i} item={item} ctx={ctx} />

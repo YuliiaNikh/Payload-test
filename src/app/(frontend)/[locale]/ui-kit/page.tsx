@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { isLocale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
+import { ui } from '@/i18n/ui'
 
 export const metadata: Metadata = { title: 'UI kit' }
 
@@ -46,7 +47,7 @@ type Props = { params: Promise<{ locale: string }> }
 export default async function UiKitPage({ params }: Props) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const sample = locale === 'he' ? 'שועל חום זריז קופץ' : 'The quick brown fox'
+  const sample = { en: 'The quick brown fox', he: 'שועל חום זריז קופץ', fr: 'Le vif renard brun' }[locale]
 
   return (
     <>
@@ -55,7 +56,7 @@ export default async function UiKitPage({ params }: Props) {
           <a className="site-name" href={localizePath(locale, '/')}>
             UI kit
           </a>
-          <LanguageSwitcher current={locale} hrefs={{ en: '/ui-kit', he: '/he/ui-kit' }} />
+          <LanguageSwitcher current={locale} hrefs={{ en: '/ui-kit', he: '/he/ui-kit', fr: '/fr/ui-kit' }} label={ui(locale).language} />
         </div>
       </header>
 

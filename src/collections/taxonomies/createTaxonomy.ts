@@ -1,3 +1,4 @@
+import { createBreadcrumbsField } from '@payloadcms/plugin-nested-docs'
 import type { CollectionConfig } from 'payload'
 
 import { isStaff } from '@/access/roles'
@@ -5,13 +6,14 @@ import { slugField } from '@/fields/slug'
 
 type Options = {
   slug: string
+  hierarchical?: boolean
   singular: string
   plural: string
 }
 
 // A WordPress-style taxonomy: terms have no drafts and are public.
 // Hierarchical taxonomies are registered with the nested docs plugin, which adds parent + breadcrumbs.
-export const createTaxonomy = ({ slug, singular, plural }: Options): CollectionConfig => ({
+export const createTaxonomy = ({ slug, singular, plural, hierarchical = false }: Options): CollectionConfig => ({
   slug,
   labels: { singular, plural },
   admin: {
@@ -29,5 +31,6 @@ export const createTaxonomy = ({ slug, singular, plural }: Options): CollectionC
     { name: 'title', type: 'text', localized: true, required: true },
     slugField(),
     { name: 'description', type: 'textarea', localized: true },
+    ...(hierarchical ? [createBreadcrumbsField(slug, { admin: { hidden: true } })] : []),
   ],
 })

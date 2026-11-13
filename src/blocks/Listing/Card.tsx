@@ -1,5 +1,6 @@
 import { Media } from '@/components/Media'
 import { cptDateField, type CptSlug } from '@/content/types'
+import { localeTags, type Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
 import type { CptDoc } from '@/lib/queries/content'
 import { cptItemPath } from '@/lib/routing/cptPaths'
@@ -8,8 +9,8 @@ import type { BlockContext } from '../context'
 
 export type CardStyle = 'standard' | 'horizontal' | 'compact' | 'person' | 'event' | 'feature'
 
-const dateFormat = (locale: string, value: string, options: Intl.DateTimeFormatOptions) =>
-  new Intl.DateTimeFormat(locale === 'he' ? 'he-IL' : 'en-GB', options).format(new Date(value))
+const dateFormat = (locale: Locale, value: string, options: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat(localeTags[locale], options).format(new Date(value))
 
 export function ListingCard({ doc, collection, style, ctx }: { doc: CptDoc; collection: CptSlug; style: CardStyle; ctx: BlockContext }) {
   const href = localizePath(ctx.locale, cptItemPath(collection, doc.slug, ctx.bases))

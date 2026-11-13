@@ -14,6 +14,7 @@ import { SiteHeader } from '@/components/chrome/SiteHeader'
 import type { CptSlug } from '@/content/types'
 import { isLocale, type Locale } from '@/i18n/config'
 import { localizePath, normalizePath } from '@/i18n/paths'
+import { ui } from '@/i18n/ui'
 import { getCptBases, getRouteAlternates, resolveRoute } from '@/lib/queries/content'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { PreviewBanner } from '@/components/PreviewBanner'
@@ -89,7 +90,7 @@ export default async function PageRoute({ params, searchParams }: Props) {
       {chrome.header !== 'none' && <SiteHeader header={chrome.header} siteName={siteName} alternates={alternates} ctx={ctx} />}
       <JsonLd data={buildJsonLd(route, crumbs, siteName, route.kind === 'page' && route.doc.id === homeId)} />
       <main>
-        <Breadcrumbs crumbs={crumbs} label={locale === 'he' ? 'פירורי לחם' : 'Breadcrumb'} />
+        <Breadcrumbs crumbs={crumbs} label={ui(locale).breadcrumb} />
         {route.kind === 'item' ? (
           <>
             <section className="section section--spacing-md">
@@ -115,8 +116,8 @@ export default async function PageRoute({ params, searchParams }: Props) {
         <PreviewBanner
           serverURL={siteUrl()}
           exitHref={`/next/exit-preview?path=${encodeURIComponent(pathname)}`}
-          label={locale === 'he' ? 'תצוגה מקדימה של טיוטה' : 'Draft preview'}
-          exitLabel={locale === 'he' ? 'יציאה' : 'Exit preview'}
+          label={ui(locale).draftPreview}
+          exitLabel={ui(locale).exitPreview}
         />
       )}
       {hubspot?.tracking && hubspot.portalId && (

@@ -6,6 +6,8 @@ const hebrewFinals: Record<string, string> = { ך: 'כ', ם: 'מ', ן: 'נ', ף:
 export const alphabets: Record<Locale, string[]> = {
   en: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
   he: 'אבגדהוזחטיכלמנסעפצקרשת'.split(''),
+  // Accents are stripped by firstLetter, so French shares the Latin alphabet
+  fr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
 }
 
 // First letter of a title for the A–Z filter; "#" for digits and symbols

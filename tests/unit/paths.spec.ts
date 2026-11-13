@@ -8,7 +8,8 @@ describe('locale config', () => {
   it('recognises supported locales only', () => {
     expect(isLocale('en')).toBe(true)
     expect(isLocale('he')).toBe(true)
-    expect(isLocale('fr')).toBe(false)
+    expect(isLocale('fr')).toBe(true)
+    expect(isLocale('de')).toBe(false)
     expect(isLocale(undefined)).toBe(false)
   })
 

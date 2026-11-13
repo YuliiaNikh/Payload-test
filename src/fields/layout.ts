@@ -8,6 +8,7 @@ type Options = { name?: string; label?: string; exclude?: string[] }
 export const layoutField = ({ name = 'layout', label = 'Sections', exclude = [] }: Options = {}): BlocksField => ({
   name,
   label,
+  labels: { singular: 'Section', plural: 'Sections' },
   type: 'blocks',
   localized: true,
   blocks: [],

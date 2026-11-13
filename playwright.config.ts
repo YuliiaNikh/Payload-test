@@ -36,6 +36,8 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     reuseExistingServer: true,
-    url: 'http://localhost:3000',
+    // "/" is a 404 until a home page exists, which Playwright would read as "server not up"
+    url: 'http://localhost:3000/admin',
+    timeout: 180_000,
   },
 })

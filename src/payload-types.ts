@@ -230,6 +230,42 @@ export interface HeroBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
@@ -312,6 +348,42 @@ export interface RichTextBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'richText';
@@ -380,6 +452,42 @@ export interface MediaTextBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -681,6 +789,42 @@ export interface CardsBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'cards';
@@ -853,6 +997,42 @@ export interface ListingBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'listing';
@@ -912,6 +1092,42 @@ export interface ColumnsBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1089,6 +1305,42 @@ export interface TabsBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'tabs';
@@ -1111,6 +1363,42 @@ export interface StatsBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1135,6 +1423,42 @@ export interface LogosBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'logos';
@@ -1158,6 +1482,42 @@ export interface TestimonialsBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1194,6 +1554,42 @@ export interface FaqBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1248,6 +1644,42 @@ export interface CtaBlock {
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
   };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
@@ -1270,6 +1702,42 @@ export interface DynamicFieldBlock {
     background?: ('default' | 'surface' | 'accent' | 'dark') | null;
     spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
     align?: ('start' | 'center') | null;
+  };
+  vis?: {
+    match?: ('all' | 'any') | null;
+    /**
+     * No conditions = always visible. Device rules apply on top.
+     */
+    rules?:
+      | {
+          type: 'device' | 'date' | 'field' | 'url' | 'items';
+          device_show?: ('desktop' | 'tablet' | 'mobile')[] | null;
+          date_from?: string | null;
+          date_until?: string | null;
+          field_name?:
+            | (
+                | 'title'
+                | 'excerpt'
+                | 'publishedDate'
+                | 'startDate'
+                | 'endDate'
+                | 'location'
+                | 'jobTitle'
+                | 'speakers'
+                | 'categories'
+                | 'tags'
+                | 'featuredImage'
+              )
+            | null;
+          field_operator?: ('set' | 'empty' | 'equals' | 'future') | null;
+          field_value?: string | null;
+          url_param?: string | null;
+          url_value?: string | null;
+          items_type?: ('posts' | 'events' | 'resources' | 'glossary' | 'people') | null;
+          items_when?: ('all' | 'upcoming') | null;
+          id?: string | null;
+        }[]
+      | null;
   };
   id?: string | null;
   blockName?: string | null;

@@ -1,5 +1,7 @@
 import type { Block, Field } from 'payload'
 
+import { visibilityField } from '@/visibility/field'
+
 export const blockStyleField: Field = {
   name: 'style',
   type: 'group',
@@ -49,7 +51,7 @@ export const blockStyleField: Field = {
 
 type SectionBlockOptions = Pick<Block, 'slug' | 'labels' | 'fields'> & { interfaceName: string }
 
-// Every section block: a Content tab plus a Style tab (phase 6 adds Visibility here)
+// Every section block: Content, Style and Visibility tabs
 export const sectionBlock = ({ slug, labels, fields, interfaceName }: SectionBlockOptions): Block => ({
   slug,
   labels,
@@ -60,6 +62,7 @@ export const sectionBlock = ({ slug, labels, fields, interfaceName }: SectionBlo
       tabs: [
         { label: 'Content', fields },
         { label: 'Style', fields: [blockStyleField] },
+        { label: 'Visibility', fields: [visibilityField()] },
       ],
     },
   ],

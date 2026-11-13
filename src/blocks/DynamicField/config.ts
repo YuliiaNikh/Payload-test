@@ -1,7 +1,7 @@
+import { dynamicFieldNames } from '@/content/types'
 import { sectionBlock } from '@/fields/blockStyle'
 
 // JetEngine-style dynamic tag: shows a field of the item this block is placed on
-export const dynamicFieldNames = ['title', 'excerpt', 'publishedDate', 'startDate', 'endDate', 'location', 'jobTitle'] as const
 
 export const DynamicFieldBlock = sectionBlock({
   slug: 'dynamicField',

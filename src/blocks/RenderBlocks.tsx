@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 
 import type { Page } from '@/payload-types'
+import { evaluateVisibility, type VisibilityValue } from '@/visibility/evaluate'
 
 import { CardsBlock } from './Cards/Component'
 import { ColumnsBlock } from './Columns/Component'
@@ -39,8 +40,13 @@ const components: Record<string, ComponentType<{ block: any; ctx: BlockContext; 
   reusableSection: ReusableSectionBlock,
 }
 
-export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | undefined; ctx: BlockContext }) {
+export async function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | undefined; ctx: BlockContext }) {
   if (!blocks?.length) return null
+  const now = new Date()
+  const decisions = await Promise.all(
+    blocks.map((block) => evaluateVisibility((block as { vis?: VisibilityValue }).vis, { ...ctx, now })),
+  )
+
   let listings = 0
   return (
     <>
@@ -48,7 +54,17 @@ export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | u
         const Component = components[block.blockType]
         // Each listing on the page gets its own URL param prefix
         const index = block.blockType === 'listing' ? listings++ : undefined
-        return Component ? <Component key={block.id ?? i} block={block} ctx={ctx} index={index} /> : null
+        const { visible, classes } = decisions[i]
+        if (!Component || !visible) return null
+        const rendered = <Component key={block.id ?? i} block={block} ctx={ctx} index={index} />
+        // Device rules are CSS so the same HTML works on every screen
+        return classes.length ? (
+          <div key={block.id ?? i} className={classes.join(' ')}>
+            {rendered}
+          </div>
+        ) : (
+          rendered
+        )
       })}
     </>
   )

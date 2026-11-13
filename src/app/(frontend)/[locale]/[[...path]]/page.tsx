@@ -3,11 +3,15 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 
+import type { BlockContext } from '@/blocks/context'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { ItemView } from '@/components/items/ItemView'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import type { CptSlug } from '@/content/types'
 import { isLocale, type Locale } from '@/i18n/config'
 import { localizePath, normalizePath } from '@/i18n/paths'
 import { getCptBases, getRouteAlternates, resolveRoute } from '@/lib/queries/content'
+import { getHomePageId } from '@/lib/queries/pages'
 
 type Props = {
   params: Promise<{ locale: string; path?: string[] }>
@@ -27,6 +31,12 @@ async function getSiteName(locale: Locale): Promise<string> {
   return settings.siteName ?? ''
 }
 
+async function getItemDefaults(collection: CptSlug, locale: Locale) {
+  const payload = await getPayload({ config })
+  const defaults = await payload.findGlobal({ slug: 'cpt-defaults', locale, depth: 2 })
+  return defaults[collection]?.after ?? null
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, route } = await resolve(params)
   const siteName = await getSiteName(locale)
@@ -35,11 +45,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PageRoute({ params }: Props) {
   const { locale, route } = await resolve(params)
-  const [alternates, siteName, bases] = await Promise.all([
+  const [alternates, siteName, bases, homeId] = await Promise.all([
     getRouteAlternates(route),
     getSiteName(locale),
     getCptBases(locale),
+    getHomePageId(),
   ])
+  const ctx: BlockContext = {
+    locale,
+    bases,
+    homeId,
+    item: route.kind === 'item' ? { collection: route.collection, doc: route.doc } : undefined,
+  }
 
   return (
     <>
@@ -51,11 +68,25 @@ export default async function PageRoute({ params }: Props) {
           <LanguageSwitcher current={locale} hrefs={alternates} />
         </div>
       </header>
-      <main className="page-main container">
+      <main>
         {route.kind === 'item' ? (
-          <ItemView collection={route.collection} doc={route.doc} locale={locale} bases={bases} />
+          <>
+            <section className="section section--spacing-md">
+              <div className="container">
+                <ItemView collection={route.collection} doc={route.doc} locale={locale} bases={bases} />
+              </div>
+            </section>
+            <RenderBlocks blocks={route.doc.layout} ctx={ctx} />
+            <RenderBlocks blocks={await getItemDefaults(route.collection, locale)} ctx={ctx} />
+          </>
+        ) : route.doc.layout?.length ? (
+          <RenderBlocks blocks={route.doc.layout} ctx={ctx} />
         ) : (
-          <h1>{route.doc.title}</h1>
+          <section className="section">
+            <div className="container">
+              <h1>{route.doc.title}</h1>
+            </div>
+          </section>
         )}
       </main>
     </>

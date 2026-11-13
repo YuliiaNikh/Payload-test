@@ -8,6 +8,8 @@ import { localizedDrafts } from './shared/drafts'
 // Elementor "global widget" / Gutenberg "synced pattern": edit once, used on many pages
 export const ReusableSections: CollectionConfig = {
   slug: 'reusable-sections',
+  // Short table prefix: nested block tables would exceed Postgres' 63-character name limit
+  dbName: 'reusable',
   labels: { singular: 'Reusable section', plural: 'Reusable sections' },
   admin: {
     group: 'Content',

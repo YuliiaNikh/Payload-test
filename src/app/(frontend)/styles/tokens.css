@@ -1,41 +1,92 @@
-/* Neutral system modelled on Astryx: 4px spacing grid, quiet greys, one blue accent. */
+/* Test UI kit tokens. Neutral system modelled on Astryx (reference only): one brand hue, quiet greys,
+   fluid type with clamp(), 4px spacing grid. Every component reads these variables. */
 :root {
-  --color-bg: #ffffff;
-  --color-surface: #f5f6f8;
-  --color-text: #1c1e21;
-  --color-text-muted: #65676b;
-  --color-border: #dadde1;
-  --color-accent: #0866ff;
+  /* Palette */
+  --neutral-0: #ffffff;
+  --neutral-50: #f7f8fa;
+  --neutral-100: #eef0f3;
+  --neutral-200: #dfe2e7;
+  --neutral-300: #c6cbd3;
+  --neutral-500: #7a828f;
+  --neutral-700: #424955;
+  --neutral-900: #16191f;
+
+  --brand-50: #eef4ff;
+  --brand-100: #d9e6ff;
+  --brand-500: #2f6bff;
+  --brand-600: #1f55e0;
+  --brand-700: #1843b3;
+
+  --success: #1d8a4f;
+  --warning: #b36b00;
+  --danger: #c4323c;
+
+  /* Semantic colors */
+  --color-bg: var(--neutral-0);
+  --color-surface: var(--neutral-50);
+  --color-surface-2: var(--neutral-100);
+  --color-text: var(--neutral-900);
+  --color-text-muted: var(--neutral-700);
+  --color-border: var(--neutral-200);
+  --color-accent: var(--brand-500);
+  --color-accent-hover: var(--brand-600);
+  --color-accent-soft: var(--brand-50);
   --color-accent-contrast: #ffffff;
+  --color-inverse-bg: var(--neutral-900);
+  --color-inverse-text: var(--neutral-50);
 
+  /* Typography: fluid between ~360px and ~1280px viewports */
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Hebrew', Arial, sans-serif;
-  --text-sm: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.75rem;
-  --text-2xl: 2.5rem;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+  --text-xs: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-md: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.75vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.45rem + 1.3vw, 2.5rem);
+  --text-3xl: clamp(2.25rem, 1.7rem + 2.4vw, 3.5rem);
+  --text-display: clamp(2.75rem, 1.9rem + 3.8vw, 4.75rem);
+  --leading-tight: 1.15;
+  --leading-normal: 1.6;
 
+  /* Spacing (4px grid) + fluid section spacing */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
+  --space-10: 40px;
   --space-12: 48px;
+  --space-16: 64px;
+  --section-sm: clamp(24px, 3vw, 40px);
+  --section-md: clamp(40px, 6vw, 80px);
+  --section-lg: clamp(64px, 9vw, 128px);
 
+  /* Shape */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --container: 1120px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgb(22 25 31 / 0.06), 0 1px 3px rgb(22 25 31 / 0.08);
+  --shadow-md: 0 4px 12px rgb(22 25 31 / 0.08), 0 2px 4px rgb(22 25 31 / 0.06);
+  --container: 1200px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #18191a;
-    --color-surface: #242526;
-    --color-text: #e4e6eb;
-    --color-text-muted: #b0b3b8;
-    --color-border: #3e4042;
-    --color-accent: #4599ff;
-    --color-accent-contrast: #0b0c0d;
+    --color-bg: #121418;
+    --color-surface: #1a1d23;
+    --color-surface-2: #23272f;
+    --color-text: #e8eaee;
+    --color-text-muted: #aab1bd;
+    --color-border: #2f343d;
+    --color-accent: #6b97ff;
+    --color-accent-hover: #8aadff;
+    --color-accent-soft: #1b2744;
+    --color-accent-contrast: #0b0d12;
+    --color-inverse-bg: #e8eaee;
+    --color-inverse-text: #121418;
   }
 }

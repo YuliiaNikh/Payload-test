@@ -4,6 +4,7 @@ import { defaultLocale, isLocale, localeDir } from '@/i18n/config'
 
 import '../styles/tokens.css'
 import '../styles/base.css'
+import '../styles/components.css'
 
 type Props = {
   children: ReactNode

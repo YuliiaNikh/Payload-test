@@ -5,6 +5,7 @@ import * as migration_20261113_090216_phase3_blocks from './20261113_090216_phas
 import * as migration_20261113_091529_phase4_listing from './20261113_091529_phase4_listing';
 import * as migration_20261113_092713_phase5_navigation from './20261113_092713_phase5_navigation';
 import * as migration_20261113_094343_phase6_visibility from './20261113_094343_phase6_visibility';
+import * as migration_20261113_095541_phase7_seo from './20261113_095541_phase7_seo';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261113_094343_phase6_visibility.up,
     down: migration_20261113_094343_phase6_visibility.down,
-    name: '20261113_094343_phase6_visibility'
+    name: '20261113_094343_phase6_visibility',
+  },
+  {
+    up: migration_20261113_095541_phase7_seo.up,
+    down: migration_20261113_095541_phase7_seo.down,
+    name: '20261113_095541_phase7_seo'
   },
 ];

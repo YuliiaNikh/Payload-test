@@ -1,0 +1,338 @@
+<title>Northwind Editor Guide</title>
+<meta name="description" content="How to add and edit content, build pages and add Hebrew translations in the Payload admin.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reading column with a sticky contents list on wide screens; steps are numbered because order matters. */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #17202b;
+  --muted: #5a6577;
+  --line: #dfe3ea;
+  --accent: #1f7a5a;
+  --accent-soft: #e2f2ea;
+  --note: #8a5a00;
+  --note-bg: #fbf1dc;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11161d; --surface: #18202a; --ink: #e6eaf0; --muted: #9aa5b5; --line: #2a3442;
+    --accent: #6fd3a8; --accent-soft: #16352a; --note: #f0b65a; --note-bg: #3a2c12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11161d; --surface: #18202a; --ink: #e6eaf0; --muted: #9aa5b5; --line: #2a3442;
+  --accent: #6fd3a8; --accent-soft: #16352a; --note: #f0b65a; --note-bg: #3a2c12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15.5px/1.65 var(--font-body); padding-inline: 16px; padding-block: 0 72px; }
+.wrap { max-width: 1120px; margin-inline: auto; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); } nav.toc { display: none; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; padding-block: 36px; font-size: 13.5px; }
+nav.toc .label { font: 500 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-block-end: 8px; }
+nav.toc a { display: block; color: var(--muted); text-decoration: none; padding-block: 4px; }
+nav.toc a:hover, nav.toc a:focus-visible { color: var(--accent); }
+main { min-width: 0; max-width: 760px; }
+header.hero { padding-block: 44px 28px; border-block-end: 1px solid var(--line); }
+.eyebrow { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font: 700 clamp(30px, 5vw, 44px)/1.1 var(--font-display); margin-block: 10px 14px; text-wrap: balance; }
+h2 { font: 700 25px/1.2 var(--font-display); margin-block: 0 10px; text-wrap: balance; }
+h3 { font: 600 17px/1.35 var(--font-body); margin-block: 22px 8px; }
+p { margin-block: 0 12px; }
+.lede { font-size: 17px; color: var(--muted); }
+section { padding-block: 40px 4px; scroll-margin-top: 16px; }
+ol.steps { counter-reset: step; list-style: none; padding: 0; margin: 12px 0 16px; display: grid; gap: 10px; }
+ol.steps > li { counter-increment: step; position: relative; padding-inline-start: 40px; }
+ol.steps > li::before {
+  content: counter(step); position: absolute; inset-inline-start: 0; inset-block-start: 1px;
+  inline-size: 26px; block-size: 26px; border-radius: 50%; display: grid; place-items: center;
+  font: 600 13px var(--font-mono); background: var(--accent-soft); color: var(--accent);
+}
+ul { padding-inline-start: 20px; margin-block: 8px 14px; }
+li { margin-block-end: 4px; }
+.ui { font: 500 13.5px var(--font-body); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; white-space: nowrap; }
+code { font: 13px var(--font-mono); background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+.note { background: var(--note-bg); color: var(--ink); border-inline-start: 3px solid var(--note); border-radius: 8px; padding: 12px 16px; margin-block: 14px; font-size: 14.5px; }
+.note strong { color: var(--note); }
+.tbl { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-block: 12px 16px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14px; }
+th, td { text-align: start; vertical-align: top; padding: 10px 14px; border-block-end: 1px solid var(--line); }
+tr:last-child td { border-block-end: 0; }
+th { font: 500 11.5px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+td:first-child { font-weight: 600; white-space: nowrap; }
+a { color: var(--accent); }
+figure { margin: 16px 0 20px; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-block-start: 16px; }
+.links a { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; text-decoration: none; font-weight: 500; }
+</style>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <div class="label">Contents</div>
+    <a href="#start">Getting around</a>
+    <a href="#page">Create a page</a>
+    <a href="#blocks">Working with sections</a>
+    <a href="#items">Blog posts and other content</a>
+    <a href="#edit">Edit, preview, publish</a>
+    <a href="#translate">Add a translation</a>
+    <a href="#menus">Menus, header, footer</a>
+    <a href="#listings">Lists and sliders</a>
+    <a href="#visibility">Show or hide a section</a>
+    <a href="#seo">SEO and redirects</a>
+    <a href="#images">Images</a>
+    <a href="#limits">When to ask a developer</a>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Northwind demo · Payload admin</div>
+      <h1>Editor guide</h1>
+      <p class="lede">How to add and change content, build pages from sections, and publish Hebrew versions. Written for editors; no code involved.</p>
+      <div class="links">
+        <a href="https://payload-test-sand-nu.vercel.app/admin">Open the admin</a>
+        <a href="https://payload-test-sand-nu.vercel.app">Open the website</a>
+      </div>
+    </header>
+
+    <section id="start">
+      <h2>Getting around</h2>
+      <p>Log in at <code>/admin</code>. The menu on the left groups everything you can edit:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Group</th><th>What is in it</th></tr></thead>
+        <tbody>
+          <tr><td>Content</td><td>Pages, Blog posts, Events, Resources, Glossary, People, Reusable sections</td></tr>
+          <tr><td>Site</td><td>Headers (with menus), Footers, Redirects</td></tr>
+          <tr><td>Taxonomies</td><td>Categories, Tags, Event types, Industries, Resource types, Topics, Departments</td></tr>
+          <tr><td>Collections</td><td>Media (images and files), Users</td></tr>
+          <tr><td>Globals</td><td>Site settings (home page, default header and footer, SEO, HubSpot, URL bases), Item defaults</td></tr>
+        </tbody>
+      </table></div>
+      <p>Every screen has a <strong>language switch</strong> in the top-right corner, <span class="ui">Locale: English</span>; click it and choose <span class="ui">עברית</span>. What you type is saved for the language that is selected. You can also switch the admin itself to Hebrew under your account.</p>
+      <figure><img src="guide-img/01-dashboard.jpg" alt="The dashboard: content types grouped as in the menu." loading="lazy" width="1440" height="900"><figcaption>The dashboard: content types grouped as in the menu.</figcaption></figure>
+      <figure><img src="guide-img/04-locale.jpg" alt="The language switch, top right." loading="lazy" width="1440" height="900"><figcaption>The language switch, top right.</figcaption></figure>
+      <div class="note"><strong>Roles.</strong> Editors can create, edit and publish all content. Only admins can manage users, Site settings and Redirects.</div>
+    </section>
+
+    <section id="page">
+      <h2>Create a page</h2>
+      <ol class="steps">
+        <li>Go to <span class="ui">Pages</span> and click <span class="ui">Create New</span>.</li>
+        <li>Pick a <span class="ui">Template</span>: Blank, Landing page, About, Contact or Archive. A template fills the page with starter sections when you first save; you change everything afterwards.</li>
+        <li>Type the <span class="ui">Title</span>. The <span class="ui">Slug</span> (the URL part) fills itself from the title; change it if you want a shorter URL.</li>
+        <li>To place the page under another one (like <code>/about/team</code>), choose a <span class="ui">Parent</span> in the right sidebar.</li>
+        <li>Build the content in <span class="ui">Sections</span> (see the next part).</li>
+        <li>Click <span class="ui">Publish changes</span> to put it live. Until then your work is saved as a draft automatically.</li>
+      </ol>
+      <figure><img src="guide-img/02-pages-list.jpg" alt="Pages list with each page’s status." loading="lazy" width="1440" height="900"><figcaption>Pages list with each page’s status.</figcaption></figure>
+      <figure><img src="guide-img/03-page-edit.jpg" alt="A page: title, slug, template and its sections. Parent is in the sidebar." loading="lazy" width="1440" height="900"><figcaption>A page: title, slug, template and its sections. Parent is in the sidebar.</figcaption></figure>
+
+      <h3>Start from an existing page instead</h3>
+      <p>Open any page, click the <span class="ui">⋮</span> menu at the far right of the publish button and choose <span class="ui">Duplicate</span>. You get a copy with all its sections. Rename it, change the slug, then edit.</p>
+      <h3>Make it the home page</h3>
+      <p>Admins: open <span class="ui">Site settings</span> and choose the page under <span class="ui">Home page</span>.</p>
+      <figure><img src="guide-img/19-site-settings.jpg" alt="Site settings: site name, home page, default header and footer, SEO and HubSpot." loading="lazy" width="1440" height="900"><figcaption>Site settings: site name, home page, default header and footer, SEO and HubSpot.</figcaption></figure>
+
+    </section>
+
+    <section id="blocks">
+      <h2>Working with sections</h2>
+      <p>A page is a stack of sections (blocks). Click <span class="ui">Add Section</span> under the list and pick one:</p>
+      <figure><img src="guide-img/05-add-section.jpg" alt="Choosing a section type." loading="lazy" width="1440" height="900"><figcaption>Choosing a section type.</figcaption></figure>
+
+      <div class="tbl"><table>
+        <thead><tr><th>Section</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td>Hero</td><td>Big headline at the top, with buttons and an image beside or below</td></tr>
+          <tr><td>Text</td><td>Formatted text: headings, lists, links</td></tr>
+          <tr><td>Media + text</td><td>An image next to text; choose which side the image goes</td></tr>
+          <tr><td>Cards</td><td>2–4 columns of cards with image, title, text and link</td></tr>
+          <tr><td>Listing</td><td>An automatic list of posts, events, resources, glossary terms or people, with filters</td></tr>
+          <tr><td>Columns</td><td>Your own layout: 1–4 columns of text, images and buttons</td></tr>
+          <tr><td>Tabs, Stats, Logos, Testimonials, FAQ</td><td>What the names say; Logos can scroll as a marquee</td></tr>
+          <tr><td>Call to action</td><td>A short banner with a heading and buttons</td></tr>
+          <tr><td>HubSpot form</td><td>A form built in HubSpot: paste its form ID; show it on the page or in a popup</td></tr>
+          <tr><td>Reusable section</td><td>Insert a section from <span class="ui">Reusable sections</span>; edit it there once and every page updates</td></tr>
+        </tbody>
+      </table></div>
+      <p>Every section has three tabs:</p>
+      <ul>
+        <li><strong>Content</strong>: the text, images and links.</li>
+        <li><strong>Style</strong>: background (default, light grey, brand tint, dark), spacing (none to large) and alignment (start or center).</li>
+        <li><strong>Visibility</strong>: rules for when the section shows (see <a href="#visibility">Show or hide a section</a>).</li>
+      </ul>
+      <figure><img src="guide-img/06-block-content.jpg" alt="An opened section with its Content, Style and Visibility tabs." loading="lazy" width="1440" height="900"><figcaption>An opened section with its Content, Style and Visibility tabs.</figcaption></figure>
+      <figure><img src="guide-img/07-block-style.jpg" alt="Style: background, spacing and alignment." loading="lazy" width="1440" height="900"><figcaption>Style: background, spacing and alignment.</figcaption></figure>
+      <h3>Move, copy and remove sections</h3>
+      <ul>
+        <li><strong>Reorder</strong>: drag a section by its handle on the left of its row.</li>
+        <li><strong>Collapse</strong>: click the arrow on the row to keep long pages tidy.</li>
+        <li><strong>Duplicate, remove, copy, paste</strong>: open the <span class="ui">⋯</span> menu on the section row. <span class="ui">Copy Row</span> on one page and <span class="ui">Paste Row</span> on another, or into the other language. <span class="ui">Add Below</span> inserts a new section right after it.</li>
+      </ul>
+      <figure><img src="guide-img/09-row-menu.jpg" alt="The section menu: move, add below, duplicate, copy, paste, remove." loading="lazy" width="1440" height="900"><figcaption>The section menu: move, add below, duplicate, copy, paste, remove.</figcaption></figure>
+
+      <h3>Buttons and links</h3>
+      <p>For every button, choose <span class="ui">Page or item</span> and pick the target from the list, or <span class="ui">Custom URL</span> for anything else. Picked pages keep working if their URL changes later. Buttons also have an <span class="ui">Appearance</span>: primary, secondary, outline, ghost or link.</p>
+    </section>
+
+    <section id="items">
+      <h2>Blog posts and other content</h2>
+      <p>Blog posts, Events, Resources, Glossary terms and People work the same way:</p>
+      <ol class="steps">
+        <li>Open the content type (for example <span class="ui">Blog posts</span>) and click <span class="ui">Create New</span>.</li>
+        <li>Fill in the title, a short <span class="ui">Excerpt</span> (shown on cards and in Google) and the main content.</li>
+        <li>In the sidebar, set the <span class="ui">Featured image</span> and pick terms: categories and tags for posts, event type for events, type, industries and topics for resources, department for people.</li>
+        <li>Fill the type's own fields: author for posts; dates, location and speakers for events; job title for people.</li>
+        <li>Optional: add <span class="ui">Extra sections</span> below the item, like on a page.</li>
+        <li>Publish.</li>
+      </ol>
+      <figure><img src="guide-img/16-post-edit.jpg" alt="A blog post: content on the left, image, date, author and terms in the sidebar." loading="lazy" width="1440" height="900"><figcaption>A blog post: content on the left, image, date, author and terms in the sidebar.</figcaption></figure>
+      <p>The item appears automatically in every list that shows its type: the blog page, sliders, related posts and the mega menu's "latest" column.</p>
+      <h3>Categories, tags and other terms</h3>
+      <p>Add or rename terms under <span class="ui">Taxonomies</span>. Categories can have a parent (for example Company › Culture). Each term has its own archive page, like <code>/blog/category/news</code>.</p>
+      <h3>Related content</h3>
+      <p>Opening a person shows the <span class="ui">Blog posts</span> and <span class="ui">Events</span> tabs with everything they wrote or speak at. You don't link them twice: set the author on the post, and it shows up on the person.</p>
+      <div class="note"><strong>Item defaults.</strong> Admins can add sections that appear after every item of a type (for example "Related posts" and a newsletter banner after each blog post) under <span class="ui">Item defaults</span>.</div>
+    </section>
+
+    <section id="edit">
+      <h2>Edit, preview and publish</h2>
+      <ul>
+        <li><strong>Autosave</strong>: your changes are saved as a draft every couple of seconds. The live site doesn't change until you publish.</li>
+        <li><strong>Live preview</strong>: click the eye icon next to <span class="ui">Publish changes</span>. The website opens beside the form and refreshes as your draft saves. Switch between mobile, tablet and desktop sizes in its toolbar.</li>
+        <li><strong>Share a preview</strong>: at the bottom of the Content tab click <span class="ui">Create preview link</span> and send the link. Anyone with it can see the draft for 7 days, without logging in.</li>
+        <li><strong>Publish later</strong>: open the arrow next to <span class="ui">Publish changes</span> and choose <span class="ui">Schedule Publish</span>. You can also schedule an unpublish. The same menu has <span class="ui">Publish in English</span> to publish only the language you are editing.</li>
+        <li><strong>Undo a change</strong>: open <span class="ui">Versions</span> at the top right, open an older version to compare it with the current one, and click <span class="ui">Restore</span>.</li>
+        <li><strong>Unpublish</strong>: in the <span class="ui">⋮</span> menu choose <span class="ui">Unpublish</span> (all languages) or <span class="ui">Unpublish in English</span> (just this one).</li>
+      </ul>
+      <figure><img src="guide-img/12-live-preview.jpg" alt="Live preview: the form on the left, the page on the right." loading="lazy" width="1440" height="900"><figcaption>Live preview: the form on the left, the page on the right.</figcaption></figure>
+      <figure><img src="guide-img/10-publish-menu.jpg" alt="The publish menu: schedule, or publish one language." loading="lazy" width="1440" height="900"><figcaption>The publish menu: schedule, or publish one language.</figcaption></figure>
+      <figure><img src="guide-img/15-versions.jpg" alt="Versions: compare and restore." loading="lazy" width="1440" height="900"><figcaption>Versions: compare and restore.</figcaption></figure>
+
+      <div class="note"><strong>Two editors on one page.</strong> When someone else has a document open, you see their name and a warning before you can take over.</div>
+    </section>
+
+    <section id="translate">
+      <h2>Add a translation</h2>
+      <p>English is the main language and has no prefix in the URL (<code>/about</code>). Hebrew lives under <code>/he</code> (<code>/he/אודות</code>) and is shown right to left automatically. Each language has its own content, slug and publish status, so a page can be live in English and a draft, or missing, in Hebrew.</p>
+
+      <h3>Translate a page or item</h3>
+      <ol class="steps">
+        <li>Open the English page or item.</li>
+        <li>Switch the language at the top to <span class="ui">עברית</span>. Empty fields mean there is no Hebrew version yet.</li>
+        <li>To start from the English content, open the <span class="ui">⋮</span> menu and choose <span class="ui">Copy to locale</span>, from English to עברית. The English sections are copied in; translate the text and swap images where needed. To build a different Hebrew layout, skip this step and add sections yourself.</li>
+        <li>Fill in the Hebrew <span class="ui">Title</span> and <span class="ui">Slug</span>. Hebrew letters are fine in the slug.</li>
+        <li>Open the <span class="ui">SEO</span> tab and add the Hebrew meta title and description.</li>
+        <li>Check it in <span class="ui">Live Preview</span>; the preview shows the Hebrew page right to left.</li>
+        <li>Open the arrow next to <span class="ui">Publish changes</span> and choose <span class="ui">Publish in עברית</span>. The English version is not touched.</li>
+      </ol>
+      <figure><img src="guide-img/11-doc-menu.jpg" alt="The ⋮ menu: Copy to locale, Duplicate, Unpublish in one language." loading="lazy" width="1440" height="900"><figcaption>The ⋮ menu: Copy to locale, Duplicate, Unpublish in one language.</figcaption></figure>
+      <figure><img src="guide-img/13-page-hebrew.jpg" alt="The same page with Locale set to עברית: Hebrew title and slug." loading="lazy" width="1440" height="900"><figcaption>The same page with Locale set to עברית: Hebrew title and slug.</figcaption></figure>
+
+      <div class="note"><strong>No Hebrew version?</strong> Then the Hebrew URL shows "page not found", and the language switch on the English page sends Hebrew visitors to the Hebrew home page. English text is never shown on Hebrew pages.</div>
+
+      <h3>Everything else that has a Hebrew version</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>What</th><th>Where</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Terms</td><td>Taxonomies → term → עברית</td><td>Hebrew title and slug. Assigned terms are shared by both languages.</td></tr>
+          <tr><td>Menus</td><td>Site → Headers → עברית</td><td>The Hebrew menu is its own list, so it can have different items. Use Copy to locale to start from English.</td></tr>
+          <tr><td>Header button</td><td>Headers → Header button</td><td>Label and target per language.</td></tr>
+          <tr><td>Footer</td><td>Site → Footers → עברית</td><td>About text, columns and legal line.</td></tr>
+          <tr><td>Reusable sections</td><td>Content → Reusable sections</td><td>Translate them once; every Hebrew page using them updates.</td></tr>
+          <tr><td>Site name, title pattern</td><td>Site settings → עברית</td><td>Shown in browser tabs and Google.</td></tr>
+          <tr><td>URL bases</td><td>Site settings → URL bases</td><td>The first part of item URLs per language, e.g. <code>blog</code> / <code>בלוג</code>.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>See what is translated</h3>
+      <p>In any list (for example <span class="ui">Pages</span>), switch the language at the top. The status column then shows the status for that language: published, draft, or changed since publishing.</p>
+    </section>
+
+    <section id="menus">
+      <h2>Menus, header and footer</h2>
+      <ol class="steps">
+        <li>Open <span class="ui">Site</span> → <span class="ui">Headers</span> → <span class="ui">Main header</span>.</li>
+        <li>In <span class="ui">Menu</span>, add an item and choose its type:
+          <ul>
+            <li><strong>Link</strong>: one link.</li>
+            <li><strong>Dropdown</strong>: a short list of links.</li>
+            <li><strong>Mega menu</strong>: up to 4 columns of links with descriptions and icons, an optional automatic column with the latest posts or events, an optional promo card with image and button, and a bottom link.</li>
+          </ul>
+        </li>
+        <li>Drag items to reorder them, then publish. Switch to עברית to edit the Hebrew menu.</li>
+      </ol>
+      <figure><img src="guide-img/18-header-menu.jpg" alt="A header: its button and the first menu item, a mega menu." loading="lazy" width="1440" height="900"><figcaption>A header: its button and the first menu item, a mega menu.</figcaption></figure>
+      <p>There are several header designs (Main, Minimal, Transparent) and two footers. <span class="ui">Site settings</span> choose the defaults. On any page or item, <span class="ui">Page appearance</span> at the bottom of the Content tab lets you keep the default, choose another header or footer, or hide them, for landing pages.</p>
+    </section>
+
+    <section id="listings">
+      <h2>Lists and sliders</h2>
+      <p>Add a <span class="ui">Listing</span> section to show items automatically. Its settings:</p>
+      <ul>
+        <li><strong>What to show</strong>: the content type; optionally only some terms; for events, upcoming or past only; "related to the current item" on item pages; items per page and the default order.</li>
+        <li><strong>Filters for visitors</strong>: add any of taxonomy (as tabs, dropdown or checkboxes), author or speaker, upcoming/past and dates, keyword search, A–Z letters, and sort. The filters go into the page URL, so a filtered list can be shared.</li>
+        <li><strong>Look</strong>: card style (standard, horizontal, compact, person, event, feature with image background), layout (grid of 2–4, list, slider) and paging (page numbers, "load more", none).</li>
+        <li><strong>Slider settings</strong> (when the layout is Slider): slides per view (1–4), arrows, dots, autoplay with seconds per slide, and full width. Full width with 1 slide per view gives tall edge-to-edge slides; with more it runs the row to the screen edge.</li>
+      </ul>
+      <figure><img src="guide-img/17-listing-settings.jpg" alt="Listing: what to show." loading="lazy" width="1440" height="900"><figcaption>Listing: what to show.</figcaption></figure>
+      <figure><img src="guide-img/17b-slider-settings.jpg" alt="Listing as a slider: card style, slides per view, arrows, dots, autoplay, full width." loading="lazy" width="1440" height="900"><figcaption>Listing as a slider: card style, slides per view, arrows, dots, autoplay, full width.</figcaption></figure>
+      <p>The CPT archive pages (Blog, Events, Resources, Glossary, People) are normal pages with a Listing section, so you can add anything above or below the list.</p>
+    </section>
+
+    <section id="visibility">
+      <h2>Show or hide a section</h2>
+      <p>In a section's <span class="ui">Visibility</span> tab, add conditions. With no conditions, the section always shows. Choose whether <em>all</em> or <em>any</em> conditions must match.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Condition</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Device</td><td>Show a section on desktop only.</td></tr>
+          <tr><td>Date window</td><td>Show a sale banner from 20 to 30 November.</td></tr>
+          <tr><td>Field of the current item</td><td>Show "Register" only while the event is still in the future.</td></tr>
+          <tr><td>URL parameter</td><td>Show a banner only for visitors from a campaign link, e.g. <code>?utm_campaign=bf</code>.</td></tr>
+          <tr><td>Content type has items</td><td>Show "Upcoming events" only when there are upcoming events.</td></tr>
+        </tbody>
+      </table></div>
+      <figure><img src="guide-img/08-block-visibility.jpg" alt="The Visibility tab: match all or any, then add conditions." loading="lazy" width="1440" height="900"><figcaption>The Visibility tab: match all or any, then add conditions.</figcaption></figure>
+
+    </section>
+
+    <section id="seo">
+      <h2>SEO and redirects</h2>
+      <ul>
+        <li><strong>SEO tab</strong> on every page, item and term: meta title and description with a Google preview and length hints (the magic-wand buttons fill them from the title and excerpt), a social sharing image, "Hide from search engines", and an optional canonical URL. Fill it per language.</li>
+        <li><strong>Defaults</strong>: when the SEO title is empty, the site uses the title pattern from Site settings, like <code>About | Northwind</code>.</li>
+        <li><strong>Changing a URL</strong>: when you change the slug of a published page or item, the old URL redirects to the new one automatically.</li>
+        <li><strong>Redirects</strong> (admins): add your own under <span class="ui">Site</span> → <span class="ui">Redirects</span>: the old path (e.g. <code>/old-page</code> or <code>/he/…</code>), the target page or URL, and permanent (301) or temporary (302).</li>
+        <li>The SEO tab sits next to Content at the top of the form.</li>
+        <li>The sitemap (<code>/sitemap.xml</code>) and the language links for Google update by themselves.</li>
+      </ul>
+    </section>
+
+      <figure><img src="guide-img/14-seo.jpg" alt="The SEO tab: title and description with length checks and a Google preview." loading="lazy" width="1440" height="900"><figcaption>The SEO tab: title and description with length checks and a Google preview.</figcaption></figure>
+    <section id="images">
+      <h2>Images</h2>
+      <ul>
+        <li>Upload in <span class="ui">Media</span>, or directly from any image field. Several files at once work too.</li>
+        <li>Always fill in <span class="ui">Alt</span>: a short description for screen readers and Google.</li>
+        <li>Large images are resized automatically for phones and desktops; you don't need to prepare sizes.</li>
+      </ul>
+    </section>
+
+    <section id="limits">
+      <h2>When to ask a developer</h2>
+      <ul>
+        <li>A new kind of section, for example a new design from Figma that no existing section can build.</li>
+        <li>A new field on a content type, a new content type or a new taxonomy.</li>
+        <li>A new visibility condition (for example by country), a new filter type or a new card style.</li>
+        <li>Anything in Site settings you don't have access to.</li>
+      </ul>
+      <p>There are no plugins to install: features are added by the developers, which is also why updates don't break the site.</p>
+    </section>
+  </main>
+</div>

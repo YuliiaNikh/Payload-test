@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 
 import type { BlockContext } from '@/blocks/context'
+import type { SearchParams } from '@/blocks/Listing/state'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { ItemView } from '@/components/items/ItemView'
 import { LanguageSwitcher } from '@/components/LanguageSwitcher'
@@ -15,6 +16,7 @@ import { getHomePageId } from '@/lib/queries/pages'
 
 type Props = {
   params: Promise<{ locale: string; path?: string[] }>
+  searchParams: Promise<SearchParams>
 }
 
 async function resolve(params: Props['params']) {
@@ -43,8 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: siteName ? `${route.doc.title} | ${siteName}` : route.doc.title }
 }
 
-export default async function PageRoute({ params }: Props) {
+export default async function PageRoute({ params, searchParams }: Props) {
   const { locale, route } = await resolve(params)
+  const { path } = await params
   const [alternates, siteName, bases, homeId] = await Promise.all([
     getRouteAlternates(route),
     getSiteName(locale),
@@ -56,6 +59,9 @@ export default async function PageRoute({ params }: Props) {
     bases,
     homeId,
     item: route.kind === 'item' ? { collection: route.collection, doc: route.doc } : undefined,
+    pathname: localizePath(locale, normalizePath(path)),
+    searchParams: await searchParams,
+    preset: route.kind === 'page' ? route.preset : undefined,
   }
 
   return (

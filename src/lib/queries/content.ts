@@ -4,15 +4,17 @@ import { getPayload, type Where } from 'payload'
 import { defaultCptBases, type CptSlug } from '@/content/types'
 import { locales, type Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
-import { cptItemPath, matchCptPath, type CptBases } from '@/lib/routing/cptPaths'
+import { cptItemPath, matchCptPath, matchTermArchivePath, type CptBases } from '@/lib/routing/cptPaths'
 import type { Config, Page } from '@/payload-types'
 
 import { findPublishedPageByPath, getPageAlternates } from './pages'
 
 export type CptDoc = Config['collections'][CptSlug]
 
+export type TermPreset = { collection: CptSlug; field: string; termId: number; title: string }
+
 export type Route =
-  | { kind: 'page'; doc: Page }
+  | { kind: 'page'; doc: Page; preset?: TermPreset }
   | { kind: 'item'; collection: CptSlug; doc: CptDoc }
 
 const published = { _status: { equals: 'published' } } as const
@@ -42,11 +44,33 @@ export async function findPublishedItem(
 }
 
 export async function resolveRoute(path: string, locale: Locale): Promise<Route | null> {
-  const match = matchCptPath(path, await getCptBases(locale))
+  const bases = await getCptBases(locale)
+  const match = matchCptPath(path, bases)
   if (match) {
     const doc = await findPublishedItem(match.collection, locale, { slug: match.slug })
     if (doc) return { kind: 'item', collection: match.collection, doc }
   }
+  const term = matchTermArchivePath(path, bases)
+  if (term) {
+    // Term archives reuse the CPT archive page (the page at /<base>) with the term preset
+    const payload = await getPayload({ config })
+    const { docs } = await payload.find({
+      collection: term.taxonomy.taxonomy,
+      locale,
+      depth: 0,
+      limit: 1,
+      where: { slug: { equals: term.slug } },
+    })
+    const archive = docs[0] && (await findPublishedPageByPath(`/${bases[term.collection]}`, locale))
+    if (docs[0] && archive) {
+      return {
+        kind: 'page',
+        doc: archive,
+        preset: { collection: term.collection, field: term.taxonomy.field, termId: docs[0].id, title: docs[0].title },
+      }
+    }
+  }
+
   const page = await findPublishedPageByPath(path, locale)
   return page ? { kind: 'page', doc: page } : null
 }

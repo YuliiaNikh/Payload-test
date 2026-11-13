@@ -70,6 +70,7 @@ export interface Config {
     richText: RichTextBlock;
     mediaText: MediaTextBlock;
     cards: CardsBlock;
+    listing: ListingBlock;
     columns: ColumnsBlock;
     tabs: TabsBlock;
     stats: StatsBlock;
@@ -250,6 +251,7 @@ export interface Page {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -412,6 +414,7 @@ export interface Post {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -495,6 +498,7 @@ export interface Person {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -565,6 +569,7 @@ export interface Event {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -692,6 +697,7 @@ export interface Resource {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -742,6 +748,110 @@ export interface Industry {
  * via the `definition` "topics".
  */
 export interface Topic {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListingBlock".
+ */
+export interface ListingBlock {
+  heading?: string | null;
+  intro?: string | null;
+  collection: 'posts' | 'events' | 'resources' | 'glossary' | 'people';
+  fixedTerms?:
+    | (
+        | {
+            relationTo: 'categories';
+            value: number | Category;
+          }
+        | {
+            relationTo: 'tags';
+            value: number | Tag;
+          }
+        | {
+            relationTo: 'event-types';
+            value: number | EventType;
+          }
+        | {
+            relationTo: 'industries';
+            value: number | Industry;
+          }
+        | {
+            relationTo: 'resource-types';
+            value: number | ResourceType;
+          }
+        | {
+            relationTo: 'topics';
+            value: number | Topic;
+          }
+        | {
+            relationTo: 'departments';
+            value: number | Department;
+          }
+      )[]
+    | null;
+  when?: ('all' | 'upcoming' | 'past') | null;
+  relatedToCurrent?: boolean | null;
+  excludeCurrent?: boolean | null;
+  perPage?: number | null;
+  defaultSort?: ('newest' | 'oldest' | 'az' | 'za' | 'updated') | null;
+  filters?:
+    | {
+        type: 'taxonomy' | 'person' | 'date' | 'search' | 'az' | 'sort';
+        taxonomy?: ('category' | 'tag' | 'type' | 'industry' | 'topic' | 'department') | null;
+        display?: ('tabs' | 'select' | 'checkboxes') | null;
+        id?: string | null;
+      }[]
+    | null;
+  cardStyle?: ('standard' | 'horizontal' | 'compact' | 'person' | 'event') | null;
+  layout?: ('grid2' | 'grid3' | 'grid4' | 'list' | 'slider') | null;
+  paging?: ('numbers' | 'loadMore' | 'none') | null;
+  style?: {
+    background?: ('default' | 'surface' | 'accent' | 'dark') | null;
+    spacing?: ('none' | 'sm' | 'md' | 'lg') | null;
+    align?: ('start' | 'center') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'listing';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * URL part for this language. Filled from the title when empty.
+   */
+  slug: string;
+  description?: string | null;
+  parent?: (number | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (number | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
   id: number;
   title: string;
   /**
@@ -890,6 +1000,7 @@ export interface Glossary {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -1150,6 +1261,7 @@ export interface ReusableSection {
         | RichTextBlock
         | MediaTextBlock
         | CardsBlock
+        | ListingBlock
         | ColumnsBlock
         | TabsBlock
         | StatsBlock
@@ -1163,45 +1275,6 @@ export interface ReusableSection {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * URL part for this language. Filled from the title when empty.
-   */
-  slug: string;
-  description?: string | null;
-  parent?: (number | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (number | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: number;
-  title: string;
-  /**
-   * URL part for this language. Filled from the title when empty.
-   */
-  slug: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1704,6 +1777,7 @@ export interface CptDefault {
           | RichTextBlock
           | MediaTextBlock
           | CardsBlock
+          | ListingBlock
           | ColumnsBlock
           | TabsBlock
           | StatsBlock
@@ -1723,6 +1797,7 @@ export interface CptDefault {
           | RichTextBlock
           | MediaTextBlock
           | CardsBlock
+          | ListingBlock
           | ColumnsBlock
           | TabsBlock
           | StatsBlock
@@ -1742,6 +1817,7 @@ export interface CptDefault {
           | RichTextBlock
           | MediaTextBlock
           | CardsBlock
+          | ListingBlock
           | ColumnsBlock
           | TabsBlock
           | StatsBlock
@@ -1761,6 +1837,7 @@ export interface CptDefault {
           | RichTextBlock
           | MediaTextBlock
           | CardsBlock
+          | ListingBlock
           | ColumnsBlock
           | TabsBlock
           | StatsBlock
@@ -1780,6 +1857,7 @@ export interface CptDefault {
           | RichTextBlock
           | MediaTextBlock
           | CardsBlock
+          | ListingBlock
           | ColumnsBlock
           | TabsBlock
           | StatsBlock

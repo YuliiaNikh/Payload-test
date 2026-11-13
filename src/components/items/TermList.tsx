@@ -1,8 +1,14 @@
-type Term = { id: number; title?: string | null } | number | null | undefined
+type Term = { id: number; title?: string | null; slug?: string | null } | number | null | undefined
 
-export function TermList({ label, terms }: { label: string; terms: Term[] | Term }) {
+type Props = {
+  label: string
+  terms: Term[] | Term
+  hrefFor?: (slug: string) => string
+}
+
+export function TermList({ label, terms, hrefFor }: Props) {
   const list = (Array.isArray(terms) ? terms : [terms]).filter(
-    (term): term is { id: number; title?: string | null } => typeof term === 'object' && term !== null,
+    (term): term is { id: number; title?: string | null; slug?: string | null } => typeof term === 'object' && term !== null,
   )
   if (!list.length) return null
 
@@ -11,8 +17,14 @@ export function TermList({ label, terms }: { label: string; terms: Term[] | Term
       <span className="term-list__label">{label}</span>
       <ul>
         {list.map((term) => (
-          <li key={term.id} className="chip">
-            {term.title}
+          <li key={term.id}>
+            {hrefFor && term.slug ? (
+              <a className="chip" href={hrefFor(term.slug)}>
+                {term.title}
+              </a>
+            ) : (
+              <span className="chip">{term.title}</span>
+            )}
           </li>
         ))}
       </ul>

@@ -6,6 +6,7 @@ import { CtaBlock } from './Cta/config'
 import { DynamicFieldBlock } from './DynamicField/config'
 import { FaqBlock } from './Faq/config'
 import { HeroBlock } from './Hero/config'
+import { ListingBlock } from './Listing/config'
 import { LogosBlock } from './Logos/config'
 import { MediaTextBlock } from './MediaText/config'
 import { ReusableSectionBlock } from './ReusableSection/config'
@@ -20,6 +21,7 @@ export const sectionBlocks: Block[] = [
   RichTextBlock,
   MediaTextBlock,
   CardsBlock,
+  ListingBlock,
   ColumnsBlock,
   TabsBlock,
   StatsBlock,

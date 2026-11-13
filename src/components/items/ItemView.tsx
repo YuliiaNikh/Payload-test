@@ -1,9 +1,9 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
-import type { CptSlug } from '@/content/types'
+import { cptTaxonomies, type CptSlug } from '@/content/types'
 import type { Locale } from '@/i18n/config'
 import { localizePath } from '@/i18n/paths'
-import { cptItemPath, type CptBases } from '@/lib/routing/cptPaths'
+import { cptItemPath, termArchivePath, type CptBases } from '@/lib/routing/cptPaths'
 import type { CptDoc } from '@/lib/queries/content'
 import type { Event, Glossary, Media, Person, Post, Resource } from '@/payload-types'
 
@@ -72,43 +72,35 @@ export function ItemView({ collection, doc, locale, bases }: Props) {
       {doc.content && <RichText className="item__content" data={doc.content} />}
 
       <footer className="item__footer">
-        {collection === 'posts' && (
-          <>
-            <TermList label="Categories" terms={(doc as Post).categories} />
-            <TermList label="Tags" terms={(doc as Post).tags} />
-          </>
+        {/* Term chips link to term archives, e.g. /blog/category/news */}
+        {cptTaxonomies[collection].map((tax) => (
+          <TermList
+            key={tax.field}
+            label={tax.label}
+            terms={(doc as unknown as Record<string, never>)[tax.field]}
+            hrefFor={(slug) => localizePath(locale, termArchivePath(collection, tax.key, slug, bases))}
+          />
+        ))}
+        {collection === 'events' && asPeople((doc as Event).speakers).length > 0 && (
+          <div className="term-list">
+            <span className="term-list__label">Speakers</span>
+            <ul>
+              {asPeople((doc as Event).speakers).map((person) => (
+                <li key={person.id}>
+                  <PersonLink person={person} locale={locale} bases={bases} />
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
-        {collection === 'events' && (
-          <>
-            <TermList label="Type" terms={(doc as Event).eventTypes} />
-            {asPeople((doc as Event).speakers).length > 0 && (
-              <div className="term-list">
-                <span className="term-list__label">Speakers</span>
-                <ul>
-                  {asPeople((doc as Event).speakers).map((person) => (
-                    <li key={person.id}>
-                      <PersonLink person={person} locale={locale} bases={bases} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </>
+        {collection === 'resources' && (doc as Resource).externalUrl && (
+          <p>
+            <a className="btn btn--primary" href={(doc as Resource).externalUrl!}>
+              Open resource
+            </a>
+          </p>
         )}
-        {collection === 'resources' && (
-          <>
-            <TermList label="Type" terms={(doc as Resource).resourceType} />
-            <TermList label="Industries" terms={(doc as Resource).industries} />
-            <TermList label="Topics" terms={(doc as Resource).topics} />
-            {(doc as Resource).externalUrl && (
-              <p>
-                <a href={(doc as Resource).externalUrl!}>Open resource</a>
-              </p>
-            )}
-          </>
-        )}
-        {collection === 'people' && <TermList label="Department" terms={(doc as Person).department} />}
-        {collection === 'glossary' && <TermList label="Related terms" terms={(doc as Glossary).relatedTerms} />}
+        {collection === 'glossary' && <TermList label="Related terms" terms={(doc as Glossary).relatedTerms} hrefFor={(slug) => localizePath(locale, cptItemPath('glossary', slug, bases))} />}
       </footer>
     </article>
   )
